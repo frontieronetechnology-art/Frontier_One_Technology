@@ -1,0 +1,132 @@
+import PageHero from "@/components/PageHero";
+import Reveal from "@/components/Reveal";
+import ContactForm from "@/components/ContactForm";
+import CTASection from "@/components/CTASection";
+import Icon from "@/components/Icons";
+
+export const metadata = {
+  title: "Contact Us",
+  description:
+    "Schedule a consultation or reach the Frontier One Technology team. We respond to every inquiry.",
+};
+
+/* Placeholder contact values — pending client input
+   (Content Doc §1.2 / Requirements & Open Items). */
+const DETAILS = [
+  { icon: "phone", label: "Phone", value: "+1 (000) 000-0000", href: "tel:+10000000000" },
+  { icon: "mail", label: "Email", value: "info@frontieronetechnology.com", href: "mailto:info@frontieronetechnology.com" },
+  { icon: "pin", label: "Location", value: "United States", href: null },
+];
+
+const SOCIALS = [
+  { label: "LinkedIn", href: "https://www.linkedin.com/" },
+  { label: "Instagram", href: "https://www.instagram.com/" },
+  { label: "X (Twitter)", href: "https://x.com/" },
+];
+
+export default function ContactPage() {
+  return (
+    <>
+      <PageHero
+        index="01"
+        eyebrow="Contact"
+        title={[
+          { text: "Let's Talk About " },
+          { text: "What's Next", serif: true },
+        ]}
+        lede="Tell us what you're building, modernizing, or securing. We respond to every inquiry — usually within one business day."
+      />
+
+      <section className="container-x pb-24 pt-8 sm:pb-28">
+        <div className="grid gap-14 lg:grid-cols-12">
+          {/* Details rail */}
+          <div className="lg:col-span-4">
+            <Reveal>
+              <div className="space-y-4">
+                {DETAILS.map((d) => (
+                  <div key={d.label} className="card flex items-center gap-4 p-5">
+                    <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-md bg-n200 text-ink">
+                      <Icon name={d.icon} />
+                    </span>
+                    <div>
+                      <p className="font-mono text-[0.6rem] uppercase tracking-[0.2em] text-n600">
+                        {d.label}
+                      </p>
+                      {d.href ? (
+                        <a href={d.href} className="mt-1 block text-[0.9rem] font-semibold tracking-tight transition-colors hover:text-n700">
+                          {d.value}
+                        </a>
+                      ) : (
+                        <p className="mt-1 text-[0.9rem] font-semibold tracking-tight">{d.value}</p>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </Reveal>
+            <Reveal delay={0.15}>
+              <div className="mt-8 rounded-xl border rule bg-n50 p-6">
+                <p className="font-mono text-[0.6rem] uppercase tracking-[0.2em] text-n600">Follow</p>
+                <div className="mt-4 flex flex-wrap gap-2.5">
+                  {SOCIALS.map((s) => (
+                    <a
+                      key={s.label}
+                      href={s.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group inline-flex items-center gap-1.5 rounded-full border rule bg-white px-4 py-1.5 text-[0.8rem] font-medium text-n700 transition-colors hover:border-ink hover:text-ink"
+                    >
+                      {s.label}
+                      <Icon name="arrowUpRight" className="text-n500 transition-colors group-hover:text-bronze-deep" />
+                    </a>
+                  ))}
+                </div>
+              </div>
+            </Reveal>
+          </div>
+
+          {/* Form */}
+          <div className="lg:col-span-7 lg:col-start-6">
+            <Reveal delay={0.1}>
+              <div className="card p-8 sm:p-10">
+                <p className="eyebrow">
+                  <span className="idx">02</span> Send a Message
+                </p>
+                <div className="mt-8">
+                  <ContactForm />
+                </div>
+              </div>
+            </Reveal>
+          </div>
+        </div>
+      </section>
+
+      {/* ── MAP ──────────────────────────────────────────────── */}
+      <section className="container-x pb-24">
+        <Reveal>
+          <div className="relative overflow-hidden rounded-2xl border rule">
+            {/* Swap `q=United+States` for the confirmed office address (SRS §6.7) */}
+            <iframe
+              title="Frontier One Technology office location"
+              src="https://www.google.com/maps?q=United+States&output=embed"
+              className="h-[26rem] w-full grayscale transition-all duration-700 hover:grayscale-0 sm:h-[30rem]"
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              allowFullScreen
+            />
+            <a
+              href="https://www.google.com/maps/dir//United+States"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-ink absolute bottom-5 left-5 !py-2.5 !px-5 text-sm"
+            >
+              Get Directions <Icon name="arrowUpRight" />
+            </a>
+          </div>
+        </Reveal>
+      </section>
+
+      <CTASection />
+    </>
+  );
+}
