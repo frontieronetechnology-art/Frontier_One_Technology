@@ -1,5 +1,0 @@
-{
-  "/page": "/",
-  "/services/[slug]/page": "/services/[slug]",
-  "/_not-found/page": "/_not-found"
-}
