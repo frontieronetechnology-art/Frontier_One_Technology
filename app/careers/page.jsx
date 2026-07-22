@@ -1,13 +1,23 @@
-import Link from "next/link";
 import PageHero from "@/components/PageHero";
 import Reveal, { RevealGroup, RevealItem } from "@/components/Reveal";
 import SectionHeading from "@/components/SectionHeading";
 import Accordion from "@/components/Accordion";
 import ApplicationForm from "@/components/ApplicationForm";
-import SpotlightCard from "@/components/SpotlightCard";
 import CTASection from "@/components/CTASection";
+import RoleBoard from "@/components/RoleBoard";
+import SpotlightCard from "@/components/SpotlightCard";
 import Icon from "@/components/Icons";
 import { JOBS, BENEFITS, CAREERS_FAQ } from "@/lib/data";
+
+const CULTURE_WORDS = [
+  "Ownership",
+  "Curiosity",
+  "Craft",
+  "Growth",
+  "Collaboration",
+  "Trust",
+  "Momentum",
+];
 
 export const metadata = {
   title: "Careers",
@@ -34,6 +44,24 @@ export default function CareersPage() {
         </div>
       </PageHero>
 
+      {/* ── CULTURE MARQUEE ──────────────────────────────────── */}
+      <div className="marquee overflow-hidden border-y rule bg-n50" aria-hidden>
+        <div className="relative py-6">
+          <div className="marquee-track items-baseline gap-10" style={{ "--marquee-duration": "32s" }}>
+            {[0, 1].map((n) => (
+              <span key={n} className="flex shrink-0 items-baseline gap-10 pr-10">
+                {CULTURE_WORDS.map((w) => (
+                  <span key={w} className="flex items-baseline gap-10">
+                    <span className="display whitespace-nowrap text-3xl text-ink sm:text-4xl">{w}</span>
+                    <span className="h-2 w-2 shrink-0 rotate-45 self-center bg-bronze" />
+                  </span>
+                ))}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+
       {/* ── OPEN POSITIONS ───────────────────────────────────── */}
       <section id="open-positions" className="container-x scroll-mt-24 pb-24 pt-8 sm:pb-28">
         <div className="flex flex-wrap items-end justify-between gap-6">
@@ -53,34 +81,11 @@ export default function CareersPage() {
           </Reveal>
         </div>
 
-        <RevealGroup className="mt-14 grid gap-5 lg:grid-cols-2" stagger={0.06}>
-          {JOBS.map((job) => (
-            <RevealItem key={job.slug}>
-              <Link href={`/careers/${job.slug}`} className="block h-full">
-                <SpotlightCard className="card group flex h-full flex-col p-8">
-                <div className="flex items-start justify-between gap-4">
-                  <h3 className="text-xl font-semibold tracking-tight">{job.title}</h3>
-                  <span className="mt-1 shrink-0 text-n500 transition-all duration-500 group-hover:translate-x-1 group-hover:text-bronze-deep">
-                    <Icon name="arrowUpRight" />
-                  </span>
-                </div>
-                <div className="mt-4 flex flex-wrap gap-2">
-                  <Tag>{job.type}</Tag>
-                  <Tag>{job.experience}</Tag>
-                  <Tag>{job.location}</Tag>
-                </div>
-                <p className="mt-5 flex-1 text-[0.88rem] leading-relaxed text-n700">{job.summary}</p>
-                <div className="mt-6 flex items-center justify-between border-t rule pt-5">
-                  <span className="font-mono text-[0.78rem] text-bronze-deep">{job.salary}</span>
-                  <span className="link-arrow text-sm">
-                    View Details <Icon name="arrow" />
-                  </span>
-                </div>
-                </SpotlightCard>
-              </Link>
-            </RevealItem>
-          ))}
-        </RevealGroup>
+        <Reveal delay={0.1}>
+          <div className="mt-14">
+            <RoleBoard jobs={JOBS} />
+          </div>
+        </Reveal>
       </section>
 
       {/* ── BENEFITS ─────────────────────────────────────────── */}
@@ -95,17 +100,23 @@ export default function CareersPage() {
               </>
             }
           />
-          <RevealGroup className="mt-14 grid grid-cols-1 gap-px overflow-hidden rounded-xl border rule bg-n300 sm:grid-cols-2 lg:grid-cols-5" stagger={0.04}>
+          <RevealGroup
+            className="mt-14 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-5"
+            stagger={0.04}
+          >
             {BENEFITS.map((benefit, i) => (
               <RevealItem key={benefit}>
-                <div className="flex h-full flex-col gap-4 bg-n50 p-6 transition-colors duration-500 hover:bg-white">
-                  <span className="font-mono text-[0.68rem] text-bronze-deep">
+                <SpotlightCard className="bracket group flex h-full min-h-[10.5rem] flex-col justify-between overflow-hidden border border-n300 bg-white p-6">
+                  <span
+                    className="ghost-num pointer-events-none select-none text-[3.5rem] leading-none transition-colors duration-500 group-hover:text-bronze/30"
+                    aria-hidden
+                  >
                     {String(i + 1).padStart(2, "0")}
                   </span>
-                  <span className="text-[0.9rem] font-medium leading-snug tracking-tight">
+                  <span className="text-[0.92rem] font-semibold leading-snug tracking-tight text-ink">
                     {benefit}
                   </span>
-                </div>
+                </SpotlightCard>
               </RevealItem>
             ))}
           </RevealGroup>
@@ -172,13 +183,5 @@ export default function CareersPage() {
         <CTASection />
       </div>
     </>
-  );
-}
-
-function Tag({ children }) {
-  return (
-    <span className="rounded-full border rule px-3 py-1 font-mono text-[0.65rem] uppercase tracking-[0.1em] text-n600">
-      {children}
-    </span>
   );
 }

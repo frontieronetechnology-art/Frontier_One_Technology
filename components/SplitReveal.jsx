@@ -51,10 +51,11 @@ export default function SplitReveal({
           <motion.span
             className={`inline-block ${word.serif ? "serif-accent" : ""}`}
             variants={{
-              hidden: { y: "115%", rotate: 2.5 },
+              hidden: { y: "115%", rotate: 2.5, filter: "blur(7px)" },
               show: {
                 y: 0,
                 rotate: 0,
+                filter: "blur(0px)",
                 transition: { duration, ease: EASE, delay: delay + i * stagger },
               },
             }}

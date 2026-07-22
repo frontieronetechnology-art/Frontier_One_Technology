@@ -11,6 +11,7 @@ export default function CTASection() {
     <section className="container-x pb-24 pt-8 sm:pb-28">
       <Reveal>
         <div className="relative overflow-hidden rounded-2xl bg-ink px-6 py-20 text-center sm:px-12 sm:py-28">
+          <div className="mesh-glow mesh-glow-invert" aria-hidden />
           {/* engraved concentric arcs */}
           <svg
             className="pointer-events-none absolute -right-40 -top-40 h-[34rem] w-[34rem] opacity-[0.08]"
@@ -47,7 +48,7 @@ export default function CTASection() {
               { text: "Ready to Build " },
               { text: "What's Next?", serif: true },
             ]}
-            className="display mx-auto mt-6 max-w-3xl text-4xl text-n100 sm:text-5xl lg:text-6xl"
+            className="display mx-auto mt-6 max-w-4xl text-[2.75rem] text-n100 sm:text-6xl lg:text-[5rem]"
           />
           <p className="mx-auto mt-7 max-w-2xl text-[0.95rem] leading-relaxed text-n400 sm:text-base">
             Technology is changing faster than ever. Having the right technology partner can

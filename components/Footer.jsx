@@ -87,13 +87,14 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Oversized wordmark — letters wave on hover */}
+        {/* Oversized wordmark — justified edge to edge so it always reads
+            centred in the container, whatever the viewport. */}
         <div className="mt-20 select-none overflow-hidden border-t border-n800 pt-10" aria-hidden>
-          <p className="display whitespace-nowrap text-[11.5vw] leading-none text-n800/60 xl:text-[10rem]">
+          <p className="display flex w-full items-baseline justify-between whitespace-nowrap text-[8.6vw] leading-[0.9] text-n800/60 xl:text-[8.5rem]">
             {"Frontier".split("").map((ch, i) => (
               <span key={`f-${i}`} className="wave-letter">{ch}</span>
             ))}
-            <span className="inline-block w-[0.22em]" />
+            <span className="w-[0.12em]" />
             {"One".split("").map((ch, i) => (
               <em key={`o-${i}`} className="wave-letter text-n800/40">{ch}</em>
             ))}

@@ -38,7 +38,7 @@ export default async function JobPage({ params }) {
           <a href="#apply" className="btn btn-ink">
             Apply Now <Icon name="arrow" />
           </a>
-          <Link href="/careers" className="btn btn-ghost">
+          <Link href="/careers" data-cursor="Back" className="btn btn-ghost">
             All Open Roles
           </Link>
         </div>

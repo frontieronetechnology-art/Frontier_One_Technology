@@ -50,7 +50,9 @@ export default function ProcessPage() {
       />
 
       {/* ── 8-STEP RAIL ──────────────────────────────────────── */}
-      <section className="container-x pb-24 pt-8 sm:pb-32">
+      <section className="relative container-x pb-24 pt-8 sm:pb-32">
+        <div className="mesh-glow" aria-hidden />
+        <div className="relative">
         <Reveal>
           <p className="mb-14 max-w-2xl border-l-2 border-bronze pl-5 text-[0.95rem] leading-relaxed text-n700">
             A proven process for delivering reliable technology solutions — every project
@@ -59,6 +61,7 @@ export default function ProcessPage() {
           </p>
         </Reveal>
         <ProcessRail />
+        </div>
       </section>
 
       {/* ── PRINCIPLES ───────────────────────────────────────── */}

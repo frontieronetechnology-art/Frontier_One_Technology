@@ -14,7 +14,7 @@ export default function SectionHeading({
   center = false,
   className = "",
 }) {
-  const titleClass = `display mt-5 text-4xl sm:text-5xl lg:text-[3.4rem] ${
+  const titleClass = `display mt-5 text-[2.5rem] sm:text-5xl lg:text-[3.75rem] ${
     invert ? "text-n100" : "text-ink"
   }`;
 

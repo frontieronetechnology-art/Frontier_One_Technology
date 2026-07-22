@@ -39,47 +39,51 @@ export default function ContactPage() {
 
       <section className="container-x pb-24 pt-8 sm:pb-28">
         <div className="grid gap-14 lg:grid-cols-12">
-          {/* Details rail */}
+          {/* Details rail — ink panel, no boxed cards */}
           <div className="lg:col-span-4">
             <Reveal>
-              <div className="space-y-4">
-                {DETAILS.map((d) => (
-                  <div key={d.label} className="card flex items-center gap-4 p-5">
-                    <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-md bg-n200 text-ink">
-                      <Icon name={d.icon} />
-                    </span>
-                    <div>
-                      <p className="font-mono text-[0.6rem] uppercase tracking-[0.2em] text-n600">
-                        {d.label}
-                      </p>
-                      {d.href ? (
-                        <a href={d.href} className="mt-1 block text-[0.9rem] font-semibold tracking-tight transition-colors hover:text-n700">
-                          {d.value}
-                        </a>
-                      ) : (
-                        <p className="mt-1 text-[0.9rem] font-semibold tracking-tight">{d.value}</p>
-                      )}
+              <div className="relative flex h-full flex-col overflow-hidden rounded-2xl bg-ink p-8 sm:p-9">
+                <div className="mesh-glow mesh-glow-invert" aria-hidden />
+                <p className="eyebrow eyebrow-invert relative">
+                  <span className="idx">→</span> Reach Us Directly
+                </p>
+                <div className="relative mt-8 divide-y divide-n800">
+                  {DETAILS.map((d) => (
+                    <div key={d.label} className="flex items-center gap-4 py-5 first:pt-0 last:pb-0">
+                      <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-md border border-n800 text-bronze">
+                        <Icon name={d.icon} />
+                      </span>
+                      <div>
+                        <p className="font-mono text-[0.6rem] uppercase tracking-[0.2em] text-n500">
+                          {d.label}
+                        </p>
+                        {d.href ? (
+                          <a href={d.href} className="mt-1 block text-[0.95rem] font-semibold tracking-tight text-n100 transition-colors hover:text-bronze">
+                            {d.value}
+                          </a>
+                        ) : (
+                          <p className="mt-1 text-[0.95rem] font-semibold tracking-tight text-n100">{d.value}</p>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                ))}
-              </div>
-            </Reveal>
-            <Reveal delay={0.15}>
-              <div className="mt-8 rounded-xl border rule bg-n50 p-6">
-                <p className="font-mono text-[0.6rem] uppercase tracking-[0.2em] text-n600">Follow</p>
-                <div className="mt-4 flex flex-wrap gap-2.5">
-                  {SOCIALS.map((s) => (
-                    <a
-                      key={s.label}
-                      href={s.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="group inline-flex items-center gap-1.5 rounded-full border rule bg-white px-4 py-1.5 text-[0.8rem] font-medium text-n700 transition-colors hover:border-ink hover:text-ink"
-                    >
-                      {s.label}
-                      <Icon name="arrowUpRight" className="text-n500 transition-colors group-hover:text-bronze-deep" />
-                    </a>
                   ))}
+                </div>
+                <div className="relative mt-8 border-t border-n800 pt-6">
+                  <p className="font-mono text-[0.6rem] uppercase tracking-[0.2em] text-n500">Follow</p>
+                  <div className="mt-4 flex flex-wrap gap-2.5">
+                    {SOCIALS.map((s) => (
+                      <a
+                        key={s.label}
+                        href={s.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="group inline-flex items-center gap-1.5 rounded-full border border-n800 px-4 py-1.5 text-[0.8rem] font-medium text-n300 transition-colors hover:border-bronze hover:text-n100"
+                      >
+                        {s.label}
+                        <Icon name="arrowUpRight" className="text-n500 transition-colors group-hover:text-bronze" />
+                      </a>
+                    ))}
+                  </div>
                 </div>
               </div>
             </Reveal>

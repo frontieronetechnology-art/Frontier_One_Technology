@@ -11,19 +11,12 @@ const EASE = [0.16, 1, 0.3, 1];
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
-  const [hidden, setHidden] = useState(false);
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
 
+  // The bar itself never moves — scroll only swaps its backdrop chrome.
   useEffect(() => {
-    let lastY = window.scrollY;
-    const onScroll = () => {
-      const y = window.scrollY;
-      setScrolled(y > 24);
-      // hide when scrolling down past the hero, resurface on any scroll up
-      setHidden(y > 480 && y > lastY + 4);
-      lastY = y;
-    };
+    const onScroll = () => setScrolled(window.scrollY > 24);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -39,11 +32,13 @@ export default function Navbar() {
   const isActive = (href) =>
     href === "/" ? pathname === "/" : pathname.startsWith(href);
 
+  // home hero is a dark full-bleed video — swap to light nav chrome until
+  // the user scrolls past it and the navbar picks up its light backdrop
+  const overDarkHero = pathname === "/" && !scrolled;
+
   return (
     <>
-      <motion.header
-        animate={{ y: hidden && !open ? "-100%" : "0%" }}
-        transition={{ duration: 0.55, ease: EASE }}
+      <header
         className={`fixed inset-x-0 top-0 z-50 transition-colors duration-500 ${
           scrolled
             ? "border-b border-n300/80 bg-n100/85 backdrop-blur-xl"
@@ -52,7 +47,7 @@ export default function Navbar() {
       >
         <div className="container-x flex h-[4.5rem] items-center justify-between">
           <Link href="/" aria-label="Frontier One Technology — Home" className="relative z-10">
-            <Logo />
+            <Logo invert={overDarkHero} />
           </Link>
 
           {/* Desktop nav */}
@@ -62,7 +57,13 @@ export default function Navbar() {
                 key={link.href}
                 href={link.href}
                 className={`relative text-[0.9rem] font-medium tracking-tight transition-colors duration-300 ${
-                  isActive(link.href) ? "text-ink" : "text-n600 hover:text-ink"
+                  overDarkHero
+                    ? isActive(link.href)
+                      ? "text-n100"
+                      : "text-n400 hover:text-n100"
+                    : isActive(link.href)
+                      ? "text-ink"
+                      : "text-n600 hover:text-ink"
                 }`}
               >
                 <span className="roll">
@@ -83,7 +84,12 @@ export default function Navbar() {
           </nav>
 
           <div className="flex items-center gap-3">
-            <Link href="/contact" className="btn btn-ink hidden !py-2.5 !px-5 text-sm lg:inline-flex">
+            <Link
+              href="/contact"
+              className={`btn hidden !py-2.5 !px-5 text-sm lg:inline-flex ${
+                overDarkHero ? "btn-paper" : "btn-ink"
+              }`}
+            >
               Schedule a Consultation
             </Link>
 
@@ -97,21 +103,21 @@ export default function Navbar() {
               <motion.span
                 animate={open ? { rotate: 45, y: 6.5 } : { rotate: 0, y: 0 }}
                 transition={{ duration: 0.4, ease: EASE }}
-                className="block h-[1.5px] w-6 bg-ink"
+                className={`block h-[1.5px] w-6 ${open || !overDarkHero ? "bg-ink" : "bg-n100"}`}
               />
               <motion.span
                 animate={open ? { opacity: 0 } : { opacity: 1 }}
-                className="block h-[1.5px] w-6 bg-ink"
+                className={`block h-[1.5px] w-6 ${open || !overDarkHero ? "bg-ink" : "bg-n100"}`}
               />
               <motion.span
                 animate={open ? { rotate: -45, y: -6.5 } : { rotate: 0, y: 0 }}
                 transition={{ duration: 0.4, ease: EASE }}
-                className="block h-[1.5px] w-6 bg-ink"
+                className={`block h-[1.5px] w-6 ${open || !overDarkHero ? "bg-ink" : "bg-n100"}`}
               />
             </button>
           </div>
         </div>
-      </motion.header>
+      </header>
 
       {/* Mobile menu */}
       <AnimatePresence>

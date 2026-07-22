@@ -43,11 +43,11 @@ export default function PageHero({ eyebrow, index = "01", title, lede, children 
             onMount
             delay={0.35}
             segments={title}
-            className="display mt-6 max-w-4xl text-[2.75rem] leading-[1.04] sm:text-6xl lg:text-7xl"
+            className="display mt-6 max-w-5xl text-[clamp(2.75rem,2vw+2.2rem,5.75rem)]"
           />
         ) : (
           <Reveal delay={0.1}>
-            <h1 className="display mt-6 max-w-4xl text-[2.75rem] leading-[1.04] sm:text-6xl lg:text-7xl">
+            <h1 className="display mt-6 max-w-5xl text-[clamp(2.75rem,2vw+2.2rem,5.75rem)]">
               {title}
             </h1>
           </Reveal>

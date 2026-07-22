@@ -70,8 +70,13 @@ export default async function ServicePage({ params }) {
           {/* Delivery list */}
           <div className="lg:col-span-4 lg:col-start-9">
             <Reveal delay={0.2}>
-              <div className="card sticky top-28 p-8">
-                <p className="font-mono text-[0.65rem] uppercase tracking-[0.22em] text-n600">
+              <div className="card relative overflow-hidden p-8 sm:sticky sm:top-28">
+                <span className="pointer-events-none absolute -right-4 -top-4 text-n200" aria-hidden>
+                  <span className="[&_svg]:h-28 [&_svg]:w-28">
+                    <Icon name={service.icon} />
+                  </span>
+                </span>
+                <p className="relative font-mono text-[0.65rem] uppercase tracking-[0.22em] text-n600">
                   How Frontier One Delivers This
                 </p>
                 <ul className="mt-6 space-y-4">
@@ -138,6 +143,7 @@ export default async function ServicePage({ params }) {
         <Reveal>
           <Link
             href={`/services/${next.slug}`}
+            data-cursor="Next"
             className="group flex items-center justify-between gap-6 border-y rule py-10"
           >
             <div>

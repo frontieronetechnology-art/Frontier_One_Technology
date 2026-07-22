@@ -94,12 +94,13 @@ export default function ServicesShowcase() {
             <Link
               href={`/services/${service.slug}`}
               onMouseEnter={() => setActive(i)}
+              data-cursor="View"
               className="svc-row group flex items-center gap-5 border-b rule py-7 sm:gap-8 sm:py-9"
             >
               <span className="font-mono text-xs text-bronze-deep sm:text-sm">
                 {String(i + 1).padStart(2, "0")}
               </span>
-              <span className="display flex-1 text-2xl transition-transform duration-500 ease-out group-hover:translate-x-3 sm:text-4xl lg:text-[2.75rem]">
+              <span className="display flex-1 text-3xl transition-transform duration-500 ease-out group-hover:translate-x-3 sm:text-5xl lg:text-[3.75rem]">
                 {service.title}
               </span>
               {/* mobile hint */}

@@ -2,12 +2,13 @@ import Link from "next/link";
 import PageHero from "@/components/PageHero";
 import Reveal, { RevealGroup, RevealItem } from "@/components/Reveal";
 import SectionHeading from "@/components/SectionHeading";
-import Timeline from "@/components/Timeline";
+import JourneyPath from "@/components/JourneyPath";
+import DirectionalReveal from "@/components/DirectionalReveal";
 import SpotlightCard from "@/components/SpotlightCard";
 import StatsBand from "@/components/StatsBand";
 import CTASection from "@/components/CTASection";
 import Icon from "@/components/Icons";
-import { CORE_VALUES } from "@/lib/data";
+import { CORE_VALUES, JOURNEY } from "@/lib/data";
 
 export const metadata = {
   title: "About Us",
@@ -37,50 +38,59 @@ export default function AboutPage() {
         </div>
       </PageHero>
 
-      {/* ── MISSION / VISION ─────────────────────────────────── */}
-      <section className="container-x py-20 sm:py-28">
-        <div className="grid gap-5 lg:grid-cols-2">
-          <Reveal>
-            <div className="card h-full p-9 sm:p-12">
-              <p className="eyebrow">
-                <span className="idx">02</span> Our Mission
-              </p>
-              <h2 className="display mt-6 text-2xl sm:text-3xl">
-                Building Technology That Creates <em>Lasting Business Value</em>
-              </h2>
-              <p className="mt-6 text-[0.92rem] leading-relaxed text-n700">
-                Technology should solve problems, simplify operations, and create opportunities
-                for growth. Our mission is to help organizations make confident technology
-                decisions by delivering secure, scalable, and practical solutions that generate
-                measurable business outcomes.
-              </p>
-              <p className="mt-4 text-[0.92rem] leading-relaxed text-n700">
-                Every project we undertake is driven by transparency, technical excellence, and
-                a commitment to building solutions that continue delivering value long after
-                deployment.
-              </p>
-            </div>
-          </Reveal>
-          <Reveal delay={0.12}>
-            <div className="h-full rounded-[0.625rem] bg-ink p-9 sm:p-12">
-              <p className="eyebrow eyebrow-invert">
-                <span className="idx">03</span> Our Vision
-              </p>
-              <h2 className="display mt-6 text-2xl text-n100 sm:text-3xl">
-                To Become the Technology Partner Businesses Trust <em>for the Long Term</em>
-              </h2>
-              <p className="mt-6 text-[0.92rem] leading-relaxed text-n400">
-                We envision a future where organizations no longer struggle to keep pace with
-                technology because they have a trusted partner guiding every stage of their
-                digital journey.
-              </p>
-              <p className="mt-4 text-[0.92rem] leading-relaxed text-n400">
-                Our goal is not simply to deliver projects, but to build lasting relationships
-                by helping businesses adapt, innovate, and grow with confidence in an
-                ever-changing digital world.
-              </p>
-            </div>
-          </Reveal>
+      {/* ── MISSION / VISION — one unified section, no card boxes ─ */}
+      <section className="container-x relative py-24 sm:py-32">
+        <div className="relative grid gap-16 lg:grid-cols-2 lg:gap-0">
+          {/* center divider — bronze spine with an orbiting marker, not a card border */}
+          <div
+            className="pointer-events-none absolute inset-y-0 left-1/2 hidden w-px -translate-x-1/2 bg-gradient-to-b from-transparent via-n300 to-transparent lg:block"
+            aria-hidden
+          />
+          <span
+            className="pointer-events-none absolute left-1/2 top-1/2 hidden h-3 w-3 -translate-x-1/2 -translate-y-1/2 rotate-45 border border-bronze bg-n100 lg:block"
+            aria-hidden
+          />
+
+          <DirectionalReveal index={0} className="lg:pr-16">
+            <span className="ghost-num block text-7xl sm:text-8xl">I</span>
+            <p className="eyebrow -mt-2">
+              <span className="idx">02</span> Our Mission
+            </p>
+            <h2 className="display mt-6 text-3xl sm:text-4xl">
+              Building Technology That Creates <em>Lasting Business Value</em>
+            </h2>
+            <p className="mt-6 text-[0.95rem] leading-relaxed text-n700">
+              Technology should solve problems, simplify operations, and create opportunities
+              for growth. Our mission is to help organizations make confident technology
+              decisions by delivering secure, scalable, and practical solutions that generate
+              measurable business outcomes.
+            </p>
+            <p className="mt-4 text-[0.95rem] leading-relaxed text-n700">
+              Every project we undertake is driven by transparency, technical excellence, and
+              a commitment to building solutions that continue delivering value long after
+              deployment.
+            </p>
+          </DirectionalReveal>
+
+          <DirectionalReveal index={1} className="lg:pl-16">
+            <span className="ghost-num block text-7xl sm:text-8xl">II</span>
+            <p className="eyebrow -mt-2">
+              <span className="idx">03</span> Our Vision
+            </p>
+            <h2 className="display mt-6 text-3xl sm:text-4xl">
+              To Become the Technology Partner Businesses Trust <em>for the Long Term</em>
+            </h2>
+            <p className="mt-6 text-[0.95rem] leading-relaxed text-n700">
+              We envision a future where organizations no longer struggle to keep pace with
+              technology because they have a trusted partner guiding every stage of their
+              digital journey.
+            </p>
+            <p className="mt-4 text-[0.95rem] leading-relaxed text-n700">
+              Our goal is not simply to deliver projects, but to build lasting relationships
+              by helping businesses adapt, innovate, and grow with confidence in an
+              ever-changing digital world.
+            </p>
+          </DirectionalReveal>
         </div>
       </section>
 
@@ -156,6 +166,7 @@ export default function AboutPage() {
       <section className="container-x pb-24 sm:pb-32">
         <Reveal>
           <figure className="relative overflow-hidden rounded-2xl bg-ink px-8 py-16 text-center sm:px-16 sm:py-20">
+            <div className="mesh-glow mesh-glow-invert" aria-hidden />
             <span
               className="pointer-events-none absolute left-6 top-4 select-none font-serif text-[10rem] italic leading-none text-n800/70"
               aria-hidden
@@ -203,30 +214,34 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ── JOURNEY ──────────────────────────────────────────── */}
-      <section className="container-x py-24 sm:py-32">
-        <SectionHeading
-          index="08"
-          eyebrow="Our Journey"
-          title={
-            <>
-              From an Idea to <em>Frontier One</em>
-            </>
-          }
-          center
-        />
-        <div className="mt-20">
-          <Timeline />
+      {/* ── JOURNEY — a drawn route, not a straight scroll line ── */}
+      <section className="overflow-hidden py-24 sm:py-32">
+        <div className="container-x">
+          <SectionHeading
+            index="08"
+            eyebrow="Our Journey"
+            title={
+              <>
+                From an Idea to <em>Frontier One</em>
+              </>
+            }
+            center
+          />
         </div>
-        <Reveal delay={0.15}>
-          <p className="mx-auto mt-20 max-w-2xl text-center text-[0.95rem] leading-relaxed text-n700 sm:text-base">
-            From an idea in 2020 to a growing technology company today, our journey has always
-            been driven by one belief:{" "}
-            <span className="font-medium text-ink">
-              technology should make business simpler, stronger, and ready for what comes next.
-            </span>
-          </p>
-        </Reveal>
+        <div className="mt-20">
+          <JourneyPath items={JOURNEY} />
+        </div>
+        <div className="container-x">
+          <Reveal delay={0.15}>
+            <p className="mx-auto mt-16 max-w-2xl text-center text-[0.95rem] leading-relaxed text-n700 sm:text-base">
+              From an idea in 2020 to a growing technology company today, our journey has always
+              been driven by one belief:{" "}
+              <span className="font-medium text-ink">
+                technology should make business simpler, stronger, and ready for what comes next.
+              </span>
+            </p>
+          </Reveal>
+        </div>
       </section>
 
       <StatsBand index="09" />

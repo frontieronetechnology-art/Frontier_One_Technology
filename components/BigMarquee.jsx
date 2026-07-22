@@ -22,11 +22,11 @@ export default function BigMarquee() {
       <div className="marquee-track items-baseline gap-10" style={{ "--marquee-duration": "46s" }}>
         {[0, 1].map((n) => (
           <span key={n} className="flex shrink-0 items-baseline gap-10 pr-10">
-            <span className="display whitespace-nowrap text-6xl text-ink sm:text-[6.5rem]">
+            <span className="display whitespace-nowrap text-7xl text-ink sm:text-[7.5rem]">
               {rowA}
             </span>
             <span className="h-3 w-3 shrink-0 rotate-45 self-center bg-bronze" />
-            <span className="display text-stroke-ink whitespace-nowrap text-6xl sm:text-[6.5rem]">
+            <span className="display text-stroke-ink whitespace-nowrap text-7xl sm:text-[7.5rem]">
               <em>{rowA}</em>
             </span>
             <span className="h-3 w-3 shrink-0 rotate-45 self-center bg-bronze" />

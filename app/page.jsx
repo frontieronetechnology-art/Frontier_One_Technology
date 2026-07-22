@@ -1,16 +1,18 @@
 import Link from "next/link";
 import Hero from "@/components/Hero";
-import Reveal, { RevealGroup, RevealItem } from "@/components/Reveal";
+import Reveal from "@/components/Reveal";
 import SectionHeading from "@/components/SectionHeading";
 import ScrollFillText from "@/components/ScrollFillText";
-import SpotlightCard from "@/components/SpotlightCard";
 import ServicesShowcase from "@/components/ServicesShowcase";
-import SplitReveal from "@/components/SplitReveal";
 import BigMarquee from "@/components/BigMarquee";
 import Marquee from "@/components/Marquee";
 import StatsBand from "@/components/StatsBand";
 import Accordion from "@/components/Accordion";
 import CTASection from "@/components/CTASection";
+import WhyPinned from "@/components/WhyPinned";
+import StackCards from "@/components/StackCards";
+import IndustrySlider from "@/components/IndustrySlider";
+import ScrollFillHeading from "@/components/ScrollFillHeading";
 import Icon from "@/components/Icons";
 import { WHY_CARDS, PROCESS_STEPS, INDUSTRIES, SERVICES_FAQ } from "@/lib/data";
 
@@ -61,9 +63,9 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── WHY FRONTIER ONE — spotlight tilt cards ──────────── */}
-      <section className="border-t rule bg-n50 py-28 sm:py-36">
-        <div className="container-x">
+      {/* ── WHY FRONTIER ONE — pinned tab-scroll panel ───────── */}
+      <section className="relative border-t rule bg-n50">
+        <div className="container-x pt-28 sm:pt-36">
           <div className="flex flex-wrap items-end justify-between gap-8">
             <SectionHeading
               index="02"
@@ -72,29 +74,17 @@ export default function HomePage() {
                 { text: "Why Businesses " },
                 { text: "Choose Us", serif: true },
               ]}
+              lede="Keep scrolling — the panel holds while four reasons technology partners stay with us step through, one at a time."
             />
             <Reveal delay={0.2}>
-              <Link href="/about" className="link-arrow mb-2">
+              <Link href="/about" className="link-arrow mb-2" data-cursor="About">
                 About the company <Icon name="arrow" />
               </Link>
             </Reveal>
           </div>
-          <RevealGroup className="mt-16 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {WHY_CARDS.map((card, i) => (
-              <RevealItem key={card.title}>
-                <SpotlightCard className="card group h-full p-7">
-                  <div className="flex items-start justify-between">
-                    <span className="flex h-11 w-11 items-center justify-center rounded-md border rule text-ink transition-colors duration-500 group-hover:bg-ink group-hover:text-n100">
-                      <Icon name={card.icon} />
-                    </span>
-                    <span className="font-mono text-xs text-n500">0{i + 1}</span>
-                  </div>
-                  <h3 className="mt-8 text-lg font-semibold tracking-tight">{card.title}</h3>
-                  <p className="mt-3 text-[0.88rem] leading-relaxed text-n700">{card.body}</p>
-                </SpotlightCard>
-              </RevealItem>
-            ))}
-          </RevealGroup>
+        </div>
+        <div className="mt-14 pb-16 sm:mt-16">
+          <WhyPinned cards={WHY_CARDS} />
         </div>
       </section>
 
@@ -125,7 +115,7 @@ export default function HomePage() {
       <section className="py-28 sm:py-36">
         <div className="container-x">
           <div className="grid gap-14 lg:grid-cols-12">
-            <div className="lg:col-span-4">
+            <div className="lg:col-span-4 lg:sticky lg:top-28 lg:self-start">
               <SectionHeading
                 index="04"
                 eyebrow="Our Approach"
@@ -143,28 +133,14 @@ export default function HomePage() {
                 </Link>
               </Reveal>
             </div>
-            <div className="lg:col-span-7 lg:col-start-6">
-              <RevealGroup className="grid gap-px overflow-hidden rounded-xl border rule bg-n300 sm:grid-cols-2" stagger={0.06}>
-                {PROCESS_STEPS.map((step) => (
-                  <RevealItem key={step.n}>
-                    <div className="group flex h-full items-baseline gap-4 bg-n100 p-6 transition-colors duration-500 hover:bg-white">
-                      <span className="font-mono text-xs text-bronze-deep">{step.n}</span>
-                      <div>
-                        <h3 className="font-semibold tracking-tight">{step.title}</h3>
-                        <p className="mt-1.5 line-clamp-2 text-[0.82rem] leading-relaxed text-n600">
-                          {step.body}
-                        </p>
-                      </div>
-                    </div>
-                  </RevealItem>
-                ))}
-              </RevealGroup>
+            <div className="lg:col-span-8 lg:col-start-5">
+              <StackCards items={PROCESS_STEPS} />
             </div>
           </div>
         </div>
       </section>
 
-      {/* ── INDUSTRIES — spotlight grid ──────────────────────── */}
+      {/* ── INDUSTRIES — auto-scrolling belt, not a static grid ── */}
       <section className="border-t rule bg-n50 py-28 sm:py-36">
         <div className="container-x">
           <div className="flex flex-wrap items-end justify-between gap-8">
@@ -175,6 +151,7 @@ export default function HomePage() {
                 { text: "Industries We " },
                 { text: "Support", serif: true },
               ]}
+              lede="Eight sectors, each with its own constraints — drag the panel or use the rail to move through them."
             />
             <Reveal delay={0.2}>
               <Link href="/industries" className="link-arrow mb-2">
@@ -182,27 +159,9 @@ export default function HomePage() {
               </Link>
             </Reveal>
           </div>
-          <RevealGroup className="mt-16 grid grid-cols-2 gap-5 lg:grid-cols-4" stagger={0.06}>
-            {INDUSTRIES.map((industry) => (
-              <RevealItem key={industry.slug}>
-                <Link href={`/industries#${industry.slug}`} className="block h-full">
-                  <SpotlightCard className="card group flex h-full flex-col justify-between gap-10 p-6 sm:p-7">
-                    <span className="flex h-11 w-11 items-center justify-center rounded-md bg-n200 text-ink transition-colors duration-500 group-hover:bg-ink group-hover:text-n100">
-                      <Icon name={industry.icon} />
-                    </span>
-                    <span className="flex items-end justify-between gap-3">
-                      <span className="text-[0.95rem] font-semibold leading-snug tracking-tight sm:text-base">
-                        {industry.name}
-                      </span>
-                      <span className="text-n500 transition-all duration-500 group-hover:translate-x-1 group-hover:text-bronze-deep">
-                        <Icon name="arrowUpRight" />
-                      </span>
-                    </span>
-                  </SpotlightCard>
-                </Link>
-              </RevealItem>
-            ))}
-          </RevealGroup>
+          <div className="mt-14 sm:mt-16">
+            <IndustrySlider items={INDUSTRIES} />
+          </div>
         </div>
       </section>
 
@@ -217,14 +176,10 @@ export default function HomePage() {
               <span className="idx">07</span> Our Standard
             </p>
           </Reveal>
-          <SplitReveal
-            as="h2"
-            delay={0.1}
-            segments={[
-              { text: "We Engineer Solutions That " },
-              { text: "Outlast the Problem.", serif: true },
-            ]}
-            className="display mt-8 text-3xl sm:text-5xl"
+          <ScrollFillHeading
+            text="We Engineer Solutions That"
+            accent="Outlast the Problem."
+            className="display mt-8 text-4xl leading-[1.05] sm:text-6xl lg:text-7xl"
           />
           <Reveal delay={0.2}>
             <p className="mt-8 text-[0.95rem] leading-relaxed text-n700 sm:text-base">
