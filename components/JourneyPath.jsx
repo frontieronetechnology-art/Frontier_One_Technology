@@ -59,11 +59,11 @@ export default function JourneyPath({ items }) {
         className="pointer-events-none absolute inset-0 h-full w-full overflow-visible"
         aria-hidden
       >
-        <path d={d} stroke="#DBE0E8" strokeWidth="1.5" fill="none" vectorEffect="non-scaling-stroke" />
+        <path d={d} stroke="#DDD1C4" strokeWidth="1.5" fill="none" vectorEffect="non-scaling-stroke" />
         <motion.path
           ref={pathRef}
           d={d}
-          stroke="#B8873A"
+          stroke="#B6844D"
           strokeWidth="1.5"
           strokeLinecap="round"
           fill="none"
@@ -77,7 +77,7 @@ export default function JourneyPath({ items }) {
           stretch it into an ellipse */}
       {dot && (
         <div
-          className="pointer-events-none absolute h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-bronze shadow-[0_0_0_5px_rgba(184,135,58,0.18)]"
+          className="pointer-events-none absolute h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-bronze shadow-[0_0_0_5px_rgba(182,132,77,0.18)]"
           style={{ left: `${dot.x}%`, top: dot.y }}
           aria-hidden
         />

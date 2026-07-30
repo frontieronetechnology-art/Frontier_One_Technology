@@ -153,20 +153,54 @@ function Step({ step, index, onActive, active }) {
     >
       {/* node — a drafting diamond that fills as its phase becomes live */}
       <span
-        className={`absolute left-0 top-9 block h-[15px] w-[15px] rotate-45 border transition-all duration-500 ${
+        className={`absolute left-0 top-[2.15rem] z-10 block h-[15px] w-[15px] rotate-45 border transition-all duration-500 ${
           active ? "scale-110 border-bronze bg-bronze" : "border-n400 bg-n100"
         }`}
         aria-hidden
       />
 
+      {/* Phases are no longer boxes. Each one is a plate that opens on a
+          tapering bronze rule, so the eight of them read as one continuous
+          score rather than eight stacked rectangles. */}
       <div
-        className={`card p-7 sm:p-8 ${active ? "!border-n400 !shadow-[0_24px_48px_-24px_rgba(27,35,51,0.16)]" : ""}`}
+        className={`relative py-7 pr-2 transition-[padding,background] duration-500 sm:py-8 ${
+          active ? "sm:pl-6" : "sm:pl-0"
+        }`}
       >
+        <span
+          className={`absolute inset-x-0 top-0 h-px origin-left transition-transform duration-[900ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${
+            active ? "scale-x-100" : "scale-x-0"
+          }`}
+          style={{ background: "linear-gradient(90deg,#B6844D,rgba(182,132,77,0))" }}
+          aria-hidden
+        />
+        <span
+          className="absolute inset-x-0 top-0 h-px bg-n300"
+          style={{ zIndex: -1 }}
+          aria-hidden
+        />
+        <div
+          className={`absolute inset-y-0 left-0 -z-10 w-full rounded-r-2xl transition-opacity duration-500 ${
+            active ? "opacity-100" : "opacity-0"
+          }`}
+          style={{
+            background:
+              "linear-gradient(90deg, rgba(245,237,226,0.9) 0%, rgba(251,249,246,0) 78%)",
+          }}
+          aria-hidden
+        />
+
         <div className="flex items-baseline gap-4">
-          <span className="font-mono text-xs text-bronze-deep">{step.n}</span>
-          <h3 className="display text-2xl">{step.title}</h3>
+          <span
+            className={`font-mono text-xs transition-colors duration-500 ${
+              active ? "text-bronze-deep" : "text-n500"
+            }`}
+          >
+            {step.n}
+          </span>
+          <h3 className="display text-2xl sm:text-[1.75rem]">{step.title}</h3>
         </div>
-        <p className="mt-3.5 text-[0.92rem] leading-relaxed text-n700">{step.body}</p>
+        <p className="mt-3.5 max-w-xl text-[0.92rem] leading-relaxed text-n700">{step.body}</p>
       </div>
     </motion.div>
   );

@@ -1,27 +1,45 @@
 import Link from "next/link";
 import PageHero from "@/components/PageHero";
-import Reveal, { RevealGroup, RevealItem } from "@/components/Reveal";
+import Reveal from "@/components/Reveal";
 import SectionHeading from "@/components/SectionHeading";
 import JourneyPath from "@/components/JourneyPath";
 import DirectionalReveal from "@/components/DirectionalReveal";
-import SpotlightCard from "@/components/SpotlightCard";
 import StatsBand from "@/components/StatsBand";
 import CTASection from "@/components/CTASection";
+import ExpandRail from "@/components/ExpandRail";
+import PerspectivePlate from "@/components/PerspectivePlate";
+import Media from "@/components/Media";
 import Icon from "@/components/Icons";
 import { CORE_VALUES, JOURNEY } from "@/lib/data";
+import { breadcrumbs } from "@/lib/seo";
 
 export const metadata = {
   title: "About Us",
   description:
     "Learn about Frontier One Technology's mission, values, and approach to building technology that creates lasting business value.",
+  alternates: { canonical: "/about" },
 };
 
 export default function AboutPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            breadcrumbs([
+              { name: "Home", path: "" },
+              { name: "About Us", path: "/about/" },
+            ])
+          ),
+        }}
+      />
+
       <PageHero
-        index="01"
         eyebrow="About Us"
+        watermark="About"
+        image="about/hero.webp"
+        position="center 40%"
         title={[
           { text: "The Partner Behind the " },
           { text: "Technology", serif: true },
@@ -29,76 +47,106 @@ export default function AboutPage() {
         lede="Frontier One Technology partners with startups, growing businesses, and enterprise organizations to design, build, and support modern technology solutions — with transparency, collaboration, and measurable results at the core of every engagement."
       >
         <div className="mt-9 flex flex-col gap-4 sm:flex-row">
-          <Link href="/contact" className="btn btn-ink">
-            Let&rsquo;s Talk <Icon name="arrow" />
+          <Link href="/contact" className="btn btn-bronze !rounded-full">
+            <span className="flex items-center gap-2.5">
+              Let&rsquo;s Talk <Icon name="arrow" />
+            </span>
           </Link>
-          <Link href="/services/cloud-solutions" className="btn btn-ghost">
+          <Link href="/services/cloud-solutions" className="btn btn-outline-paper !rounded-full">
             Explore Our Services
           </Link>
         </div>
       </PageHero>
 
-      {/* ── MISSION / VISION — one unified section, no card boxes ─ */}
-      <section className="container-x relative py-24 sm:py-32">
-        <div className="relative grid gap-16 lg:grid-cols-2 lg:gap-0">
-          {/* center divider — bronze spine with an orbiting marker, not a card border */}
-          <div
-            className="pointer-events-none absolute inset-y-0 left-1/2 hidden w-px -translate-x-1/2 bg-gradient-to-b from-transparent via-n300 to-transparent lg:block"
-            aria-hidden
-          />
-          <span
-            className="pointer-events-none absolute left-1/2 top-1/2 hidden h-3 w-3 -translate-x-1/2 -translate-y-1/2 rotate-45 border border-bronze bg-n100 lg:block"
-            aria-hidden
-          />
+      {/* ── MISSION / VISION ─────────────────────────────────────
+          Rebuilt. The previous version set both statements as identical
+          mirrored columns headed by roman numerals, so the eye read them as
+          one repeated block and skipped the second. They are now two
+          asymmetric, oppositely-aligned movements with their own oversized
+          labels — different shape, different rhythm, both get read. */}
+      <section className="relative overflow-hidden py-24 sm:py-32">
+        <Media
+          src="about/mission-bg.webp"
+          fill
+          grade="light"
+          position="center 45%"
+          className="opacity-40"
+        />
+        <div
+          className="pointer-events-none absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(160deg, rgba(251,249,246,0.96) 0%, rgba(245,241,235,0.9) 46%, rgba(236,228,217,0.86) 100%)",
+          }}
+          aria-hidden
+        />
+        <div className="grid-paper absolute inset-0 opacity-60" aria-hidden />
 
-          <DirectionalReveal index={0} className="lg:pr-16">
-            <span className="ghost-num block text-7xl sm:text-8xl">I</span>
-            <p className="eyebrow -mt-2">
-              <span className="idx">02</span> Our Mission
-            </p>
-            <h2 className="display mt-6 text-3xl sm:text-4xl">
-              Building Technology That Creates <em>Lasting Business Value</em>
-            </h2>
-            <p className="mt-6 text-[0.95rem] leading-relaxed text-n700">
-              Technology should solve problems, simplify operations, and create opportunities
-              for growth. Our mission is to help organizations make confident technology
-              decisions by delivering secure, scalable, and practical solutions that generate
-              measurable business outcomes.
-            </p>
-            <p className="mt-4 text-[0.95rem] leading-relaxed text-n700">
-              Every project we undertake is driven by transparency, technical excellence, and
-              a commitment to building solutions that continue delivering value long after
-              deployment.
-            </p>
+        <div className="container-x relative">
+          {/* ── Mission ── */}
+          <DirectionalReveal index={0}>
+            <div className="grid gap-8 lg:grid-cols-12 lg:items-end">
+              <h2 className="display col-span-full text-[clamp(2.8rem,7vw,6.5rem)] leading-[0.9] lg:col-span-5">
+                Our
+                <br />
+                <em className="text-bronze-deep">Mission</em>
+              </h2>
+              <div className="lg:col-span-6 lg:col-start-7">
+                <p className="display text-[1.45rem] leading-[1.25] sm:text-[1.9rem]">
+                  Building technology that creates{" "}
+                  <em>lasting business value.</em>
+                </p>
+                <p className="mt-6 max-w-xl text-[0.95rem] leading-relaxed text-n700">
+                  Technology should solve problems, simplify operations, and create
+                  opportunities for growth. Our mission is to help organizations make confident
+                  technology decisions by delivering secure, scalable, and practical solutions
+                  that generate measurable business outcomes.
+                </p>
+                <p className="mt-4 max-w-xl text-[0.95rem] leading-relaxed text-n700">
+                  Every project we undertake is driven by transparency, technical excellence,
+                  and a commitment to building solutions that continue delivering value long
+                  after deployment.
+                </p>
+              </div>
+            </div>
           </DirectionalReveal>
 
-          <DirectionalReveal index={1} className="lg:pl-16">
-            <span className="ghost-num block text-7xl sm:text-8xl">II</span>
-            <p className="eyebrow -mt-2">
-              <span className="idx">03</span> Our Vision
-            </p>
-            <h2 className="display mt-6 text-3xl sm:text-4xl">
-              To Become the Technology Partner Businesses Trust <em>for the Long Term</em>
-            </h2>
-            <p className="mt-6 text-[0.95rem] leading-relaxed text-n700">
-              We envision a future where organizations no longer struggle to keep pace with
-              technology because they have a trusted partner guiding every stage of their
-              digital journey.
-            </p>
-            <p className="mt-4 text-[0.95rem] leading-relaxed text-n700">
-              Our goal is not simply to deliver projects, but to build lasting relationships
-              by helping businesses adapt, innovate, and grow with confidence in an
-              ever-changing digital world.
-            </p>
+          <div className="rule-bronze my-16 sm:my-20" aria-hidden />
+
+          {/* ── Vision — mirrored, so the pair never reads as a duplicate ── */}
+          <DirectionalReveal index={1}>
+            <div className="grid gap-8 lg:grid-cols-12 lg:items-end">
+              <h2 className="display col-span-full text-[clamp(2.8rem,7vw,6.5rem)] leading-[0.9] lg:col-span-5 lg:col-start-8 lg:text-right">
+                Our
+                <br />
+                <em className="text-bronze-deep">Vision</em>
+              </h2>
+              <div className="lg:col-span-6 lg:col-start-1 lg:row-start-1">
+                <p className="display text-[1.45rem] leading-[1.25] sm:text-[1.9rem]">
+                  To become the technology partner businesses trust{" "}
+                  <em>for the long term.</em>
+                </p>
+                <p className="mt-6 max-w-xl text-[0.95rem] leading-relaxed text-n700">
+                  We envision a future where organizations no longer struggle to keep pace with
+                  technology because they have a trusted partner guiding every stage of their
+                  digital journey.
+                </p>
+                <p className="mt-4 max-w-xl text-[0.95rem] leading-relaxed text-n700">
+                  Our goal is not simply to deliver projects, but to build lasting
+                  relationships by helping businesses adapt, innovate, and grow with confidence
+                  in an ever-changing digital world.
+                </p>
+              </div>
+            </div>
           </DirectionalReveal>
         </div>
       </section>
 
       {/* ── CORE VALUES ──────────────────────────────────────── */}
-      <section className="border-t rule bg-n50 py-24 sm:py-32">
+      <section className="border-t rule bg-band py-24 sm:py-32">
         <div className="container-x">
           <SectionHeading
-            index="04"
+           
             eyebrow="Our Core Values"
             title={
               <>
@@ -106,19 +154,15 @@ export default function AboutPage() {
               </>
             }
           />
-          <RevealGroup className="mt-16 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {CORE_VALUES.map((value, i) => (
-              <RevealItem key={value.title}>
-                <SpotlightCard className="card h-full p-8">
-                  <span className="font-mono text-xs text-bronze-deep">
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <h3 className="mt-5 text-lg font-semibold tracking-tight">{value.title}</h3>
-                  <p className="mt-3 text-[0.88rem] leading-relaxed text-n700">{value.body}</p>
-                </SpotlightCard>
-              </RevealItem>
-            ))}
-          </RevealGroup>
+          <Reveal delay={0.1}>
+            <div className="mt-16">
+              <ExpandRail
+                items={CORE_VALUES}
+                imageBase="about/value"
+                ratioClass="h-[32rem]"
+              />
+            </div>
+          </Reveal>
         </div>
       </section>
 
@@ -127,7 +171,7 @@ export default function AboutPage() {
         <div className="grid gap-14 lg:grid-cols-12">
           <div className="lg:col-span-5">
             <SectionHeading
-              index="05"
+             
               eyebrow="What Makes Us Different"
               title={
                 <>
@@ -165,7 +209,7 @@ export default function AboutPage() {
       {/* ── OUR PROMISE ──────────────────────────────────────── */}
       <section className="container-x pb-24 sm:pb-32">
         <Reveal>
-          <figure className="relative overflow-hidden rounded-2xl bg-ink px-8 py-16 text-center sm:px-16 sm:py-20">
+          <figure className="relative overflow-hidden rounded-2xl bg-dark px-8 py-16 text-center sm:px-16 sm:py-20">
             <div className="mesh-glow mesh-glow-invert" aria-hidden />
             <span
               className="pointer-events-none absolute left-6 top-4 select-none font-serif text-[10rem] italic leading-none text-n800/70"
@@ -174,12 +218,12 @@ export default function AboutPage() {
               &ldquo;
             </span>
             <figcaption className="eyebrow eyebrow-invert justify-center">
-              <span className="idx">06</span> Our Promise
+              Our Promise
             </figcaption>
             <blockquote className="relative mx-auto mt-8 max-w-3xl">
               <p className="display text-2xl leading-snug text-n100 sm:text-[2rem]">
                 Every recommendation we make will be guided by one simple question:{" "}
-                <em className="text-bronze">
+                <em className="text-bronze-light">
                   &ldquo;Will this still be the right solution for our client three years from
                   now?&rdquo;
                 </em>{" "}
@@ -191,10 +235,10 @@ export default function AboutPage() {
       </section>
 
       {/* ── WORKING PHILOSOPHY ───────────────────────────────── */}
-      <section className="border-t rule bg-n50 py-24 sm:py-32">
+      <section className="border-t rule bg-band py-24 sm:py-32">
         <div className="container-x mx-auto max-w-4xl text-center">
           <SectionHeading
-            index="07"
+           
             eyebrow="Our Working Philosophy"
             title={
               <>
@@ -215,10 +259,16 @@ export default function AboutPage() {
       </section>
 
       {/* ── JOURNEY — a drawn route, not a straight scroll line ── */}
-      <section className="overflow-hidden py-24 sm:py-32">
-        <div className="container-x">
+      <section className="relative overflow-hidden py-24 sm:py-32">
+        {/* the route now runs across a receding 3D ground plane */}
+        <PerspectivePlate src="about/journey-terrain.webp" opacity={0.42} />
+        <div
+          className="pointer-events-none absolute inset-0 bg-gradient-to-b from-n100 via-n100/55 to-n100"
+          aria-hidden
+        />
+        <div className="container-x relative">
           <SectionHeading
-            index="08"
+           
             eyebrow="Our Journey"
             title={
               <>
@@ -228,10 +278,10 @@ export default function AboutPage() {
             center
           />
         </div>
-        <div className="mt-20">
+        <div className="relative mt-20">
           <JourneyPath items={JOURNEY} />
         </div>
-        <div className="container-x">
+        <div className="container-x relative">
           <Reveal delay={0.15}>
             <p className="mx-auto mt-16 max-w-2xl text-center text-[0.95rem] leading-relaxed text-n700 sm:text-base">
               From an idea in 2020 to a growing technology company today, our journey has always
@@ -244,7 +294,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <StatsBand index="09" />
+      <StatsBand />
       <div className="pt-16">
         <CTASection />
       </div>

@@ -53,7 +53,7 @@ export default function ServicesShowcase() {
               initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.35, ease: EASE }}
-              className="overflow-hidden rounded-xl border border-n300 bg-ink p-6 shadow-[0_32px_64px_-20px_rgba(27,35,51,0.45)]"
+              className="overflow-hidden rounded-xl border border-n300 bg-dark p-6 shadow-[0_32px_64px_-20px_rgba(45,34,24,0.45)]"
             >
               <div className="flex items-center justify-between">
                 <span className="flex h-11 w-11 items-center justify-center rounded-md bg-n800 text-n100">
@@ -94,7 +94,6 @@ export default function ServicesShowcase() {
             <Link
               href={`/services/${service.slug}`}
               onMouseEnter={() => setActive(i)}
-              data-cursor="View"
               className="svc-row group flex items-center gap-5 border-b rule py-7 sm:gap-8 sm:py-9"
             >
               <span className="font-mono text-xs text-bronze-deep sm:text-sm">
@@ -107,7 +106,9 @@ export default function ServicesShowcase() {
               <span className="max-w-[10rem] text-right font-mono text-[0.6rem] uppercase tracking-[0.14em] text-n500 lg:hidden">
                 {service.focus[0]}
               </span>
-              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border rule text-ink transition-all duration-500 group-hover:rotate-45 group-hover:border-ink group-hover:bg-ink group-hover:text-n100 sm:h-12 sm:w-12">
+              {/* line-arrow indicator — extends on hover, no circle */}
+              <span className="shrink-0 flex items-center gap-2 text-n500 transition-colors duration-500 group-hover:text-ink">
+                <span className="block h-px w-5 bg-current transition-all duration-500 group-hover:w-10" />
                 <Icon name="arrowUpRight" />
               </span>
             </Link>

@@ -6,6 +6,7 @@ import ApplicationForm from "@/components/ApplicationForm";
 import CTASection from "@/components/CTASection";
 import Icon from "@/components/Icons";
 import { JOBS } from "@/lib/data";
+import { jobPosting, breadcrumbs } from "@/lib/seo";
 
 export function generateStaticParams() {
   return JOBS.map((j) => ({ slug: j.slug }));
@@ -18,6 +19,13 @@ export async function generateMetadata({ params }) {
   return {
     title: `${job.title} — Careers`,
     description: job.summary,
+    alternates: { canonical: `/careers/${job.slug}` },
+    openGraph: {
+      title: `${job.title} — Careers | Frontier One Technology`,
+      description: job.summary,
+      url: `/careers/${job.slug}`,
+      type: "website",
+    },
   };
 }
 
@@ -28,17 +36,35 @@ export default async function JobPage({ params }) {
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify([
+            jobPosting(job),
+            breadcrumbs([
+              { name: "Home", path: "" },
+              { name: "Careers", path: "/careers/" },
+              { name: job.title, path: `/careers/${job.slug}/` },
+            ]),
+          ]),
+        }}
+      />
+
       <PageHero
-        index="01"
         eyebrow="Careers / Open Role"
+        watermark="Careers"
+        image={`careers/role-${job.slug}.webp`}
+        position="center 40%"
         title={[{ text: job.title, serif: true }]}
         lede={job.summary}
       >
         <div className="mt-9 flex flex-wrap items-center gap-3">
-          <a href="#apply" className="btn btn-ink">
-            Apply Now <Icon name="arrow" />
+          <a href="#apply" className="btn btn-bronze !rounded-full">
+            <span className="flex items-center gap-2.5">
+              Apply Now <Icon name="arrow" />
+            </span>
           </a>
-          <Link href="/careers" data-cursor="Back" className="btn btn-ghost">
+          <Link href="/careers" data-cursor="Back" className="btn btn-outline-paper !rounded-full">
             All Open Roles
           </Link>
         </div>
@@ -108,7 +134,7 @@ export default async function JobPage({ params }) {
             <Reveal delay={0.2}>
               <div className="card sticky top-28 p-8">
                 <p className="eyebrow">
-                  <span className="idx">→</span> Apply for this role
+                  <span className="text-bronze-deep">→</span> Apply for this role
                 </p>
                 <div className="mt-7">
                   <ApplicationForm role={job.title} />

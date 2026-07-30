@@ -70,7 +70,7 @@ export default function Odometer({ value, suffix = "", className = "" }) {
         )
       )}
       {suffix && (
-        <span className="inline-block text-[0.55em] text-bronze" style={{ lineHeight: `${H / 0.55}em` }}>
+        <span className="inline-block text-[0.55em] text-bronze-light" style={{ lineHeight: `${H / 0.55}em` }}>
           {suffix}
         </span>
       )}

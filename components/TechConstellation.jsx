@@ -74,7 +74,7 @@ function Tile({ tech, i, px, py, dimmed, reduce }) {
           rel="noopener noreferrer"
           data-cursor="Search"
           title={`Search ${tech.name}`}
-          className={`group flex aspect-square flex-col items-center justify-center gap-2 rounded-xl border border-n300 bg-white p-3 transition-all duration-500 hover:-translate-y-1.5 hover:border-ink hover:shadow-[0_20px_40px_-20px_rgba(27,35,51,0.35)] ${
+          className={`group flex aspect-square flex-col items-center justify-center gap-2 rounded-xl border border-n300 bg-white p-3 transition-all duration-500 hover:-translate-y-1.5 hover:border-ink hover:shadow-[0_20px_40px_-20px_rgba(45,34,24,0.35)] ${
             dimmed ? "opacity-25 grayscale" : "opacity-100"
           }`}
         >
@@ -88,7 +88,7 @@ function Tile({ tech, i, px, py, dimmed, reduce }) {
               } object-contain grayscale-[0.4] transition-all duration-500 group-hover:scale-110 group-hover:grayscale-0`}
             />
           ) : (
-            <span className="flex h-8 w-8 items-center justify-center rounded-md bg-n200 font-mono text-[0.62rem] font-semibold tracking-wider text-n700 transition-colors duration-500 group-hover:bg-ink group-hover:text-n100 sm:h-9 sm:w-9">
+            <span className="flex h-8 w-8 items-center justify-center rounded-md bg-n200 font-mono text-[0.62rem] font-semibold tracking-wider text-n700 transition-colors duration-500 group-hover:bg-dark group-hover:text-n100 sm:h-9 sm:w-9">
               {tech.mono}
             </span>
           )}
@@ -135,7 +135,7 @@ export default function TechConstellation() {
           onClick={() => setFilter(null)}
           className={`rounded-full border px-4 py-1.5 font-mono text-[0.65rem] uppercase tracking-[0.16em] transition-colors duration-300 ${
             filter === null
-              ? "border-ink bg-ink text-n100"
+              ? "border-ink bg-dark text-n100"
               : "border-n300 text-n600 hover:border-ink hover:text-ink"
           }`}
         >
@@ -148,7 +148,7 @@ export default function TechConstellation() {
             onClick={() => setFilter((f) => (f === c ? null : c))}
             className={`rounded-full border px-4 py-1.5 font-mono text-[0.65rem] uppercase tracking-[0.16em] transition-colors duration-300 ${
               filter === c
-                ? "border-ink bg-ink text-n100"
+                ? "border-ink bg-dark text-n100"
                 : "border-n300 text-n600 hover:border-ink hover:text-ink"
             }`}
           >

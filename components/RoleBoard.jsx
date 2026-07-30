@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import Icon from "./Icons";
+import Media from "./Media";
 
 const EASE = [0.16, 1, 0.3, 1];
 const GLYPHS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789$–/";
@@ -60,7 +61,7 @@ export default function RoleBoard({ jobs }) {
   return (
     <div className="overflow-hidden rounded-xl border border-n300 bg-white">
       {/* column headings */}
-      <div className="hidden grid-cols-[3rem_minmax(0,1.5fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,1.1fr)_3rem] items-center gap-4 border-b border-n300 bg-n50 px-6 py-3.5 font-mono text-[0.6rem] uppercase tracking-[0.22em] text-n500 lg:grid">
+      <div className="hidden grid-cols-[3rem_minmax(0,1.5fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,1.1fr)_3rem] items-center gap-4 border-b border-n300 bg-band px-6 py-3.5 font-mono text-[0.6rem] uppercase tracking-[0.22em] text-n500 lg:grid">
         <span>№</span>
         <span>Role</span>
         <span>Type</span>
@@ -87,14 +88,39 @@ export default function RoleBoard({ jobs }) {
               initial={false}
               animate={{ scaleX: active ? 1 : 0 }}
               transition={{ duration: reduce ? 0 : 0.55, ease: EASE }}
-              className="absolute inset-0 origin-left bg-ink"
+              className="absolute inset-0 origin-left bg-dark"
               aria-hidden
             />
+
+            {/* the live row previews the role page it leads to — same plate
+                the destination hero uses, held right back so the table stays
+                readable */}
+            <AnimatePresence initial={false}>
+              {active && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: reduce ? 0 : 0.6, ease: EASE }}
+                  className="pointer-events-none absolute inset-0 overflow-hidden"
+                  aria-hidden
+                >
+                  <Media
+                    src={`careers/role-${job.slug}.webp`}
+                    fill
+                    grade="dark"
+                    position="center 40%"
+                    className="opacity-30"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-r from-dark via-dark/75 to-dark/35" />
+                </motion.div>
+              )}
+            </AnimatePresence>
 
             <div className="relative grid grid-cols-[2rem_minmax(0,1fr)_2.5rem] items-center gap-4 px-5 py-5 lg:grid-cols-[3rem_minmax(0,1.5fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,1.1fr)_3rem] lg:px-6">
               <span
                 className={`font-mono text-[0.7rem] transition-colors duration-500 ${
-                  active ? "text-bronze" : "text-bronze-deep"
+                  active ? "text-bronze-light" : "text-bronze-deep"
                 }`}
               >
                 {String(i + 1).padStart(2, "0")}
@@ -128,14 +154,13 @@ export default function RoleBoard({ jobs }) {
                 <Flap text={job.salary} active={active} />
               </span>
 
+              {/* + rotates to × when active — no circle */}
               <span
-                className={`flex h-9 w-9 items-center justify-center justify-self-end rounded-full border transition-all duration-500 ${
-                  active
-                    ? "rotate-45 border-bronze bg-bronze text-ink"
-                    : "border-n300 text-n600"
+                className={`justify-self-end transition-all duration-500 ${
+                  active ? "rotate-45 text-bronze-light" : "text-n500"
                 }`}
               >
-                <Icon name="arrowUpRight" />
+                <Icon name="plus" />
               </span>
             </div>
 
@@ -150,7 +175,7 @@ export default function RoleBoard({ jobs }) {
                   className="relative overflow-hidden"
                 >
                   <p className="px-5 pb-5 text-[0.82rem] leading-relaxed text-n400 lg:px-6 lg:pl-[4.75rem]">
-                    <span className="font-mono text-[0.62rem] uppercase tracking-[0.2em] text-bronze">
+                    <span className="font-mono text-[0.62rem] uppercase tracking-[0.2em] text-bronze-light">
                       {job.location}
                     </span>
                     <span className="mt-2 block max-w-2xl">{job.summary}</span>

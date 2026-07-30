@@ -10,7 +10,7 @@ export default function CTASection() {
   return (
     <section className="container-x pb-24 pt-8 sm:pb-28">
       <Reveal>
-        <div className="relative overflow-hidden rounded-2xl bg-ink px-6 py-20 text-center sm:px-12 sm:py-28">
+        <div className="relative overflow-hidden rounded-2xl bg-dark px-6 py-20 text-center sm:px-12 sm:py-28">
           <div className="mesh-glow mesh-glow-invert" aria-hidden />
           {/* engraved concentric arcs */}
           <svg
@@ -20,7 +20,7 @@ export default function CTASection() {
             aria-hidden
           >
             {[60, 100, 140, 180, 220].map((r) => (
-              <circle key={r} cx="200" cy="200" r={r} stroke="#F4F6FA" strokeWidth="1" />
+              <circle key={r} cx="200" cy="200" r={r} stroke="#FBF9F6" strokeWidth="1" />
             ))}
           </svg>
           <svg
@@ -30,7 +30,7 @@ export default function CTASection() {
             aria-hidden
           >
             {[70, 120, 170, 220].map((r) => (
-              <circle key={r} cx="200" cy="200" r={r} stroke="#F4F6FA" strokeWidth="1" />
+              <circle key={r} cx="200" cy="200" r={r} stroke="#FBF9F6" strokeWidth="1" />
             ))}
           </svg>
 
@@ -39,7 +39,7 @@ export default function CTASection() {
           </div>
 
           <p className="eyebrow eyebrow-invert justify-center">
-            <span className="idx">→</span> Start the Conversation
+            <span className="text-bronze-deep">→</span> Start the Conversation
           </p>
           <SplitReveal
             as="h2"

@@ -6,19 +6,35 @@ import CTASection from "@/components/CTASection";
 import IndustryDeck from "@/components/IndustryDeck";
 import TechConstellation from "@/components/TechConstellation";
 import { INDUSTRIES } from "@/lib/data";
+import { breadcrumbs } from "@/lib/seo";
 
 export const metadata = {
   title: "Industries We Serve",
   description:
     "Technology solutions tailored for financial services, healthcare, retail, manufacturing, education, and more.",
+  alternates: { canonical: "/industries" },
 };
 
 export default function IndustriesPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            breadcrumbs([
+              { name: "Home", path: "" },
+              { name: "Industries We Serve", path: "/industries/" },
+            ])
+          ),
+        }}
+      />
+
       <PageHero
-        index="01"
         eyebrow="Industries We Serve"
+        watermark="Industries"
+        image="industries/hero.webp"
+        position="center 40%"
         title={[
           { text: "Delivering Technology Solutions Across " },
           { text: "Diverse Industries", serif: true },
@@ -32,11 +48,11 @@ export default function IndustriesPage() {
       </section>
 
       {/* ── WHY ORGANIZATIONS CHOOSE US ──────────────────────── */}
-      <section className="relative overflow-hidden bg-ink py-24 sm:py-28">
+      <section className="relative overflow-hidden bg-dark py-24 sm:py-28">
         <div className="mesh-glow mesh-glow-invert" aria-hidden />
         <div className="container-x relative mx-auto max-w-4xl text-center">
           <SectionHeading
-            index="02"
+           
             eyebrow="Why Organizations Choose Frontier One"
             title={
               <>
@@ -62,7 +78,7 @@ export default function IndustriesPage() {
       <section className="py-20 sm:py-24">
         <div className="container-x mb-10">
           <SectionHeading
-            index="03"
+           
             eyebrow="Technology Experience"
             title={
               <>
@@ -77,7 +93,7 @@ export default function IndustriesPage() {
       {/* ── TECHNOLOGY STACK ─────────────────────────────────── */}
       <section className="container-x pb-24 sm:pb-28">
         <SectionHeading
-          index="04"
+         
           eyebrow="Technology Stack"
           title={
             <>

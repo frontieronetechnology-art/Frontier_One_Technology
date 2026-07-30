@@ -1,34 +1,38 @@
+import Image from "next/image";
+
 /**
- * Frontier One wordmark + mark.
- * Mark: three forward-stepping bars — an abstract "F" in motion,
- * with a bronze keystone dot. Placeholder until final brand logo
- * files are dropped into /public/logos (see IMAGE-PROMPTS.md).
+ * Frontier One Technology — official lockup.
+ *
+ * Two approved variants only (Brand Colour System v3.0 §13.1):
+ *   • Master Flat  — bronze mark + #3D2F24 wordmark, on ivory / white
+ *   • Inverse      — bronze mark + #F7F2EC wordmark, on #2D2218
+ *
+ * The wordmark is never recoloured ad-hoc and the mark is never separated
+ * from it except at ≤64px (favicon, avatar, watermark) — hence `markOnly`.
  */
-export default function Logo({ invert = false, className = "" }) {
-  const ink = invert ? "#F4F6FA" : "#1B2333";
+export default function Logo({ invert = false, markOnly = false, className = "" }) {
+  if (markOnly) {
+    return (
+      <Image
+        src="/logos/logo-mark.png"
+        alt="Frontier One Technology"
+        width={962}
+        height={431}
+        priority
+        className={`h-8 w-auto ${className}`}
+      />
+    );
+  }
+
   return (
-    <span className={`inline-flex items-center gap-3 ${className}`}>
-      <svg width="30" height="30" viewBox="0 0 32 32" fill="none" aria-hidden>
-        <rect x="4" y="5" width="17" height="3.2" rx="0.6" fill={ink} />
-        <rect x="4" y="14.4" width="12" height="3.2" rx="0.6" fill={ink} />
-        <rect x="4" y="23.8" width="6.5" height="3.2" rx="0.6" fill={ink} />
-        <circle cx="25.5" cy="25.4" r="2.6" fill="#B8873A" />
-      </svg>
-      <span className="flex flex-col leading-none">
-        <span
-          className="text-[1.05rem] font-semibold tracking-tight"
-          style={{ color: ink }}
-        >
-          Frontier One
-        </span>
-        <span
-          className={`mt-1 font-mono text-[0.55rem] uppercase tracking-[0.34em] ${
-            invert ? "text-n500" : "text-n600"
-          }`}
-        >
-          Technology
-        </span>
-      </span>
-    </span>
+    <Image
+      src={invert ? "/logos/logo-lockup-inverse.png" : "/logos/logo-lockup.png"}
+      alt="Frontier One Technology"
+      width={1618}
+      height={435}
+      priority
+      sizes="(max-width: 640px) 150px, 190px"
+      className={`h-[2.15rem] w-auto sm:h-[2.45rem] ${className}`}
+    />
   );
 }

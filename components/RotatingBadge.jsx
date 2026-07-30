@@ -23,7 +23,7 @@ export default function RotatingBadge({
       </svg>
       <span
         className={`absolute inset-0 m-auto flex h-10 w-10 items-center justify-center rounded-full ${
-          invert ? "bg-n100 text-ink" : "bg-ink text-n100"
+          invert ? "bg-n100 text-ink" : "bg-dark text-n100"
         }`}
       >
         <Icon name="arrowUpRight" />

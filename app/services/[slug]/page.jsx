@@ -6,6 +6,7 @@ import SectionHeading from "@/components/SectionHeading";
 import CTASection from "@/components/CTASection";
 import Icon from "@/components/Icons";
 import { SERVICES, PROCESS_STEPS } from "@/lib/data";
+import { serviceSchema, breadcrumbs } from "@/lib/seo";
 
 export function generateStaticParams() {
   return SERVICES.map((s) => ({ slug: s.slug }));
@@ -18,6 +19,13 @@ export async function generateMetadata({ params }) {
   return {
     title: service.title,
     description: service.short,
+    alternates: { canonical: `/services/${service.slug}` },
+    openGraph: {
+      title: `${service.title} | Frontier One Technology`,
+      description: service.short,
+      url: `/services/${service.slug}`,
+      type: "website",
+    },
   };
 }
 
@@ -30,9 +38,24 @@ export default async function ServicePage({ params }) {
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify([
+            serviceSchema(service),
+            breadcrumbs([
+              { name: "Home", path: "" },
+              { name: service.title, path: `/services/${service.slug}/` },
+            ]),
+          ]),
+        }}
+      />
+
       <PageHero
-        index={String(index + 1).padStart(2, "0")}
+        image={`services/${service.slug}.webp`}
+        position="center 42%"
         eyebrow={`Services / ${service.title}`}
+        watermark="Services"
         title={[
           { text: service.title.split(" ").slice(0, -1).join(" ") + " " },
           { text: service.title.split(" ").slice(-1).join(""), serif: true },
@@ -108,10 +131,10 @@ export default async function ServicePage({ params }) {
       </section>
 
       {/* ── HOW WE ENGAGE (process tie-in) ───────────────────── */}
-      <section className="border-t rule bg-n50 py-24 sm:py-28">
+      <section className="border-t rule bg-band py-24 sm:py-28">
         <div className="container-x">
           <SectionHeading
-            index="02"
+           
             eyebrow="The Engagement"
             title={
               <>
@@ -123,7 +146,7 @@ export default async function ServicePage({ params }) {
           <RevealGroup className="mt-14 grid grid-cols-2 gap-px overflow-hidden rounded-xl border rule bg-n300 sm:grid-cols-4" stagger={0.05}>
             {PROCESS_STEPS.map((step) => (
               <RevealItem key={step.n}>
-                <div className="flex h-full flex-col gap-2 bg-n50 p-5 transition-colors duration-500 hover:bg-white sm:p-6">
+                <div className="flex h-full flex-col gap-2 bg-band p-5 transition-colors duration-500 hover:bg-white sm:p-6">
                   <span className="font-mono text-[0.68rem] text-bronze-deep">{step.n}</span>
                   <span className="text-[0.9rem] font-semibold tracking-tight">{step.title}</span>
                 </div>
@@ -154,7 +177,7 @@ export default async function ServicePage({ params }) {
                 {next.title}
               </p>
             </div>
-            <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full border rule text-ink transition-all duration-500 group-hover:bg-ink group-hover:text-n100">
+            <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full border rule text-ink transition-all duration-500 group-hover:bg-dark group-hover:text-n100">
               <Icon name="arrow" />
             </span>
           </Link>

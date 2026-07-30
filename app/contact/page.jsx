@@ -4,10 +4,13 @@ import ContactForm from "@/components/ContactForm";
 import CTASection from "@/components/CTASection";
 import Icon from "@/components/Icons";
 
+import { breadcrumbs } from "@/lib/seo";
+
 export const metadata = {
   title: "Contact Us",
   description:
     "Schedule a consultation or reach the Frontier One Technology team. We respond to every inquiry.",
+  alternates: { canonical: "/contact" },
 };
 
 /* Placeholder contact values — pending client input
@@ -27,9 +30,23 @@ const SOCIALS = [
 export default function ContactPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            breadcrumbs([
+              { name: "Home", path: "" },
+              { name: "Contact", path: "/contact/" },
+            ])
+          ),
+        }}
+      />
+
       <PageHero
-        index="01"
         eyebrow="Contact"
+        watermark="Contact"
+        image="contact/hero.webp"
+        position="center 45%"
         title={[
           { text: "Let's Talk About " },
           { text: "What's Next", serif: true },
@@ -42,15 +59,15 @@ export default function ContactPage() {
           {/* Details rail — ink panel, no boxed cards */}
           <div className="lg:col-span-4">
             <Reveal>
-              <div className="relative flex h-full flex-col overflow-hidden rounded-2xl bg-ink p-8 sm:p-9">
+              <div className="relative flex h-full flex-col overflow-hidden rounded-2xl bg-dark p-8 sm:p-9">
                 <div className="mesh-glow mesh-glow-invert" aria-hidden />
                 <p className="eyebrow eyebrow-invert relative">
-                  <span className="idx">→</span> Reach Us Directly
+                  <span className="text-bronze-deep">→</span> Reach Us Directly
                 </p>
                 <div className="relative mt-8 divide-y divide-n800">
                   {DETAILS.map((d) => (
                     <div key={d.label} className="flex items-center gap-4 py-5 first:pt-0 last:pb-0">
-                      <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-md border border-n800 text-bronze">
+                      <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-md border border-n800 text-bronze-light">
                         <Icon name={d.icon} />
                       </span>
                       <div>
@@ -58,7 +75,7 @@ export default function ContactPage() {
                           {d.label}
                         </p>
                         {d.href ? (
-                          <a href={d.href} className="mt-1 block text-[0.95rem] font-semibold tracking-tight text-n100 transition-colors hover:text-bronze">
+                          <a href={d.href} className="mt-1 block text-[0.95rem] font-semibold tracking-tight text-n100 transition-colors hover:text-bronze-light">
                             {d.value}
                           </a>
                         ) : (
@@ -77,10 +94,10 @@ export default function ContactPage() {
                         href={s.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="group inline-flex items-center gap-1.5 rounded-full border border-n800 px-4 py-1.5 text-[0.8rem] font-medium text-n300 transition-colors hover:border-bronze hover:text-n100"
+                        className="group inline-flex items-center gap-1.5 rounded-full border border-n800 px-4 py-1.5 text-[0.8rem] font-medium text-n300 transition-colors hover:border-bronze-light hover:text-n100"
                       >
                         {s.label}
-                        <Icon name="arrowUpRight" className="text-n500 transition-colors group-hover:text-bronze" />
+                        <Icon name="arrowUpRight" className="text-n500 transition-colors group-hover:text-bronze-light" />
                       </a>
                     ))}
                   </div>
@@ -94,7 +111,7 @@ export default function ContactPage() {
             <Reveal delay={0.1}>
               <div className="card p-8 sm:p-10">
                 <p className="eyebrow">
-                  <span className="idx">02</span> Send a Message
+                  Send a Message
                 </p>
                 <div className="mt-8">
                   <ContactForm />

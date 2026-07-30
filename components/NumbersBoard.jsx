@@ -38,13 +38,13 @@ function Cell({ stat, i, span, reduce }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-8% 0px" }}
       transition={{ duration: 0.8, delay: i * 0.06, ease: EASE }}
-      className={`spotlight group relative flex flex-col justify-between gap-9 bg-ink p-7 transition-colors duration-500 hover:bg-n800/50 sm:p-8 ${span}`}
+      className={`spotlight group relative flex flex-col justify-between gap-9 bg-dark p-7 transition-colors duration-500 hover:bg-n800/50 sm:p-8 ${span}`}
     >
       {/* bronze edge sweeps in on hover */}
-      <span className="absolute inset-x-0 top-0 h-px origin-left scale-x-0 bg-bronze transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-x-100" />
+      <span className="absolute inset-x-0 top-0 h-px origin-left scale-x-0 bg-bronze-light transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-x-100" />
 
       <div className="flex items-start justify-between gap-4">
-        <span className="font-mono text-[0.62rem] uppercase tracking-[0.22em] text-bronze">
+        <span className="font-mono text-[0.62rem] uppercase tracking-[0.22em] text-bronze-light">
           {stat.label}
         </span>
         <span className="font-mono text-[0.62rem] text-n600">
@@ -73,7 +73,7 @@ function Cell({ stat, i, span, reduce }) {
             whileInView={{ scaleX: 1 }}
             viewport={{ once: true, margin: "-8% 0px" }}
             transition={{ duration: 1.1, delay: 0.2 + i * 0.07, ease: EASE }}
-            className="absolute inset-0 origin-left bg-bronze/70"
+            className="absolute inset-0 origin-left bg-bronze-light/70"
           />
         </span>
         <p className="mt-4 text-[0.83rem] leading-relaxed text-n500">{stat.body}</p>
@@ -102,7 +102,7 @@ export default function NumbersBoard({ stats }) {
       {/* readout header */}
       <div className="mt-14 flex flex-wrap items-center justify-between gap-4 border-t border-n800 pt-5">
         <span className="flex items-center gap-2.5 font-mono text-[0.62rem] uppercase tracking-[0.22em] text-n500">
-          <span className="pulse-dot inline-block h-1.5 w-1.5 rounded-full bg-bronze" />
+          <span className="pulse-dot inline-block h-1.5 w-1.5 rounded-full bg-bronze-light" />
           Frontier One — operating metrics
         </span>
         <span className="font-mono text-[0.62rem] uppercase tracking-[0.22em] text-n600">

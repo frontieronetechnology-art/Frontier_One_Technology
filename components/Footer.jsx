@@ -2,6 +2,7 @@ import Link from "next/link";
 import Logo from "./Logo";
 import Icon from "./Icons";
 import { NAV_LINKS, SERVICES } from "@/lib/data";
+import { sortedPosts } from "@/lib/blog";
 
 const SOCIALS = [
   { label: "LinkedIn", href: "https://www.linkedin.com/" },
@@ -9,9 +10,11 @@ const SOCIALS = [
   { label: "X (Twitter)", href: "https://x.com/" },
 ];
 
+const LATEST_POSTS = sortedPosts().slice(0, 3);
+
 export default function Footer() {
   return (
-    <footer className="bg-ink text-n100">
+    <footer className="bg-dark text-n100">
       <div className="container-x pt-20 pb-10">
         <div className="grid gap-14 lg:grid-cols-12">
           {/* Brand column */}
@@ -22,24 +25,24 @@ export default function Footer() {
             </p>
             <div className="mt-8 space-y-3 font-mono text-[0.8rem] text-n400">
               <p className="flex items-center gap-3">
-                <Icon name="phone" className="text-bronze" />
+                <Icon name="phone" className="text-bronze-light" />
                 <span>+1 (000) 000-0000</span>
               </p>
               <p className="flex items-center gap-3">
-                <Icon name="mail" className="text-bronze" />
+                <Icon name="mail" className="text-bronze-light" />
                 <a href="mailto:info@frontieronetechnology.com" className="transition-colors hover:text-n100">
                   info@frontieronetechnology.com
                 </a>
               </p>
               <p className="flex items-center gap-3">
-                <Icon name="pin" className="text-bronze" />
+                <Icon name="pin" className="text-bronze-light" />
                 <span>United States</span>
               </p>
             </div>
           </div>
 
           {/* Link columns */}
-          <div className="grid grid-cols-2 gap-10 sm:grid-cols-3 lg:col-span-7">
+          <div className="grid grid-cols-2 gap-10 sm:grid-cols-4 lg:col-span-7">
             <div>
               <p className="font-mono text-[0.65rem] uppercase tracking-[0.24em] text-n500">Company</p>
               <ul className="mt-5 space-y-3">
@@ -62,6 +65,29 @@ export default function Footer() {
                     </Link>
                   </li>
                 ))}
+              </ul>
+            </div>
+            <div>
+              <p className="font-mono text-[0.65rem] uppercase tracking-[0.24em] text-n500">Insights</p>
+              <ul className="mt-5 space-y-3">
+                {LATEST_POSTS.map((p) => (
+                  <li key={p.slug}>
+                    <Link
+                      href={`/blog/${p.slug}`}
+                      className="block text-sm leading-snug text-n300 transition-colors duration-300 hover:text-white"
+                    >
+                      {p.title}
+                    </Link>
+                  </li>
+                ))}
+                <li>
+                  <Link
+                    href="/blog"
+                    className="inline-flex items-center gap-2 text-sm text-bronze-light transition-colors duration-300 hover:text-white"
+                  >
+                    All articles <Icon name="arrowUpRight" />
+                  </Link>
+                </li>
               </ul>
             </div>
             <div>

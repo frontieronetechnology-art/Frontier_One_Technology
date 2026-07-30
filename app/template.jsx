@@ -21,7 +21,7 @@ export default function Template({ children }) {
     <>
       <motion.div
         aria-hidden
-        className="pointer-events-none fixed inset-0 z-[75] bg-ink"
+        className="pointer-events-none fixed inset-0 z-[75] bg-dark"
         initial={{ scaleY: reduce ? 0 : 1 }}
         animate={{ scaleY: 0 }}
         style={{ transformOrigin: "top" }}

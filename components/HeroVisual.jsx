@@ -48,7 +48,7 @@ export default function HeroVisual() {
         className="pointer-events-none absolute left-1/2 top-1/2 h-[70%] w-[70%] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-70"
         style={{
           background:
-            "radial-gradient(circle, rgba(184,135,58,0.10), rgba(27,35,51,0.04) 55%, transparent 72%)",
+            "radial-gradient(circle, rgba(182,132,77,0.10), rgba(45,34,24,0.04) 55%, transparent 72%)",
           filter: "blur(28px)",
         }}
       />
@@ -68,11 +68,11 @@ export default function HeroVisual() {
             <g key={i}>
               <motion.line
                 x1={a.x} y1={a.y} x2={b.x} y2={b.y}
-                stroke="#B8873A" strokeWidth="1" strokeDasharray="3 4" opacity="0.55"
+                stroke="#B6844D" strokeWidth="1" strokeDasharray="3 4" opacity="0.55"
                 {...draw(1.0 + i * 0.12, 0.9)}
               />
               <motion.circle
-                cx={b.x} cy={b.y} r="3" fill="#B8873A"
+                cx={b.x} cy={b.y} r="3" fill="#B6844D"
                 initial={reduce ? {} : { scale: 0, opacity: 0 }}
                 animate={reduce ? {} : { scale: 1, opacity: 1 }}
                 transition={{ duration: 0.5, delay: 1.75 + i * 0.12, ease: EASE }}
@@ -88,8 +88,8 @@ export default function HeroVisual() {
           {...draw(0.35, 1.4)}
         >
           <circle cx={CX} cy={CY} r="206" stroke="#C9CFDA" strokeWidth="1" strokeDasharray="3 7" />
-          <circle cx={CX} cy="74" r="4.5" fill="#1B2333" />
-          <circle cx="486" cy={CY} r="3" fill="#B8873A" />
+          <circle cx={CX} cy="74" r="4.5" fill="#2D2218" />
+          <circle cx="486" cy={CY} r="3" fill="#B6844D" />
         </motion.g>
         <motion.g
           className={reduce ? "" : "animate-spin-slower"}
@@ -97,7 +97,7 @@ export default function HeroVisual() {
           {...draw(0.5, 1.4)}
         >
           <circle cx={CX} cy={CY} r="150" stroke="#9EA4AF" strokeWidth="1" strokeDasharray="1 9" />
-          <circle cx="130" cy={CY} r="4" fill="#1B2333" />
+          <circle cx="130" cy={CY} r="4" fill="#2D2218" />
         </motion.g>
 
         {/* inner fine measurement ring */}
@@ -116,13 +116,13 @@ export default function HeroVisual() {
           <ellipse cx={CX} cy={CY} rx="64" ry="92" stroke="#DBE0E8" strokeWidth="1" fill="none" />
         </motion.g>
         <motion.circle
-          cx={CX} cy={CY} r="7" fill="#1B2333"
+          cx={CX} cy={CY} r="7" fill="#2D2218"
           initial={reduce ? {} : { scale: 0 }}
           animate={reduce ? {} : { scale: 1 }}
           transition={{ duration: 0.6, delay: 1.1, ease: EASE }}
         />
         <motion.circle
-          cx={CX} cy={CY} r="14" stroke="#B8873A" strokeWidth="1" opacity="0.6"
+          cx={CX} cy={CY} r="14" stroke="#B6844D" strokeWidth="1" opacity="0.6"
           {...draw(1.2, 0.8)}
         />
 
@@ -172,12 +172,12 @@ function FloatingChip({ className, delay, icon, title, sub, drift, driftDelay = 
       className={`absolute ${className}`}
     >
       <div
-        className={`flex items-center gap-3 rounded-lg border border-white/70 bg-white/60 py-3 pl-3 pr-5 shadow-[0_16px_40px_-16px_rgba(27,35,51,0.25)] backdrop-blur-md ${
+        className={`flex items-center gap-3 rounded-lg border border-white/70 bg-white/60 py-3 pl-3 pr-5 shadow-[0_16px_40px_-16px_rgba(45,34,24,0.25)] backdrop-blur-md ${
           drift ? "animate-drift" : ""
         }`}
         style={{ animationDelay: driftDelay }}
       >
-        <span className="flex h-9 w-9 items-center justify-center rounded-md bg-ink text-n100">
+        <span className="flex h-9 w-9 items-center justify-center rounded-md bg-dark text-n100">
           <Icon name={icon} />
         </span>
         <span>

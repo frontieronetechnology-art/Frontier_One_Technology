@@ -23,6 +23,7 @@ export default function TermsPage() {
   return (
     <LegalPage
       eyebrow="Legal"
+      image="legal/terms-hero.webp"
       title={[{ text: "Terms & " }, { text: "Conditions", serif: true }]}
       note="The terms governing use of the Frontier One Technology website and services."
       sections={SECTIONS}

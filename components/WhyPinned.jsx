@@ -10,8 +10,10 @@ import {
   useReducedMotion,
 } from "framer-motion";
 import Icon from "./Icons";
+import Media from "./Media";
+import OrbitalField from "./OrbitalField";
 
-const NAV_H = 72; // px — matches the fixed navbar height
+const NAV_H = 84; // px — matches the floating navbar capsule height
 const EASE = [0.16, 1, 0.3, 1];
 
 /* ── segmented scroll tick — fills as its slice of the section passes ── */
@@ -19,7 +21,7 @@ function Tick({ i, total, progress }) {
   const scaleX = useTransform(progress, [i / total, (i + 1) / total], [0, 1]);
   return (
     <span className="relative h-px flex-1 overflow-hidden bg-n700">
-      <motion.span style={{ scaleX }} className="absolute inset-0 origin-left bg-bronze" />
+      <motion.span style={{ scaleX }} className="absolute inset-0 origin-left bg-bronze-light" />
     </span>
   );
 }
@@ -27,7 +29,6 @@ function Tick({ i, total, progress }) {
 /* ── right-hand visual plate — drops in an image when one exists,
       otherwise holds an intentional orbital drafting motif ────────── */
 function Plate({ card, i, active, total }) {
-  const [missing, setMissing] = useState(false);
   const isActive = i === active;
   const dir = i < active ? -1 : 1;
 
@@ -43,48 +44,19 @@ function Plate({ card, i, active, total }) {
       transition={{ duration: 0.8, ease: EASE }}
       className="absolute inset-0 overflow-hidden rounded-xl"
     >
-      <div className="absolute inset-0 bg-gradient-to-br from-n800 via-ink to-n900" />
+      <div className="absolute inset-0 bg-gradient-to-br from-n800 via-dark to-n900" />
+
+      {/* photograph sits at the base of the stack … */}
+      <Media src={`home/why-0${i + 1}.webp`} fill grade="dark" position="center 40%" />
+
+      {/* … the drafting lattice stays on top of it, exactly as before */}
       <div className="grid-paper-invert absolute inset-0" />
-
-      {/* orbital motif */}
-      <div className="absolute left-1/2 top-1/2 h-[38rem] w-[38rem] -translate-x-1/2 -translate-y-1/2">
-        <svg viewBox="0 0 400 400" fill="none" className="animate-spin-slow h-full w-full">
-          <circle cx="200" cy="200" r="176" stroke="rgba(184,135,58,0.22)" />
-          <circle cx="200" cy="200" r="132" stroke="rgba(244,246,250,0.08)" strokeDasharray="2 8" />
-          <ellipse cx="200" cy="200" rx="176" ry="62" stroke="rgba(244,246,250,0.07)" />
-          <ellipse cx="200" cy="200" rx="62" ry="176" stroke="rgba(244,246,250,0.07)" />
-          <circle cx="376" cy="200" r="3.5" fill="#b8873a" />
-          <circle cx="200" cy="24" r="2.5" fill="rgba(244,246,250,0.5)" />
-        </svg>
-      </div>
-      <div className="absolute left-1/2 top-1/2 h-[26rem] w-[26rem] -translate-x-1/2 -translate-y-1/2">
-        <svg viewBox="0 0 400 400" fill="none" className="animate-spin-slower h-full w-full">
-          <circle
-            cx="200"
-            cy="200"
-            r="190"
-            stroke="rgba(244,246,250,0.11)"
-            strokeDasharray="14 12"
-          />
-        </svg>
-      </div>
-
-      {/* optional art — /public/images/why-01.webp … drop in and it takes over */}
-      {!missing && (
-        <img
-          src={`/images/why-0${i + 1}.webp`}
-          alt=""
-          loading="lazy"
-          onError={() => setMissing(true)}
-          className="absolute inset-0 h-full w-full object-cover"
-        />
-      )}
-      <div className="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/25 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-t from-dark/88 via-dark/35 to-dark/10" />
 
       {/* foreground furniture */}
       <div className="absolute inset-0 flex flex-col justify-between p-6 sm:p-9">
         <div className="flex items-start justify-between">
-          <span className="flex h-12 w-12 items-center justify-center rounded-md border border-n700/80 bg-ink/50 text-bronze backdrop-blur-sm">
+          <span className="flex h-12 w-12 items-center justify-center rounded-md border border-n700/80 bg-dark/50 text-bronze-light backdrop-blur-sm">
             <Icon name={card.icon} />
           </span>
           <span className="font-mono text-[0.6rem] uppercase tracking-[0.22em] text-n500">
@@ -143,7 +115,12 @@ export default function WhyPinned({ cards, href = "/about", cta = "About the com
         className="sticky flex items-center overflow-hidden"
         style={{ top: NAV_H, height: `calc(100vh - ${NAV_H}px)` }}
       >
-        <div className="container-x w-full">
+        {/* the orbital field now spans the whole band rather than being
+            cropped inside a single card */}
+        <OrbitalField className="absolute left-1/2 top-1/2 h-[130vh] w-[130vh] -translate-x-1/2 -translate-y-1/2 opacity-90" />
+        <OrbitalField className="absolute -left-[18vw] top-[8%] hidden h-[46vh] w-[46vh] opacity-60 lg:block" />
+
+        <div className="container-x relative w-full">
           <div className="grid h-[82vh] max-h-[46rem] grid-rows-[10rem_minmax(0,1fr)] gap-3 sm:grid-rows-[13rem_minmax(0,1fr)] sm:gap-4 lg:grid-cols-[minmax(0,0.44fr)_minmax(0,1fr)] lg:grid-rows-1">
             {/* ── copy panel ── */}
             <div className="relative order-2 flex min-h-0 flex-col justify-between overflow-hidden rounded-xl bg-n800 p-5 sm:p-8 lg:order-1">
@@ -173,8 +150,8 @@ export default function WhyPinned({ cards, href = "/about", cta = "About the com
                       transition={{ duration: 0.7, ease: EASE }}
                       className="absolute inset-0 flex flex-col justify-center"
                     >
-                      <span className="font-mono text-[0.62rem] uppercase tracking-[0.22em] text-bronze">
-                        {String(i + 1).padStart(2, "0")} — Why Frontier One
+                      <span className="font-mono text-[0.62rem] uppercase tracking-[0.22em] text-bronze-light">
+                        Why Frontier One
                       </span>
                       <h3 className="display mt-3 text-[1.5rem] leading-[1.05] text-n100 sm:mt-4 sm:text-[2.15rem]">
                         {card.title}
@@ -191,9 +168,9 @@ export default function WhyPinned({ cards, href = "/about", cta = "About the com
               <Link
                 href={href}
                 data-cursor="View"
-                className="group relative inline-flex w-fit items-center gap-2.5 overflow-hidden rounded-md border border-n700 px-5 py-3 font-mono text-[0.7rem] uppercase tracking-[0.18em] text-n100 transition-colors duration-500 hover:border-bronze hover:text-ink"
+                className="group relative inline-flex w-fit items-center gap-2.5 overflow-hidden rounded-md border border-n700 px-5 py-3 font-mono text-[0.7rem] uppercase tracking-[0.18em] text-n100 transition-colors duration-500 hover:border-bronze-light hover:text-ink"
               >
-                <span className="absolute inset-x-0 bottom-0 h-full origin-bottom translate-y-full bg-bronze transition-transform duration-[600ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-y-0" />
+                <span className="absolute inset-x-0 bottom-0 h-full origin-bottom translate-y-full bg-bronze-light transition-transform duration-[600ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-y-0" />
                 <span className="relative">{cta}</span>
                 <span className="icon-swap relative text-current">
                   <Icon name="arrowUpRight" />

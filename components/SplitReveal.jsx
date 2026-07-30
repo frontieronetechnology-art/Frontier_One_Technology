@@ -1,5 +1,6 @@
 "use client";
 
+import { Fragment } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 
 const EASE = [0.16, 1, 0.3, 1];
@@ -37,7 +38,8 @@ export default function SplitReveal({
       <Tag className={className}>
         {words.map((word, i) => (
           <span key={i} className={word.serif ? "serif-accent" : undefined}>
-            {word.w}{" "}
+            {word.w}
+            {i < words.length - 1 ? " " : null}
           </span>
         ))}
       </Tag>
@@ -46,24 +48,32 @@ export default function SplitReveal({
 
   return (
     <MTag className={className} {...viewProps} aria-label={words.map((x) => x.w).join(" ")}>
+      {/* The inter-word space MUST sit outside .mask-word. That element is an
+          inline-block with overflow:hidden, and CSS white-space processing
+          strips a trailing space at the end of such a box — so a space placed
+          inside it silently vanishes and adjacent words collide. It showed up
+          worst against the italic serif accent, which has no side bearing to
+          spare, but it was quietly tightening every headline on the site. */}
       {words.map((word, i) => (
-        <span key={i} className="mask-word" aria-hidden>
-          <motion.span
-            className={`inline-block ${word.serif ? "serif-accent" : ""}`}
-            variants={{
-              hidden: { y: "115%", rotate: 2.5, filter: "blur(7px)" },
-              show: {
-                y: 0,
-                rotate: 0,
-                filter: "blur(0px)",
-                transition: { duration, ease: EASE, delay: delay + i * stagger },
-              },
-            }}
-          >
-            {word.w}
-          </motion.span>
-          {" "}
-        </span>
+        <Fragment key={i}>
+          <span className="mask-word" aria-hidden>
+            <motion.span
+              className={`inline-block ${word.serif ? "serif-accent" : ""}`}
+              variants={{
+                hidden: { y: "115%", rotate: 2.5, filter: "blur(7px)" },
+                show: {
+                  y: 0,
+                  rotate: 0,
+                  filter: "blur(0px)",
+                  transition: { duration, ease: EASE, delay: delay + i * stagger },
+                },
+              }}
+            >
+              {word.w}
+            </motion.span>
+          </span>
+          {i < words.length - 1 ? " " : null}
+        </Fragment>
       ))}
     </MTag>
   );

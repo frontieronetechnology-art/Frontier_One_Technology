@@ -6,7 +6,6 @@ import SplitReveal from "./SplitReveal";
  * ([{ text, serif }]) — arrays get the word-mask stagger reveal.
  */
 export default function SectionHeading({
-  index,
   eyebrow,
   title,
   lede,
@@ -22,7 +21,6 @@ export default function SectionHeading({
     <div className={`${center ? "text-center" : ""} ${className}`}>
       <Reveal>
         <p className={`eyebrow ${invert ? "eyebrow-invert" : ""} ${center ? "justify-center" : ""}`}>
-          {index && <span className="idx">{index}</span>}
           {eyebrow}
         </p>
       </Reveal>

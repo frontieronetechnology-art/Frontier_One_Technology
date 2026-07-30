@@ -41,6 +41,7 @@ export default function PrivacyPage() {
   return (
     <LegalPage
       eyebrow="Legal"
+      image="legal/privacy-hero.webp"
       title={[{ text: "Privacy " }, { text: "Policy", serif: true }]}
       note="How Frontier One Technology collects, uses, protects, and manages visitor data."
       sections={SECTIONS}

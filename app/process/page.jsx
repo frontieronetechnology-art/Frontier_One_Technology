@@ -4,12 +4,17 @@ import SectionHeading from "@/components/SectionHeading";
 import ProcessRail from "@/components/ProcessRail";
 import SpotlightCard from "@/components/SpotlightCard";
 import CTASection from "@/components/CTASection";
+import Starfield from "@/components/Starfield";
+import Media from "@/components/Media";
 import Icon from "@/components/Icons";
+
+import { breadcrumbs } from "@/lib/seo";
 
 export const metadata = {
   title: "Our Approach",
   description:
     "A proven 8-step process — discover, assess, strategize, design, develop, validate, deploy, support — for reliable technology delivery.",
+  alternates: { canonical: "/process" },
 };
 
 /* Supplementary principles (SRS §5.3.3 — added per industry best practice) */
@@ -39,9 +44,23 @@ const PRINCIPLES = [
 export default function ProcessPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            breadcrumbs([
+              { name: "Home", path: "" },
+              { name: "Our Approach", path: "/process/" },
+            ])
+          ),
+        }}
+      />
+
       <PageHero
-        index="01"
         eyebrow="Our Approach"
+        watermark="Process"
+        image="process/hero.webp"
+        position="center 45%"
         title={[
           { text: "Building Technology with Purpose, Precision, and " },
           { text: "Long-Term Value", serif: true },
@@ -50,9 +69,18 @@ export default function ProcessPage() {
       />
 
       {/* ── 8-STEP RAIL ──────────────────────────────────────── */}
-      <section className="relative container-x pb-24 pt-8 sm:pb-32">
-        <div className="mesh-glow" aria-hidden />
-        <div className="relative">
+      {/* NOTE — no `overflow-hidden` here. It made this section the sticky
+          containing block, which pinned ProcessRail's dial to a dead spot
+          instead of letting it travel down the viewport with the scroll.
+          Decoration is clipped by its own wrapper instead. */}
+      <section className="relative pb-24 pt-8 sm:pb-32">
+        <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
+          <div className="mesh-glow" />
+          {/* the dial used to float in dead space — a sparse star chart gives
+              the phase rail something to sit in without adding noise */}
+          <Starfield count={110} className="opacity-80" />
+        </div>
+        <div className="container-x relative">
         <Reveal>
           <p className="mb-14 max-w-2xl border-l-2 border-bronze pl-5 text-[0.95rem] leading-relaxed text-n700">
             A proven process for delivering reliable technology solutions — every project
@@ -65,10 +93,24 @@ export default function ProcessPage() {
       </section>
 
       {/* ── PRINCIPLES ───────────────────────────────────────── */}
-      <section className="border-t rule bg-n50 py-24 sm:py-32">
-        <div className="container-x">
+      <section className="relative overflow-hidden border-t rule bg-band py-24 sm:py-32">
+        <Media
+          src="process/principles-bg.webp"
+          fill
+          grade="light"
+          position="center 50%"
+          className="opacity-28"
+        />
+        <div
+          className="pointer-events-none absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(180deg, rgba(245,241,235,0.95) 0%, rgba(251,249,246,0.88) 50%, rgba(245,241,235,0.96) 100%)",
+          }}
+          aria-hidden
+        />
+        <div className="container-x relative">
           <SectionHeading
-            index="02"
             eyebrow="How We Hold the Line"
             title={
               <>
@@ -81,7 +123,7 @@ export default function ProcessPage() {
             {PRINCIPLES.map((p) => (
               <RevealItem key={p.title}>
                 <SpotlightCard className="card group h-full p-7">
-                  <span className="flex h-11 w-11 items-center justify-center rounded-md border rule text-ink transition-colors duration-500 group-hover:bg-ink group-hover:text-n100">
+                  <span className="flex h-11 w-11 items-center justify-center rounded-md border rule text-ink transition-colors duration-500 group-hover:bg-dark group-hover:text-n100">
                     <Icon name={p.icon} />
                   </span>
                   <h3 className="mt-7 text-lg font-semibold tracking-tight">{p.title}</h3>

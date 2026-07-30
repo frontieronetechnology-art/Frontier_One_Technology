@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion, useInView, useReducedMotion } from "framer-motion";
 import Icon from "./Icons";
+import Media from "./Media";
 
 const EASE = [0.16, 1, 0.3, 1];
 const DURATION = 0.95;
@@ -27,7 +28,6 @@ const inner = (delay) => ({
 
 /* ── left plate — image when one exists, drafting motif when it doesn't ── */
 function Plate({ item, i, total }) {
-  const [missing, setMissing] = useState(false);
   const words = item.name.split(" ");
   const tail = words.length > 1 ? words[words.length - 1] : null;
   const lead = tail ? words.slice(0, -1).join(" ") : item.name;
@@ -43,34 +43,21 @@ function Plate({ item, i, total }) {
         }}
         className="absolute inset-0"
       >
-        <div className="absolute inset-0 bg-gradient-to-br from-n800 via-ink to-n900" />
+        <div className="absolute inset-0 bg-gradient-to-br from-n800 via-dark to-n900" />
+        <Media
+          src={`industries/home-${item.slug}.webp`}
+          fill
+          grade="dark"
+          position="center 45%"
+        />
         <div className="grid-paper-invert absolute inset-0" />
-        <div className="absolute left-1/2 top-1/2 h-[34rem] w-[34rem] -translate-x-1/2 -translate-y-1/2">
-          <svg viewBox="0 0 400 400" fill="none" className="animate-spin-slow h-full w-full">
-            <circle cx="200" cy="200" r="170" stroke="rgba(184,135,58,0.20)" />
-            <circle cx="200" cy="200" r="118" stroke="rgba(244,246,250,0.09)" strokeDasharray="2 9" />
-            <ellipse cx="200" cy="200" rx="170" ry="58" stroke="rgba(244,246,250,0.07)" />
-            <circle cx="370" cy="200" r="3.5" fill="#b8873a" />
-          </svg>
-        </div>
-
-        {/* optional art — /public/images/industry-<slug>.webp */}
-        {!missing && (
-          <img
-            src={`/images/industry-${item.slug}.webp`}
-            alt=""
-            loading="lazy"
-            onError={() => setMissing(true)}
-            className="absolute inset-0 h-full w-full object-cover"
-          />
-        )}
-        <div className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/40 to-ink/10" />
+        <div className="absolute inset-0 bg-gradient-to-t from-dark/90 via-dark/40 to-dark/10" />
       </motion.div>
 
       {/* copy */}
       <div className="relative flex h-full flex-col justify-between py-6 pl-14 pr-6 sm:py-10 sm:pl-20 sm:pr-10">
         <motion.span {...inner(0.15)} className="flex items-center gap-3">
-          <span className="flex h-11 w-11 items-center justify-center rounded-md border border-n700/80 bg-ink/60 text-bronze backdrop-blur-sm">
+          <span className="flex h-11 w-11 items-center justify-center rounded-md border border-n700/80 bg-dark/60 text-bronze-light backdrop-blur-sm">
             <Icon name={item.icon} />
           </span>
           <span className="font-mono text-[0.62rem] uppercase tracking-[0.22em] text-n400">
@@ -171,7 +158,7 @@ export default function IndustrySlider({ items }) {
       onMouseLeave={() => setPaused(false)}
       onFocus={() => setPaused(true)}
       onBlur={() => setPaused(false)}
-      className="relative max-h-[46rem] min-h-[42rem] w-full overflow-hidden rounded-xl border border-n300 bg-ink outline-none"
+      className="relative max-h-[46rem] min-h-[42rem] w-full overflow-hidden rounded-xl border border-n300 bg-dark outline-none"
       style={{ height: "80vh" }}
     >
       <div className="grid h-full grid-rows-[14rem_minmax(0,1fr)] lg:grid-cols-2 lg:grid-rows-1">
@@ -229,13 +216,16 @@ export default function IndustrySlider({ items }) {
                 ))}
               </motion.ul>
 
-              <motion.span {...inner(0.5)}>
+              {/* The old text link read as body copy and nobody recognised it
+                  as a control. It is now an explicit chip. */}
+              <motion.span {...inner(0.5)} className="group inline-flex">
                 <Link
                   href={`/industries#${active.slug}`}
                   data-cursor="View"
-                  className="link-arrow"
+                  className="cta-chip"
                 >
-                  {active.name} in detail <Icon name="arrow" />
+                  Explore {active.name}
+                  <Icon name="arrowUpRight" />
                 </Link>
               </motion.span>
             </motion.div>
@@ -257,7 +247,7 @@ export default function IndustrySlider({ items }) {
             {i === index && (
               <motion.span
                 layoutId="industry-bullet"
-                className="absolute inset-0 rounded-full bg-bronze"
+                className="absolute inset-0 rounded-full bg-bronze-light"
                 transition={{ duration: 0.5, ease: EASE }}
               />
             )}
@@ -277,7 +267,7 @@ export default function IndustrySlider({ items }) {
             type="button"
             onClick={() => step(d)}
             aria-label={d > 0 ? "Next industry" : "Previous industry"}
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-n300 text-ink transition-colors duration-300 hover:border-ink hover:bg-ink hover:text-n100"
+            className="flex h-9 w-9 items-center justify-center border border-n300 text-ink transition-colors duration-300 hover:border-ink hover:bg-dark hover:text-n100"
           >
             <span className={d > 0 ? "rotate-90" : "-rotate-90"}>
               <Icon name="arrow" />

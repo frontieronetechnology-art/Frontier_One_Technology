@@ -96,7 +96,7 @@ export default function Chatbot() {
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: 1.2, duration: 0.7, ease: EASE }}
-        className="fixed bottom-5 right-5 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-ink text-n100 shadow-[0_16px_40px_-12px_rgba(27,35,51,0.5)] transition-transform duration-500 hover:scale-105 sm:bottom-7 sm:right-7"
+        className="fixed bottom-5 right-5 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-dark text-n100 shadow-[0_16px_40px_-12px_rgba(45,34,24,0.5)] transition-transform duration-500 hover:scale-105 sm:bottom-7 sm:right-7"
       >
         <AnimatePresence mode="wait" initial={false}>
           <motion.span
@@ -122,12 +122,12 @@ export default function Chatbot() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 24, scale: 0.97 }}
             transition={{ duration: 0.5, ease: EASE }}
-            className="fixed bottom-[5.5rem] right-4 z-50 flex h-[30rem] w-[calc(100vw-2rem)] max-w-sm flex-col overflow-hidden rounded-xl border border-n300 bg-white shadow-[0_32px_80px_-24px_rgba(27,35,51,0.4)] sm:bottom-24 sm:right-7"
+            className="fixed bottom-[5.5rem] right-4 z-50 flex h-[30rem] w-[calc(100vw-2rem)] max-w-sm flex-col overflow-hidden rounded-xl border border-n300 bg-white shadow-[0_32px_80px_-24px_rgba(45,34,24,0.4)] sm:bottom-24 sm:right-7"
             role="dialog"
             aria-label="Frontier One assistant"
           >
             {/* Header */}
-            <div className="flex items-center gap-3 border-b rule bg-ink px-5 py-4">
+            <div className="flex items-center gap-3 border-b rule bg-dark px-5 py-4">
               <span className="relative flex h-9 w-9 items-center justify-center rounded-full bg-n800 text-n100">
                 <Icon name="sparks" />
                 <span className="absolute -right-0.5 -top-0.5 h-2 w-2 rounded-full bg-bronze pulse-dot" />
@@ -147,7 +147,7 @@ export default function Chatbot() {
                   <div
                     className={`max-w-[85%] rounded-lg px-4 py-2.5 text-[0.85rem] leading-relaxed ${
                       m.from === "user"
-                        ? "bg-ink text-n100"
+                        ? "bg-dark text-n100"
                         : "border border-n300 bg-white text-n700"
                     }`}
                   >
@@ -210,7 +210,7 @@ export default function Chatbot() {
               <button
                 type="submit"
                 aria-label="Send message"
-                className="flex h-10 w-10 items-center justify-center rounded-md bg-ink text-n100 transition-transform hover:scale-105"
+                className="flex h-10 w-10 items-center justify-center rounded-md bg-dark text-n100 transition-transform hover:scale-105"
               >
                 <Icon name="send" />
               </button>

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Hero from "@/components/Hero";
-import Reveal from "@/components/Reveal";
+import Reveal, { RevealGroup, RevealItem } from "@/components/Reveal";
 import SectionHeading from "@/components/SectionHeading";
 import ScrollFillText from "@/components/ScrollFillText";
 import ServicesShowcase from "@/components/ServicesShowcase";
@@ -13,19 +13,35 @@ import WhyPinned from "@/components/WhyPinned";
 import StackCards from "@/components/StackCards";
 import IndustrySlider from "@/components/IndustrySlider";
 import ScrollFillHeading from "@/components/ScrollFillHeading";
+import Media from "@/components/Media";
 import Icon from "@/components/Icons";
 import { WHY_CARDS, PROCESS_STEPS, INDUSTRIES, SERVICES_FAQ } from "@/lib/data";
+import { sortedPosts } from "@/lib/blog";
+import { faqPage, breadcrumbs } from "@/lib/seo";
+
+const LATEST_POSTS = sortedPosts().slice(0, 3);
 
 export const metadata = {
   title: "Frontier One Technology | Enterprise Technology Consulting",
   description:
-    "Practical cloud, security, and software solutions engineered for long-term business growth. Schedule a consultation with Frontier One Technology.",
+    "Enterprise technology consulting across cloud, cybersecurity, software engineering, data, AI, and DevOps. Practical solutions engineered for long-term business growth.",
+  alternates: { canonical: "/" },
 };
 
 export default function HomePage() {
   return (
     <>
-      {/* ── HERO — kinetic type, magnetic CTAs, tilt orbital ── */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify([
+            faqPage(SERVICES_FAQ),
+            breadcrumbs([{ name: "Home", path: "" }]),
+          ]),
+        }}
+      />
+
+      {/* ── HERO — layered plate, magnetic CTAs ── */}
       <Hero />
 
       {/* ── TECHNOLOGY MARQUEE ───────────────────────────────── */}
@@ -36,7 +52,7 @@ export default function HomePage() {
         <div className="grid gap-14 lg:grid-cols-12">
           <div className="lg:col-span-4">
             <SectionHeading
-              index="01"
+             
               eyebrow="Who We Are"
               title={[
                 { text: "Technology Built Around " },
@@ -64,11 +80,11 @@ export default function HomePage() {
       </section>
 
       {/* ── WHY FRONTIER ONE — pinned tab-scroll panel ───────── */}
-      <section className="relative border-t rule bg-n50">
+      <section className="relative border-t rule bg-band">
         <div className="container-x pt-28 sm:pt-36">
           <div className="flex flex-wrap items-end justify-between gap-8">
             <SectionHeading
-              index="02"
+             
               eyebrow="Why Frontier One"
               title={[
                 { text: "Why Businesses " },
@@ -92,7 +108,7 @@ export default function HomePage() {
       <section className="container-x py-28 sm:py-36">
         <div className="flex flex-wrap items-end justify-between gap-8">
           <SectionHeading
-            index="03"
+           
             eyebrow="Services"
             title={[
               { text: "Technology Services for " },
@@ -107,17 +123,35 @@ export default function HomePage() {
       </section>
 
       {/* ── KINETIC STATEMENT MARQUEE ────────────────────────── */}
-      <section className="overflow-hidden border-y rule bg-n50">
+      <section className="overflow-hidden border-y rule bg-band">
         <BigMarquee />
       </section>
 
-      {/* ── OUR APPROACH (PREVIEW) ───────────────────────────── */}
-      <section className="py-28 sm:py-36">
-        <div className="container-x">
+      {/* ── OUR APPROACH — the page's dark feature section (§05.2 L3) ── */}
+      {/* NOTE — no `overflow-hidden` on this section. An `overflow` value other
+          than `visible` on any ancestor makes that ancestor the sticky
+          containing block, which silently kills the card stack inside
+          StackCards (and the sticky heading column). The decorative
+          background is therefore clipped by its own wrapper instead. */}
+      <section className="relative bg-dark py-28 text-n100 sm:py-36">
+        <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
+          <Media
+            src="home/approach-bg.webp"
+            fill
+            grade="dark"
+            position="center 30%"
+            className="opacity-45"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-dark via-dark/80 to-dark" />
+          <div className="grid-paper-invert absolute inset-0" />
+          <div className="mesh-glow mesh-glow-invert" />
+        </div>
+
+        <div className="container-x relative">
           <div className="grid gap-14 lg:grid-cols-12">
             <div className="lg:col-span-4 lg:sticky lg:top-28 lg:self-start">
               <SectionHeading
-                index="04"
+                invert
                 eyebrow="Our Approach"
                 title={[
                   { text: "A Proven Process, " },
@@ -126,7 +160,7 @@ export default function HomePage() {
                 lede="Every project follows a structured approach that keeps communication clear, minimizes risk, and ensures solutions are built around your business objectives."
               />
               <Reveal delay={0.25}>
-                <Link href="/process" className="btn btn-ink mt-10">
+                <Link href="/process" className="btn btn-bronze mt-10 !rounded-full">
                   <span className="flex items-center gap-2.5">
                     See the Full Process <Icon name="arrow" />
                   </span>
@@ -141,11 +175,11 @@ export default function HomePage() {
       </section>
 
       {/* ── INDUSTRIES — auto-scrolling belt, not a static grid ── */}
-      <section className="border-t rule bg-n50 py-28 sm:py-36">
+      <section className="border-t rule bg-band py-28 sm:py-36">
         <div className="container-x">
           <div className="flex flex-wrap items-end justify-between gap-8">
             <SectionHeading
-              index="05"
+             
               eyebrow="Industries"
               title={[
                 { text: "Industries We " },
@@ -166,14 +200,14 @@ export default function HomePage() {
       </section>
 
       {/* ── STATS BAND ───────────────────────────────────────── */}
-      <StatsBand index="06" />
+      <StatsBand />
 
       {/* ── USP HIGHLIGHT ────────────────────────────────────── */}
       <section className="container-x py-28 sm:py-36">
         <div className="mx-auto max-w-4xl text-center">
           <Reveal>
             <p className="eyebrow justify-center">
-              <span className="idx">07</span> Our Standard
+              Our Standard
             </p>
           </Reveal>
           <ScrollFillHeading
@@ -199,11 +233,27 @@ export default function HomePage() {
       </section>
 
       {/* ── FAQ ──────────────────────────────────────────────── */}
-      <section className="border-t rule bg-n50 py-28 sm:py-36">
-        <div className="container-x grid gap-14 lg:grid-cols-12">
+      <section className="relative overflow-hidden border-t rule bg-band py-28 sm:py-36">
+        {/* the FAQ column used to sit on a bare band; a veiled architectural
+            plate gives it a floor without competing with the copy */}
+        <Media
+          src="home/faq-bg.webp"
+          fill
+          grade="light"
+          position="center 55%"
+          className="opacity-30"
+        />
+        <div
+          className="pointer-events-none absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(180deg, rgba(245,241,235,0.94) 0%, rgba(251,249,246,0.9) 45%, rgba(245,241,235,0.96) 100%)",
+          }}
+          aria-hidden
+        />
+        <div className="container-x relative grid gap-14 lg:grid-cols-12">
           <div className="lg:col-span-4">
             <SectionHeading
-              index="08"
               eyebrow="FAQ"
               title={[{ text: "Common " }, { text: "Questions", serif: true }]}
               lede="Straight answers about how we work, what we deliver, and how to get started."
@@ -217,8 +267,60 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ── INSIGHTS ─────────────────────────────────────────── */}
+      <section className="container-x py-28 sm:py-36">
+        <div className="flex flex-wrap items-end justify-between gap-8">
+          <SectionHeading
+            eyebrow="Insights"
+            title={[
+              { text: "What We've Learned " },
+              { text: "Doing the Work", serif: true },
+            ]}
+            lede="Perspectives written for the people who fund the decision — cloud economics, security posture, delivery cost, and where enterprise AI actually pays."
+          />
+          <Reveal delay={0.2}>
+            <Link href="/blog" className="group mb-2 inline-flex">
+              <span className="cta-chip">
+                All Articles <Icon name="arrowUpRight" />
+              </span>
+            </Link>
+          </Reveal>
+        </div>
+
+        <RevealGroup className="mt-16 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {LATEST_POSTS.map((post) => (
+            <RevealItem key={post.slug}>
+              <Link
+                href={`/blog/${post.slug}`}
+                className="group card flex h-full flex-col overflow-hidden"
+              >
+                <div className="relative h-48">
+                  <Media src={post.image} fill grade="light" />
+                </div>
+                <div className="flex flex-1 flex-col justify-between gap-5 p-6">
+                  <div>
+                    <p className="flex items-center gap-3 font-mono text-[0.6rem] uppercase tracking-[0.2em] text-n700">
+                      {post.category}
+                      <span className="h-px w-5 bg-bronze" />
+                      {post.readTime} min
+                    </p>
+                    <h3 className="display mt-4 text-[1.2rem] leading-[1.14]">{post.title}</h3>
+                    <p className="mt-3 text-[0.86rem] leading-relaxed text-n700">
+                      {post.excerpt}
+                    </p>
+                  </div>
+                  <span className="cta-chip self-start">
+                    Read Article <Icon name="arrowUpRight" />
+                  </span>
+                </div>
+              </Link>
+            </RevealItem>
+          ))}
+        </RevealGroup>
+      </section>
+
       {/* ── FINAL CTA ────────────────────────────────────────── */}
-      <div className="bg-n50 pt-16">
+      <div className="bg-band pt-16">
         <CTASection />
       </div>
     </>
