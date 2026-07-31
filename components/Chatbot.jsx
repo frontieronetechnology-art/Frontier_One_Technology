@@ -98,6 +98,16 @@ export default function Chatbot() {
         transition={{ delay: 1.2, duration: 0.7, ease: EASE }}
         className="fixed bottom-5 right-5 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-dark text-n100 shadow-[0_16px_40px_-12px_rgba(45,34,24,0.5)] transition-transform duration-500 hover:scale-105 sm:bottom-7 sm:right-7"
       >
+        {!open && (
+          <>
+            <span className="pulse-ring inset-[-6px]" aria-hidden />
+            <span
+              className="pulse-ring inset-[-6px]"
+              aria-hidden
+              style={{ animationDelay: "1.1s" }}
+            />
+          </>
+        )}
         <AnimatePresence mode="wait" initial={false}>
           <motion.span
             key={open ? "close" : "chat"}
@@ -106,7 +116,7 @@ export default function Chatbot() {
             exit={{ opacity: 0, rotate: 30 }}
             transition={{ duration: 0.25 }}
           >
-            <Icon name={open ? "close" : "chat"} />
+            <Icon name={open ? "close" : "bot"} />
           </motion.span>
         </AnimatePresence>
         {!open && (

@@ -25,6 +25,17 @@ const EASE = [0.16, 1, 0.3, 1];
  * A two-axis scrim (§09.4 Image Scrim) still guarantees the h1 clears 4.5:1
  * over any plate.
  */
+/* Only the copy block (eyebrow / h1 / lede / CTAs) moves with `align` — the
+   watermark and the scroll cue always stay dead-centre, so the page name
+   still reads as the frame's anchor regardless of which side the copy sits
+   on. Every inner page uses "left" so the whole set reads as one deliberate
+   composition instead of each page repeating the home hero's centring. */
+const ALIGN = {
+  center: { outer: "items-center", inner: "items-center text-center", btn: "items-center" },
+  left: { outer: "items-start", inner: "items-start text-left", btn: "items-start" },
+  right: { outer: "items-end", inner: "items-end text-right", btn: "items-end" },
+};
+
 export default function PageHero({
   eyebrow,
   image,
@@ -33,7 +44,9 @@ export default function PageHero({
   children,
   position,
   watermark,
+  align = "left",
 }) {
+  const a = ALIGN[align] || ALIGN.left;
   const ref = useRef(null);
   const reduce = useReducedMotion();
   const { scrollYProgress } = useScroll({
@@ -107,12 +120,14 @@ export default function PageHero({
         </motion.div>
       )}
 
-      <div className="container-x hero-inner relative z-10 flex flex-col items-center pt-[calc(var(--nav-h)+1rem)]">
+      <div
+        className={`container-x hero-inner relative z-10 flex flex-col pt-[calc(var(--nav-h)+1rem)] ${a.outer}`}
+      >
         <div className="flex-[1.3]" />
 
         <motion.div
           style={reduce ? undefined : { y, opacity: fade }}
-          className="flex w-full max-w-4xl flex-col items-center text-center"
+          className={`flex w-full max-w-4xl flex-col ${a.inner}`}
         >
           <motion.p
             initial={{ opacity: 0 }}
@@ -155,7 +170,7 @@ export default function PageHero({
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.9, delay: 1.0, ease: EASE }}
-              className="mt-9 flex flex-col items-center gap-4 sm:flex-row"
+              className={`mt-9 flex flex-col gap-4 sm:flex-row sm:items-center ${a.btn}`}
             >
               {children}
             </motion.div>

@@ -254,6 +254,20 @@ export const ICONS = {
       <path d="M8.5 11h.01M12 11h.01M15.5 11h.01" />
     </svg>
   ),
+  bot: (
+    <svg {...base}>
+      <g {...guide}>
+        <path d="M5.5 6h1.8M5.5 12h1.8M5.5 18h1.8" strokeDasharray="1 2" />
+        <path d="M16.7 6h1.8M16.7 12h1.8M16.7 18h1.8" strokeDasharray="1 2" />
+      </g>
+      <path d="M12 3.5 6.5 7.2v9.6L12 20.5l5.5-3.7V7.2Z" />
+      <path d="M12 3.5V2.6" />
+      <path d="M12 1.2Q12.3 2.1 13.2 2.4Q12.3 2.7 12 3.6Q11.7 2.7 10.8 2.4Q11.7 2.1 12 1.2Z" />
+      <circle cx="9.7" cy="12" r="1.1" fill="currentColor" stroke="none" />
+      <circle cx="14.3" cy="12" r="1.1" fill="currentColor" stroke="none" />
+      <path d="M10 15.6h4" />
+    </svg>
+  ),
   close: (
     <svg {...base} width={16} height={16}>
       <path d="m5 5 14 14M19 5 5 19" />

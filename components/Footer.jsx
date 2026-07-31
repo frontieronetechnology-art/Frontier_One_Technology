@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Logo from "./Logo";
 import Icon from "./Icons";
-import { NAV_LINKS, SERVICES } from "@/lib/data";
+import { FOOTER_LINKS, SERVICES } from "@/lib/data";
 import { sortedPosts } from "@/lib/blog";
 
 const SOCIALS = [
@@ -46,9 +46,9 @@ export default function Footer() {
             <div>
               <p className="font-mono text-[0.65rem] uppercase tracking-[0.24em] text-n500">Company</p>
               <ul className="mt-5 space-y-3">
-                {NAV_LINKS.map((l) => (
+                {FOOTER_LINKS.map((l) => (
                   <li key={l.href}>
-                    <Link href={l.href} className="text-sm text-n300 transition-colors duration-300 hover:text-white">
+                    <Link href={l.href} className="link-underline text-sm text-n300 transition-colors duration-300 hover:text-white">
                       {l.label}
                     </Link>
                   </li>
@@ -60,7 +60,7 @@ export default function Footer() {
               <ul className="mt-5 space-y-3">
                 {SERVICES.map((s) => (
                   <li key={s.slug}>
-                    <Link href={`/services/${s.slug}`} className="text-sm text-n300 transition-colors duration-300 hover:text-white">
+                    <Link href={`/services/${s.slug}`} className="link-underline text-sm text-n300 transition-colors duration-300 hover:text-white">
                       {s.title}
                     </Link>
                   </li>
@@ -74,7 +74,7 @@ export default function Footer() {
                   <li key={p.slug}>
                     <Link
                       href={`/blog/${p.slug}`}
-                      className="block text-sm leading-snug text-n300 transition-colors duration-300 hover:text-white"
+                      className="link-underline block text-sm leading-snug text-n300 transition-colors duration-300 hover:text-white"
                     >
                       {p.title}
                     </Link>
@@ -83,7 +83,7 @@ export default function Footer() {
                 <li>
                   <Link
                     href="/blog"
-                    className="inline-flex items-center gap-2 text-sm text-bronze-light transition-colors duration-300 hover:text-white"
+                    className="link-underline inline-flex items-center gap-2 text-sm text-bronze-light transition-colors duration-300 hover:text-white"
                   >
                     All articles <Icon name="arrowUpRight" />
                   </Link>
@@ -99,7 +99,7 @@ export default function Footer() {
                       href={s.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="group inline-flex items-center gap-2 text-sm text-n300 transition-colors duration-300 hover:text-white"
+                      className="link-underline group inline-flex items-center gap-2 text-sm text-n300 transition-colors duration-300 hover:text-white"
                     >
                       {s.label}
                       <span className="opacity-0 transition-opacity duration-300 group-hover:opacity-100">

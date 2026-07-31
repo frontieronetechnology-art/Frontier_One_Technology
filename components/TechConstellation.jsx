@@ -1,130 +1,106 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
-import {
-  motion,
-  useMotionValue,
-  useMotionValueEvent,
-  useSpring,
-  useReducedMotion,
-} from "framer-motion";
+import { useState } from "react";
+import { useReducedMotion } from "framer-motion";
 import { TECHNOLOGIES, TECH_CATEGORIES } from "@/lib/data";
-
-const REPEL_RADIUS = 165; // px — how close the cursor gets before tiles move
-const REPEL_FORCE = 28; // px — maximum displacement at point-blank range
 
 const searchUrl = (name) =>
   `https://www.google.com/search?q=${encodeURIComponent(`${name} technology`)}`;
 
-/* ── one brand tile ──────────────────────────────────────────────────── */
-function Tile({ tech, i, px, py, dimmed, reduce }) {
-  const ref = useRef(null);
-  const centre = useRef({ x: 0, y: 0 });
+/* ── one brand tile — a pill, not a boxed grid cell ──────────────────── */
+function Tile({ tech }) {
+  return (
+    <a
+      href={searchUrl(tech.name)}
+      target="_blank"
+      rel="noopener noreferrer"
+      data-cursor="Search"
+      title={`Search ${tech.name}`}
+      className="group flex shrink-0 items-center gap-3 rounded-2xl border border-n300 bg-white/85 px-5 py-3.5 shadow-[0_1px_0_rgba(255,255,255,0.6)_inset] backdrop-blur-sm transition-all duration-500 hover:-translate-y-1 hover:border-bronze hover:bg-white hover:shadow-[0_22px_44px_-22px_rgba(45,34,24,0.4)]"
+    >
+      {tech.slug ? (
+        <img
+          src={`/tech/${tech.slug}.svg`}
+          alt={tech.name}
+          loading="lazy"
+          className={`${
+            tech.wide ? "h-6 w-16" : "h-7 w-7"
+          } shrink-0 object-contain grayscale-[0.35] transition-all duration-500 group-hover:scale-110 group-hover:grayscale-0`}
+        />
+      ) : (
+        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-n200 font-mono text-[0.6rem] font-semibold tracking-wider text-n700 transition-colors duration-500 group-hover:bg-dark group-hover:text-n100">
+          {tech.mono}
+        </span>
+      )}
+      <span className="whitespace-nowrap text-[0.85rem] font-medium text-n700 transition-colors duration-500 group-hover:text-ink">
+        {tech.name}
+      </span>
+    </a>
+  );
+}
 
-  const ox = useMotionValue(0);
-  const oy = useMotionValue(0);
-  const x = useSpring(ox, { stiffness: 170, damping: 16, mass: 0.5 });
-  const y = useSpring(oy, { stiffness: 170, damping: 16, mass: 0.5 });
-
-  /* Centre is measured against the container (offsetParent), so it stays
-     valid while the page scrolls — no per-frame getBoundingClientRect. */
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const measure = () => {
-      centre.current = {
-        x: el.offsetLeft + el.offsetWidth / 2,
-        y: el.offsetTop + el.offsetHeight / 2,
-      };
-    };
-    measure();
-    const ro = new ResizeObserver(measure);
-    if (el.offsetParent) ro.observe(el.offsetParent);
-    return () => ro.disconnect();
-  }, []);
-
-  const repel = useCallback(() => {
-    if (reduce) return;
-    const dx = centre.current.x - px.get();
-    const dy = centre.current.y - py.get();
-    const dist = Math.hypot(dx, dy);
-    if (dist > 0 && dist < REPEL_RADIUS) {
-      const force = (1 - dist / REPEL_RADIUS) * REPEL_FORCE;
-      ox.set((dx / dist) * force);
-      oy.set((dy / dist) * force);
-    } else {
-      ox.set(0);
-      oy.set(0);
-    }
-  }, [ox, oy, px, py, reduce]);
-
-  useMotionValueEvent(px, "change", repel);
-  useMotionValueEvent(py, "change", repel);
+/* ── one category rail — an infinite marquee, direction alternating
+      row to row so the plate has real rhythm instead of a static grid ── */
+function Row({ category, items, index, dimmed }) {
+  const reverse = index % 2 === 1;
+  // Short categories (as few as 3 logos) would otherwise leave a visible gap
+  // once the -50% loop point comes around, since the doubled track wouldn't
+  // be wide enough to cover the row at every point in the cycle. Padding the
+  // base set up to a minimum count — before it gets doubled for the seamless
+  // loop — keeps every row dense at every frame, never showing empty rail.
+  const MIN_TILES = 9;
+  const padded =
+    items.length >= MIN_TILES
+      ? items
+      : Array.from({ length: MIN_TILES }, (_, k) => items[k % items.length]);
+  const duration = Math.max(20, padded.length * 4.5);
+  const looped = [...padded, ...padded];
 
   return (
-    <motion.div ref={ref} style={{ x, y }} className="relative">
-      {/* idle drift lives on its own layer so it never fights the repel */}
+    <div className="flex items-center gap-5">
+      <span className="hidden w-32 shrink-0 items-center gap-2 font-mono text-[0.64rem] uppercase tracking-[0.2em] text-n500 sm:flex">
+        <span className="h-px w-4 bg-bronze/60" aria-hidden />
+        {category}
+      </span>
+      {/* no hover-pause here on purpose — this rail runs continuously */}
       <div
-        className={reduce ? "" : "tech-float"}
-        style={{ animationDelay: `${(i % 7) * -0.9}s`, animationDuration: `${6 + (i % 5)}s` }}
+        className="relative min-w-0 flex-1 overflow-hidden"
+        style={{
+          maskImage: "linear-gradient(90deg, transparent, black 6%, black 94%, transparent)",
+          WebkitMaskImage:
+            "linear-gradient(90deg, transparent, black 6%, black 94%, transparent)",
+        }}
       >
-        <a
-          href={searchUrl(tech.name)}
-          target="_blank"
-          rel="noopener noreferrer"
-          data-cursor="Search"
-          title={`Search ${tech.name}`}
-          className={`group flex aspect-square flex-col items-center justify-center gap-2 rounded-xl border border-n300 bg-white p-3 transition-all duration-500 hover:-translate-y-1.5 hover:border-ink hover:shadow-[0_20px_40px_-20px_rgba(45,34,24,0.35)] ${
-            dimmed ? "opacity-25 grayscale" : "opacity-100"
-          }`}
+        <div
+          className={`marquee-track items-center gap-4 pr-4 transition-opacity duration-500 ${
+            reverse ? "marquee-track-reverse" : ""
+          } ${dimmed ? "opacity-25" : "opacity-100"}`}
+          style={{ "--marquee-duration": `${duration}s` }}
         >
-          {tech.slug ? (
-            <img
-              src={`/tech/${tech.slug}.svg`}
-              alt={tech.name}
-              loading="lazy"
-              className={`${
-                tech.wide ? "h-6 w-[70%]" : "h-8 w-8 sm:h-9 sm:w-9"
-              } object-contain grayscale-[0.4] transition-all duration-500 group-hover:scale-110 group-hover:grayscale-0`}
-            />
-          ) : (
-            <span className="flex h-8 w-8 items-center justify-center rounded-md bg-n200 font-mono text-[0.62rem] font-semibold tracking-wider text-n700 transition-colors duration-500 group-hover:bg-dark group-hover:text-n100 sm:h-9 sm:w-9">
-              {tech.mono}
-            </span>
-          )}
-          <span className="text-center text-[0.6rem] font-medium leading-tight text-n600 transition-colors duration-500 group-hover:text-ink sm:text-[0.68rem]">
-            {tech.name}
-          </span>
-        </a>
+          {looped.map((tech, i) => (
+            <Tile key={`${tech.name}-${i}`} tech={tech} />
+          ))}
+        </div>
       </div>
-    </motion.div>
+    </div>
   );
 }
 
 /**
- * Technology field — real brand marks that drift on their own, scatter away
- * from the cursor, and open a search for that technology when clicked.
- * Category chips filter the field down without moving anything.
+ * Technology stack — a bordered instrument plate holding one infinite
+ * marquee rail per category (direction alternates row to row), instead of
+ * a flat grid of identical boxes. Category chips isolate a row rather than
+ * dimming scattered tiles; every tile still opens a search for that
+ * technology on click.
  */
 export default function TechConstellation() {
-  const wrapRef = useRef(null);
   const reduce = useReducedMotion();
   const [filter, setFilter] = useState(null);
 
-  const px = useMotionValue(-9999);
-  const py = useMotionValue(-9999);
-
-  const onMove = (e) => {
-    const el = wrapRef.current;
-    if (!el) return;
-    const r = el.getBoundingClientRect();
-    px.set(e.clientX - r.left);
-    py.set(e.clientY - r.top);
-  };
-  const onLeave = () => {
-    px.set(-9999);
-    py.set(-9999);
-  };
+  const grouped = TECH_CATEGORIES.map((category) => ({
+    category,
+    items: TECHNOLOGIES.filter((t) => t.category === category),
+  }));
 
   return (
     <div>
@@ -160,23 +136,44 @@ export default function TechConstellation() {
         </span>
       </div>
 
-      <div
-        ref={wrapRef}
-        onMouseMove={onMove}
-        onMouseLeave={onLeave}
-        className="relative mt-6 grid grid-cols-3 gap-3 sm:grid-cols-5 sm:gap-4 lg:grid-cols-7"
-      >
-        {TECHNOLOGIES.map((tech, i) => (
-          <Tile
-            key={tech.name}
-            tech={tech}
-            i={i}
-            px={px}
-            py={py}
-            reduce={reduce}
-            dimmed={filter !== null && tech.category !== filter}
-          />
-        ))}
+      {/* the plate */}
+      <div className="relative mt-8 overflow-hidden rounded-2xl border border-n300 bg-n100/70 py-9 sm:py-10">
+        <div className="grid-paper absolute inset-0 opacity-40" aria-hidden />
+        <div className="mesh-glow" aria-hidden />
+
+        {reduce ? (
+          <div className="relative space-y-7 px-6 sm:px-9">
+            {grouped.map(({ category, items }) => (
+              <div key={category}>
+                <p className="mb-3 flex items-center gap-2 font-mono text-[0.64rem] uppercase tracking-[0.2em] text-n500">
+                  <span className="h-px w-4 bg-bronze/60" aria-hidden />
+                  {category}
+                </p>
+                <div
+                  className={`flex flex-wrap gap-3 transition-opacity duration-500 ${
+                    filter !== null && filter !== category ? "opacity-25" : "opacity-100"
+                  }`}
+                >
+                  {items.map((tech) => (
+                    <Tile key={tech.name} tech={tech} />
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="relative space-y-6">
+            {grouped.map((g, i) => (
+              <Row
+                key={g.category}
+                category={g.category}
+                items={g.items}
+                index={i}
+                dimmed={filter !== null && filter !== g.category}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

@@ -51,7 +51,7 @@ export default function Navbar() {
   const isActive = (href) =>
     href === "/" ? pathname === "/" : pathname.startsWith(href);
 
-  const links = NAV_LINKS.filter((l) => l.href !== "/" && l.href !== "/contact");
+  const links = NAV_LINKS.filter((l) => l.href !== "/");
 
   /* Each group carries capsule glass only once detached. At rest it is
      transparent and reads as part of the single full-bleed banner. */
@@ -103,18 +103,21 @@ export default function Navbar() {
                     key={link.href}
                     href={link.href}
                     aria-current={on ? "page" : undefined}
-                    className={`relative rounded-full px-4 py-2 text-[0.875rem] font-medium tracking-tight transition-colors duration-300 ${
+                    className={`group relative rounded-full px-4 py-2 text-[0.875rem] font-medium tracking-tight transition-colors duration-300 ${
                       on ? "text-ink" : "text-n700 hover:text-ink"
                     }`}
                   >
+                    {link.label}
+                    {!on && (
+                      <span className="pointer-events-none absolute inset-x-4 bottom-1 h-[2px] origin-center scale-x-0 rounded-full bg-bronze transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-x-100" />
+                    )}
                     {on && (
                       <motion.span
-                        layoutId="nav-pill"
-                        className="absolute inset-0 rounded-full bg-bronze-tint ring-1 ring-bronze/40"
+                        layoutId="nav-underline"
+                        className="pointer-events-none absolute inset-x-4 bottom-1 h-[2px] rounded-full bg-bronze"
                         transition={{ duration: 0.5, ease: EASE }}
                       />
                     )}
-                    <span className="relative">{link.label}</span>
                   </Link>
                 );
               })}

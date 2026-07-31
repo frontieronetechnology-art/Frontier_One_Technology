@@ -147,20 +147,32 @@ export default function Hero() {
         />
       </motion.div>
 
-      {/* ── COPY — centred, held to the lower half ──────────────── */}
+      {/* ── COPY — centred, rebalanced toward true optical centre ── */}
       <div className="container-x hero-inner relative z-10 flex flex-col items-center pt-[calc(var(--nav-h)+1rem)]">
-        {/* deliberate emptiness above the copy */}
-        <div className="flex-[1.35]" />
+        {/* trimmed from flex-[1.35]: the block now sits nearer centre
+            instead of pinned to the floor of the frame */}
+        <div className="flex-1" />
 
         <motion.div
           style={reduce ? undefined : { y: contentY, opacity: fade }}
           className="flex w-full max-w-4xl flex-col items-center text-center"
         >
+          {/* kicker tick — a single drawn line to anchor the composition
+              before the eyebrow reads; keeps an all-centred frame from
+              feeling like a default template hero */}
+          <motion.span
+            initial={{ scaleX: 0, opacity: 0 }}
+            animate={{ scaleX: 1, opacity: 1 }}
+            transition={{ duration: 0.7, delay: 0.05, ease: EASE }}
+            className="h-px w-9 origin-center bg-bronze-light/70"
+            aria-hidden
+          />
+
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="eyebrow eyebrow-invert"
+            className="eyebrow eyebrow-invert mt-5"
           >
             <Scramble text="TECHNOLOGY CONSULTING & IT SERVICES" delay={0.4} />
           </motion.p>
@@ -172,14 +184,14 @@ export default function Hero() {
               { text: "Building Technology That Moves Businesses " },
               { text: "Forward", serif: true },
             ]}
-            className="display mt-7 text-balance text-[clamp(2.3rem,3.1vw+1.1rem,5rem)] leading-[0.98] tracking-[-0.04em] text-n100 sm:mt-8"
+            className="display mt-6 text-balance text-[clamp(2.3rem,3.1vw+1.1rem,5rem)] leading-[0.98] tracking-[-0.04em] text-n100 sm:mt-7"
           />
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, delay: 0.9, ease: EASE }}
-            className="mt-7 flex flex-col items-center gap-8 sm:mt-8"
+            className="mt-6 flex flex-col items-center gap-7 sm:mt-7"
           >
             <p className="max-w-xl text-pretty text-[0.95rem] leading-relaxed text-n400 sm:text-base">
               Whether you&rsquo;re modernizing your infrastructure, strengthening security, or
@@ -187,7 +199,10 @@ export default function Hero() {
               technology solutions designed for long-term business growth.
             </p>
 
-            <div className="flex flex-col items-center gap-4 sm:flex-row">
+            {/* primary/secondary now carry different weight — one filled
+                action plus one quiet inline link, instead of two equal
+                pills sitting side by side */}
+            <div className="flex flex-col items-center gap-5 sm:flex-row sm:gap-8">
               <Magnetic>
                 <Link href="/services/cloud-solutions" className="btn btn-bronze !rounded-full">
                   <span className="flex items-center gap-2.5">
@@ -196,8 +211,12 @@ export default function Hero() {
                 </Link>
               </Magnetic>
               <Magnetic strength={0.2}>
-                <Link href="/contact" className="btn btn-outline-paper !rounded-full">
-                  Schedule a Consultation
+                <Link
+                  href="/contact"
+                  data-cursor="Contact"
+                  className="link-arrow link-arrow-invert"
+                >
+                  Schedule a Consultation <Icon name="arrow" />
                 </Link>
               </Magnetic>
             </div>
@@ -230,17 +249,18 @@ export default function Hero() {
           </ul>
 
           <div className="hidden shrink-0 items-center gap-3 sm:flex" aria-hidden>
-            <span className="h-5 w-px bg-n600" />
             <span className="font-mono text-[0.58rem] uppercase tracking-[0.3em] text-n500">
               Scroll
             </span>
-            <motion.span
-              className="text-sm leading-none text-n500"
-              animate={reduce ? {} : { y: [0, 5, 0] }}
-              transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
-            >
-              ↓
-            </motion.span>
+            {/* a drawn capsule with a travelling dot reads as an instrument
+                rather than a bouncing glyph */}
+            <span className="relative h-8 w-4 rounded-full border border-n600">
+              <motion.span
+                className="absolute left-1/2 top-1.5 h-1.5 w-1.5 -translate-x-1/2 rounded-full bg-bronze-light"
+                animate={reduce ? {} : { y: [0, 12, 0], opacity: [1, 0.35, 1] }}
+                transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+              />
+            </span>
           </div>
         </motion.div>
       </div>

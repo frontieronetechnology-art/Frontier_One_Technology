@@ -7,7 +7,7 @@ import { motion, useMotionValue, useSpring } from "framer-motion";
  * Mix-blend-mode: difference cursor.
  * A white circle that inverts whatever color sits beneath it —
  * works on every background automatically, no theming needed.
- * Slight spring lag gives it depth without feeling slow.
+ * Tracks the pointer ~1:1 so it never feels laggy.
  */
 export default function Cursor() {
   const [enabled, setEnabled] = useState(false);
@@ -16,8 +16,8 @@ export default function Cursor() {
 
   const x = useMotionValue(-100);
   const y = useMotionValue(-100);
-  const springX = useSpring(x, { stiffness: 280, damping: 26, mass: 0.5 });
-  const springY = useSpring(y, { stiffness: 280, damping: 26, mass: 0.5 });
+  const springX = useSpring(x, { stiffness: 1500, damping: 120, mass: 0.4 });
+  const springY = useSpring(y, { stiffness: 1500, damping: 120, mass: 0.4 });
 
   useEffect(() => {
     const fine   = window.matchMedia("(pointer: fine)").matches;

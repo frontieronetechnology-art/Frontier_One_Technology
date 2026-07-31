@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion, useScroll, useSpring, useInView } from "framer-motion";
+import { motion, useScroll, useSpring, useTransform, useInView } from "framer-motion";
 import { PROCESS_STEPS } from "@/lib/data";
 
 const EASE = [0.16, 1, 0.3, 1];
@@ -13,11 +13,22 @@ const STEP_ANGLE = 360 / TOTAL;
       to whichever step is currently in the reading position. ─────────── */
 function Dial({ active, progress }) {
   const arc = useSpring(progress, { stiffness: 90, damping: 24 });
-  const needle = useSpring(active * STEP_ANGLE, { stiffness: 70, damping: 18 });
-
-  useEffect(() => {
-    needle.set(active * STEP_ANGLE);
-  }, [active, needle]);
+  // The needle tracks the same continuous scroll progress as the bronze
+  // arc — always pointing exactly at the arc's leading edge — instead of
+  // jumping between 8 fixed angles. That continuous sweep is what makes it
+  // read as a real instrument dial rather than a stepper with a hand on it.
+  const needleDeg = useSpring(useTransform(progress, [0, 1], [0, 360]), {
+    stiffness: 90,
+    damping: 26,
+  });
+  // The tip is computed directly in SVG user-space rather than rotated via
+  // CSS transform-origin on a <g> — that property is ambiguous for SVG
+  // (viewBox units vs. rendered pixels differ by browser) and was the
+  // actual cause of the needle pivoting off-centre. x1/y1 stay hard-coded
+  // at (100,100), so the pivot is guaranteed to be the dial's true centre.
+  const needleRad = useTransform(needleDeg, (d) => ((d - 90) * Math.PI) / 180);
+  const needleX = useTransform(needleRad, (r) => 100 + 74 * Math.cos(r));
+  const needleY = useTransform(needleRad, (r) => 100 + 74 * Math.sin(r));
 
   return (
     <div className="relative aspect-square w-full max-w-[26rem]">
@@ -57,22 +68,27 @@ function Dial({ active, progress }) {
           style={{ pathLength: arc }}
         />
 
-        {/* needle */}
-        <motion.g style={{ rotate: needle, transformOrigin: "100px 100px" }}>
-          <line x1="100" y1="100" x2="100" y2="26" stroke="var(--color-ink)" strokeWidth="1" />
-          <circle cx="100" cy="26" r="4" fill="var(--color-bronze)" />
-        </motion.g>
+        {/* needle — x1/y1 pinned to the exact centre, only the tip moves */}
+        <motion.line x1="100" y1="100" x2={needleX} y2={needleY} stroke="var(--color-ink)" strokeWidth="1" />
+        <motion.circle cx={needleX} cy={needleY} r="4" fill="var(--color-bronze)" />
+
+        {/* hub — a proper instrument boss the needle visibly pivots on,
+            not just a 3px dot. The readout below is pushed well clear of
+            centre so this never gets buried under the big numeral. */}
+        <circle cx="100" cy="100" r="9.5" fill="var(--color-n100)" stroke="var(--color-bronze)" strokeWidth="1.5" />
         <circle cx="100" cy="100" r="3" fill="var(--color-ink)" />
       </svg>
 
-      {/* readout at the hub */}
-      <div className="absolute inset-0 flex flex-col items-center justify-center pt-10 text-center">
+      {/* readout — held well below the hub so the needle's pivot always
+          reads as the dial's true centre instead of vanishing behind the
+          numeral */}
+      <div className="absolute inset-0 flex flex-col items-center justify-center pt-24 text-center">
         <motion.p
           key={active}
           initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: EASE }}
-          className="display text-[5.5rem] leading-none text-ink"
+          className="display text-[3.75rem] leading-none text-ink"
         >
           {PROCESS_STEPS[active].n}
         </motion.p>

@@ -6,42 +6,6 @@ import Media from "./Media";
 
 const NAV_H = 84; // px — matches the floating navbar capsule height
 
-/* ── figure motif — plots the eight-step framework as a ring and lights
-      up every node completed by the current step ─────────────────────── */
-function StepDial({ i, total }) {
-  const nodes = Array.from({ length: total }, (_, k) => {
-    const a = ((-90 + k * (360 / total)) * Math.PI) / 180;
-    return { x: 100 + 64 * Math.cos(a), y: 100 + 64 * Math.sin(a) };
-  });
-  const done = nodes.slice(0, i + 1);
-  const path = done.map((n, k) => `${k ? "L" : "M"}${n.x.toFixed(1)} ${n.y.toFixed(1)}`).join(" ");
-
-  return (
-    <svg viewBox="0 0 200 200" fill="none" className="h-full w-full">
-      <circle cx="100" cy="100" r="64" stroke="rgba(61,47,36,0.18)" strokeDasharray="2 6" />
-      <circle cx="100" cy="100" r="84" stroke="rgba(61,47,36,0.1)" />
-      {done.length > 1 && (
-        <path d={path} stroke="#8C6239" strokeWidth="1.25" strokeLinejoin="round" />
-      )}
-      {nodes.map((n, k) => (
-        <g key={k}>
-          {k === i && (
-            <circle cx={n.x} cy={n.y} r="9.5" stroke="rgba(140,98,57,0.45)" strokeWidth="1" />
-          )}
-          <circle
-            cx={n.x}
-            cy={n.y}
-            r={k === i ? 4.5 : 2.75}
-            fill={k <= i ? "#8C6239" : "#FBF9F6"}
-            stroke={k <= i ? "#8C6239" : "rgba(61,47,36,0.35)"}
-            strokeWidth="1"
-          />
-        </g>
-      ))}
-    </svg>
-  );
-}
-
 /* ── one card in the stack ───────────────────────────────────────────── */
 function Card({ item, i, total, progress }) {
   const last = i === total - 1;
@@ -60,12 +24,19 @@ function Card({ item, i, total, progress }) {
         style={{ scale, y: i * 13 }}
         className="relative h-[calc(100%-1.5rem)] w-full origin-top overflow-hidden rounded-xl border border-n300 bg-white shadow-[0_32px_64px_-40px_rgba(45,34,24,0.35)]"
       >
-        {/* photographic ground + ivory veil.
-            The veil used to run 0.965 → 0.68 alpha, which buried the
-            photograph almost completely. It now starts far lighter and clears
-            fast toward the figure side, so the image actually reads. Text
-            contrast is preserved by keeping the veil densest under the copy
-            column (left ~45%) and by the local scrim on the heading block. */}
+        {/* photographic ground.
+            The veil has to match the layout it sits under, which the old
+            single diagonal gradient didn't: below `sm` the description row
+            spans the card's FULL width (stacked above the figure strip), so
+            a horizontal fade left the right half of every wrapped line
+            sitting almost bare over the photo. Above `sm` the description
+            column is 61.7% of the width (1fr of 1.62fr), and the old fade
+            started clearing at 46% — inside that column — so the last third
+            of the text sat on a nearly-transparent veil too. Both are fixed
+            below: the mobile veil runs top → bottom (matching the stacked
+            rows), the desktop veil now stays dense through the full 62%
+            text column before clearing over the figure side. A multiply
+            pass underneath still deepens the overall grade. */}
         <Media
           src={`home/approach-${item.n}.webp`}
           fill
@@ -73,10 +44,38 @@ function Card({ item, i, total, progress }) {
           position="center 45%"
         />
         <div
-          className="absolute inset-0"
+          className="absolute inset-0 mix-blend-multiply"
           style={{
             background:
-              "linear-gradient(105deg, rgba(251,249,246,0.90) 0%, rgba(251,249,246,0.74) 38%, rgba(245,241,235,0.42) 68%, rgba(236,228,217,0.20) 100%)",
+              "linear-gradient(160deg, rgba(45,34,24,0.22) 0%, rgba(45,34,24,0.05) 55%, rgba(45,34,24,0.18) 100%)",
+          }}
+          aria-hidden
+        />
+        {/* One evenly-calibrated veil is what actually carries legibility
+            here — per-element text-shadow halos were tried and made the
+            heading look like it had a glowing outline (bold, not smooth)
+            while leaving the small mono labels (Step NN, NN/08, the phase
+            %) under-protected, since a halo strong enough for thin small
+            type reads as an artefact on large bold type. A single gradient,
+            calibrated once, is smooth and treats every piece of copy in
+            the column the same way — dense enough to hold contrast for the
+            smallest label, not so dense the photo disappears. */}
+        <div
+          className="absolute inset-0 sm:hidden"
+          style={{
+            background:
+              "linear-gradient(180deg, rgba(251,249,246,0.85) 0%, rgba(251,249,246,0.7) 35%, rgba(245,241,235,0.4) 55%, rgba(236,228,217,0.12) 75%, rgba(236,228,217,0.04) 90%)",
+          }}
+          aria-hidden
+        />
+        {/* pulled further left on purpose — the wash should hold the near
+            edge and be visibly clearing before the card's midpoint, not
+            reach into the middle */}
+        <div
+          className="absolute inset-0 hidden sm:block"
+          style={{
+            background:
+              "linear-gradient(90deg, rgba(251,249,246,0.85) 0%, rgba(251,249,246,0.78) 25%, rgba(251,249,246,0.5) 40%, rgba(245,241,235,0.25) 52%, rgba(236,228,217,0.1) 64%, rgba(236,228,217,0) 76%)",
           }}
           aria-hidden
         />
@@ -90,13 +89,19 @@ function Card({ item, i, total, progress }) {
                 Step {item.n}
               </span>
               <span className="h-px flex-1 bg-n350" />
-              <span className="font-mono text-[0.62rem] uppercase tracking-[0.22em] text-n700">
+              {/* this badge sits at the column's far edge, past where the
+                  (now much lighter, left-weighted) veil still has any
+                  strength — a tiny chip of its own keeps it legible without
+                  widening the veil back out toward the middle */}
+              <span className="shrink-0 rounded-full bg-n100/75 px-2 py-0.5 font-mono text-[0.62rem] uppercase tracking-[0.22em] text-n700">
                 {item.n} / {String(total).padStart(2, "0")}
               </span>
             </div>
 
             <div className="min-h-0">
-              <h3 className="display text-[1.6rem] leading-[1.02] sm:text-[2.6rem]">{item.title}</h3>
+              <h3 className="display text-ink text-[1.6rem] leading-[1.02] sm:text-[2.6rem]">
+                {item.title}
+              </h3>
               <p className="mt-4 line-clamp-5 max-w-lg text-[0.85rem] leading-relaxed text-n700 sm:mt-5 sm:line-clamp-none sm:text-[0.92rem]">
                 {item.body}
               </p>
@@ -110,18 +115,23 @@ function Card({ item, i, total, progress }) {
                   style={{ width: `${((i + 1) / total) * 100}%` }}
                 />
               </span>
-              <span className="font-mono text-[0.62rem] uppercase tracking-[0.2em] text-n700">
+              <span className="shrink-0 rounded-full bg-n100/75 px-2 py-0.5 font-mono text-[0.62rem] uppercase tracking-[0.2em] text-n700">
                 {Math.round(((i + 1) / total) * 100)}%
               </span>
             </div>
           </div>
 
-          {/* ── figure — dial reads over the exposed edge of the photograph ── */}
+          {/* ── figure — just the photograph, with the numeral carrying
+              its own drop-shadow so it holds contrast without a
+              pasted-on backing plate ── */}
           <figure className="relative m-0 flex items-center justify-center">
-            <div className="h-[15rem] w-[15rem] sm:h-[20rem] sm:w-[20rem]">
-              <StepDial i={i} total={total} />
-            </div>
-            <span className="ghost-num absolute bottom-4 right-6 select-none text-[5.5rem] leading-none sm:text-[7rem]">
+            <span
+              className="ghost-num absolute bottom-4 right-6 select-none text-[5.5rem] leading-none sm:text-[7rem]"
+              style={{
+                filter:
+                  "drop-shadow(0 1px 1px rgba(255,255,255,0.5)) drop-shadow(0 6px 18px rgba(45,34,24,0.4))",
+              }}
+            >
               {item.n}
             </span>
           </figure>

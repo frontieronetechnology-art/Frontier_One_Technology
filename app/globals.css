@@ -181,11 +181,16 @@ body {
     rgba(251, 249, 246, 0.78) 0%,
     rgba(245, 241, 235, 0.68) 100%
   );
-  -webkit-backdrop-filter: blur(22px) saturate(160%);
-  backdrop-filter: blur(22px) saturate(160%);
+  -webkit-backdrop-filter: blur(16px) saturate(150%);
+  backdrop-filter: blur(16px) saturate(150%);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.65),
     inset 0 -1px 0 rgba(106, 74, 48, 0.06);
+  /* the fixed pane sits over the entire scrolling page, so its own
+     compositor layer keeps the blur from being resampled against every
+     scroll-driven repaint underneath it */
+  transform: translateZ(0);
+  will-change: backdrop-filter;
 }
 
 /* the detached, scrolled state sits on its own so it needs a touch more
@@ -196,12 +201,14 @@ body {
     rgba(251, 249, 246, 0.86) 0%,
     rgba(245, 241, 235, 0.76) 100%
   );
-  -webkit-backdrop-filter: blur(26px) saturate(170%);
-  backdrop-filter: blur(26px) saturate(170%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  backdrop-filter: blur(18px) saturate(160%);
   border: 1px solid rgba(224, 214, 200, 0.75);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.7),
     0 10px 26px -12px rgba(106, 74, 48, 0.28);
+  transform: translateZ(0);
+  will-change: backdrop-filter;
 }
 
 /* graceful degradation — no backdrop-filter means we must be opaque or the
@@ -383,6 +390,15 @@ body {
 .link-arrow:hover { color: var(--color-bronze-rich); }
 .link-arrow:hover::after { background: var(--color-bronze); }
 
+/* text-link CTA for dark surfaces — the quiet counterpart to .btn-bronze,
+   used where two full pill buttons of equal weight would flatten hierarchy */
+.link-arrow-invert {
+  color: var(--color-n100);
+}
+.link-arrow-invert::after { background: rgba(231, 211, 181, 0.35); }
+.link-arrow-invert:hover { color: var(--color-bronze-light); }
+.link-arrow-invert:hover::after { background: var(--color-bronze-light); }
+
 /* Discoverable card CTA — reads unmistakably as a control, not body text.
    Used on the industry / service cards where the link was too quiet. */
 .cta-chip {
@@ -529,6 +545,7 @@ body {
   animation: marquee-x var(--marquee-duration, 38s) linear infinite;
 }
 .marquee:hover .marquee-track { animation-play-state: paused; }
+.marquee-track-reverse { animation-direction: reverse; }
 
 /* ── Motion motifs ────────────────────────────────────────────── */
 
@@ -548,25 +565,47 @@ body {
 .animate-spin-slower { animation: spin-slow-rev 90s linear infinite; transform-origin: center; }
 .animate-drift { animation: drift-y 7s ease-in-out infinite; }
 
-/* idle drift for the technology field — each tile offset by its own delay */
-@keyframes tech-float {
-  0%, 100% { transform: translate3d(0, 0, 0); }
-  33%      { transform: translate3d(2px, -6px, 0); }
-  66%      { transform: translate3d(-3px, 3px, 0); }
-}
-.tech-float {
-  animation-name: tech-float;
-  animation-timing-function: ease-in-out;
-  animation-iteration-count: infinite;
-  will-change: transform;
-}
-
 /* pulse dot (live indicator) */
 @keyframes pulse-dot {
   0%, 100% { opacity: 1; transform: scale(1); }
   50% { opacity: 0.45; transform: scale(0.8); }
 }
 .pulse-dot { animation: pulse-dot 2.2s ease-in-out infinite; }
+
+/* expanding ring (chat launcher) — mirrors the reference floating-call ring */
+@keyframes pulse-ring {
+  0% { transform: scale(1); opacity: 0.55; }
+  100% { transform: scale(1.45); opacity: 0; }
+}
+.pulse-ring {
+  position: absolute;
+  border-radius: 9999px;
+  border: 1.5px solid var(--color-bronze);
+  pointer-events: none;
+  animation: pulse-ring 2.2s ease-out infinite;
+}
+
+/* underline on hover — scale-x grows out of the left edge */
+.link-underline {
+  position: relative;
+}
+.link-underline::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -3px;
+  height: 1px;
+  border-radius: 9999px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.45s var(--ease-brand);
+}
+.link-underline:hover::after,
+.link-underline:focus-visible::after {
+  transform: scaleX(1);
+}
 
 /* slow twinkle for the process-page starfield */
 @keyframes twinkle {
@@ -948,8 +987,8 @@ button:hover .roll > span {
   .animate-spin-slower,
   .animate-drift,
   .pulse-dot,
+  .pulse-ring,
   .shimmer-text,
-  .tech-float,
   .twinkle,
   .grain::after {
     animation: none !important;
