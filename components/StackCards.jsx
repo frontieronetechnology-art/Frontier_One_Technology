@@ -1,18 +1,21 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
 import Media from "./Media";
 
 const NAV_H = 84; // px — matches the floating navbar capsule height
 
 /* ── one card in the stack ───────────────────────────────────────────── */
-function Card({ item, i, total, progress }) {
+function Card({ item, i, total, progress, fraction }) {
   const last = i === total - 1;
   const start = i / total;
 
-  // every card but the last shrinks and dims as the ones after it ride over
-  const scale = useTransform(progress, [start, 1], [1, last ? 1 : 1 - (total - 1 - i) * 0.03]);
+  // every card but the last shrinks and dims as the ones after it ride over.
+  // `fraction` is smaller on touch (0.015 vs 0.03): the GPU has to recomposite
+  // every card every scroll frame, so a gentler shrink is a cheaper one on
+  // phones while still reading as a stack.
+  const scale = useTransform(progress, [start, 1], [1, last ? 1 : 1 - (total - 1 - i) * fraction]);
   const dim = useTransform(progress, [start, 1], [0, last ? 0 : 0.45]);
 
   return (
@@ -21,7 +24,7 @@ function Card({ item, i, total, progress }) {
       style={{ top: NAV_H, height: "clamp(30rem, 70dvh, 40rem)" }}
     >
       <motion.article
-        style={{ scale, y: i * 13 }}
+        style={{ scale, y: i * 13, willChange: "transform" }}
         className="relative h-[calc(100%-1.5rem)] w-full origin-top overflow-hidden rounded-xl border border-n300 bg-white shadow-[0_32px_64px_-40px_rgba(45,34,24,0.35)]"
       >
         {/* photographic ground.
@@ -156,10 +159,18 @@ function Card({ item, i, total, progress }) {
 export default function StackCards({ items }) {
   const ref = useRef(null);
   const reduce = useReducedMotion();
+  const [fine, setFine] = useState(false);
+
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end end"],
   });
+
+  useEffect(() => {
+    setFine(window.matchMedia("(hover: hover) and (pointer: fine)").matches);
+  }, []);
+
+  const fraction = fine ? 0.03 : 0.015;
 
   if (reduce) {
     return (
@@ -180,7 +191,7 @@ export default function StackCards({ items }) {
   return (
     <div ref={ref} className="relative">
       {items.map((item, i) => (
-        <Card key={item.n} item={item} i={i} total={items.length} progress={scrollYProgress} />
+        <Card key={item.n} item={item} i={i} total={items.length} progress={scrollYProgress} fraction={fraction} />
       ))}
     </div>
   );

@@ -27,20 +27,26 @@ const inner = (delay) => ({
 });
 
 /* ── left plate — image when one exists, drafting motif when it doesn't ── */
-function Plate({ item, i, total }) {
+function Plate({ item, i, total, fine }) {
   const words = item.name.split(" ");
   const tail = words.length > 1 ? words[words.length - 1] : null;
   const lead = tail ? words.slice(0, -1).join(" ") : item.name;
 
   return (
     <>
-      {/* desaturated → full colour, exactly one beat behind the slide */}
+      {/* desaturated → full colour, exactly one beat behind the slide.
+          The filter run is expensive on touch (a full-screen repaint every
+          autoplay), so phones render the plate already in colour. */}
       <motion.div
-        initial={{ filter: "grayscale(1) brightness(0.5)" }}
-        animate={{
-          filter: "grayscale(0) brightness(1)",
-          transition: { duration: 1, ease: "linear", delay: 0.35 },
-        }}
+        initial={fine ? { filter: "grayscale(1) brightness(0.5)" } : false}
+        animate={
+          fine
+            ? {
+                filter: "grayscale(0) brightness(1)",
+                transition: { duration: 1, ease: "linear", delay: 0.35 },
+              }
+            : undefined
+        }
         className="absolute inset-0"
       >
         <div className="absolute inset-0 bg-gradient-to-br from-n800 via-dark to-n900" />
@@ -174,7 +180,7 @@ export default function IndustrySlider({ items }) {
               exit="exit"
               className="absolute inset-0"
             >
-              <Plate item={active} i={index} total={total} />
+              <Plate item={active} i={index} total={total} fine={fine} />
             </motion.div>
           </AnimatePresence>
         </div>

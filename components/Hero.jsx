@@ -166,7 +166,7 @@ export default function Hero() {
           transition={{ duration: 1.9, delay: 0.7, ease: EASE }}
           className="relative h-full w-full"
         >
-          <Media src="home/hero-city-cutout.png" fill grade="dark" position="center bottom" />
+          <Media src="home/hero-city-cutout.webp" fill grade="dark" position="center bottom" />
         </motion.div>
         <div
           className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-dark to-transparent"

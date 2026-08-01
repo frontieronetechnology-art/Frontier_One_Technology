@@ -147,7 +147,6 @@ export default function WhyPinned({ cards, href = "/about", cta = "About the com
                       animate={{
                         opacity: isActive ? 1 : 0,
                         y: isActive ? 0 : dir * 24,
-                        filter: isActive ? "blur(0px)" : "blur(6px)",
                       }}
                       transition={{ duration: 0.7, ease: EASE }}
                       className="absolute inset-0 flex flex-col justify-center"
