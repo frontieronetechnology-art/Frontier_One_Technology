@@ -242,7 +242,7 @@ export default function Hero() {
               </Magnetic>
               <Magnetic strength={0.2}>
                 <Link
-                  href="/contact"
+                  href="/contact#form"
                   data-cursor="Contact"
                   className="link-arrow link-arrow-invert hero-cta-secondary hero-focus inline-flex min-h-[2.75rem] w-full items-center justify-center sm:w-auto sm:justify-start"
                 >

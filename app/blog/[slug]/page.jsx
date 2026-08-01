@@ -165,7 +165,7 @@ export default async function BlogPost({ params }) {
                 <p className="mt-2.5 text-[0.85rem] leading-relaxed text-n700">
                   We run this analysis against real estates every week.
                 </p>
-                <Link href="/contact" className="cta-chip mt-4">
+                <Link href="/contact#form" className="cta-chip mt-4">
                   Book a consultation <Icon name="arrowUpRight" />
                 </Link>
               </div>

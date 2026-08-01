@@ -107,7 +107,7 @@ export default function ContactPage() {
           </div>
 
           {/* Form */}
-          <div className="lg:col-span-7 lg:col-start-6">
+          <div id="contact-form" className="scroll-mt-24 lg:col-span-7 lg:col-start-6">
             <Reveal delay={0.1}>
               <div className="card p-8 sm:p-10">
                 <p className="eyebrow">

@@ -1045,6 +1045,11 @@ html {
 }
 
 @media (pointer: coarse) {
+  /* CSS smooth-scroll makes back-button / anchor scrolls glide slowly on
+     phones and can fight momentum flings — phones scroll natively, and
+     native instant restore feels far snappier */
+  html { scroll-behavior: auto; }
+
   .grain::after {
     animation: none;
   }
@@ -1073,6 +1078,13 @@ html {
   a:hover .roll > span,
   button:hover .roll > span {
     transform: none;
+  }
+
+  /* full-width moving marquee tracks are the priciest part of a phone's
+     frame budget — 60% slower on touch cuts the fill rate without ever
+     reading as "stuck" */
+  .marquee-track {
+    animation-duration: calc(var(--marquee-duration, 38s) * 1.6);
   }
 }
 

@@ -120,10 +120,13 @@ export default function IndustrySlider({ items }) {
   const jump = useCallback((n) => setSlide(([cur]) => (n === cur ? [cur, 1] : [n, n > cur ? 1 : -1])), []);
 
   useEffect(() => {
-    if (reduce || !inView || paused) return;
+    // no autoplay on touch — a surprise full-screen slide while the user is
+    // scrolling the page is exactly the jank that makes phones feel broken.
+    // Touch users advance via the rail / arrows.
+    if (reduce || !fine || !inView || paused) return;
     const t = setTimeout(() => step(1), AUTOPLAY);
     return () => clearTimeout(t);
-  }, [index, inView, paused, reduce, step]);
+  }, [index, inView, paused, reduce, fine, step]);
 
   const onKey = (e) => {
     if (e.key === "ArrowDown" || e.key === "ArrowRight") {

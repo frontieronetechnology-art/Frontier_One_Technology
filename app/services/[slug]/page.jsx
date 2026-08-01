@@ -63,7 +63,7 @@ export default async function ServicePage({ params }) {
         lede={service.short}
       >
         <div className="mt-9 flex flex-col gap-4 sm:flex-row">
-          <Link href="/contact" className="btn btn-ink">
+          <Link href="/contact#form" className="btn btn-ink">
             Schedule a Consultation <Icon name="arrow" />
           </Link>
           <Link href="/process" className="btn btn-ghost">

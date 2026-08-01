@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import {
   motion,
@@ -81,7 +81,17 @@ export default function WhyPinned({ cards, href = "/about", cta = "About the com
   const wrapRef = useRef(null);
   const reduce = useReducedMotion();
   const [active, setActive] = useState(0);
+  const [fine, setFine] = useState(true);
   const total = cards.length;
+
+  /* The pinned cross-fade drives a React state update from the scroll
+     position — that re-render (plus the stacked image plates) is what
+     phones choke on mid-scroll. Touch devices get the same static grid as
+     reduced-motion instead; it reads as a normal section and scrolls
+     natively. Desktop keeps the pinned panel. */
+  useEffect(() => {
+    setFine(window.matchMedia("(hover: hover) and (pointer: fine)").matches);
+  }, []);
 
   const { scrollYProgress } = useScroll({
     target: wrapRef,
@@ -93,7 +103,7 @@ export default function WhyPinned({ cards, href = "/about", cta = "About the com
     setActive((prev) => (prev === i ? prev : i));
   });
 
-  if (reduce) {
+  if (reduce || !fine) {
     return (
       <div className="container-x grid gap-5 sm:grid-cols-2">
         {cards.map((card, i) => (

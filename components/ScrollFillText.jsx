@@ -1,18 +1,36 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 
 /**
  * Scroll-linked word fill — each word deepens from ghost gray to ink
  * as it crosses the reading zone. The scroll-storytelling staple.
+ *
+ * On touch this is a plain paragraph: the effect drives an opacity write
+ * to ~20 words every scroll frame (native scroll fires per frame on a
+ * phone), which is real main-thread work for a decorative fade.
  */
 export default function ScrollFillText({ text, className = "" }) {
   const ref = useRef(null);
+  const [fine, setFine] = useState(true);
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start 0.85", "end 0.5"],
   });
+
+  useEffect(() => {
+    setFine(window.matchMedia("(hover: hover) and (pointer: fine)").matches);
+  }, []);
+
+  if (!fine) {
+    return (
+      <p ref={ref} className={className}>
+        {text}
+      </p>
+    );
+  }
+
   const words = text.split(" ");
 
   return (

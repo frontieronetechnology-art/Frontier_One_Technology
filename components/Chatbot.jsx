@@ -164,7 +164,7 @@ export default function Chatbot() {
                     {m.text}
                     {m.escalate && (
                       <Link
-                        href="/contact"
+                        href="/contact#form"
                         onClick={() => setOpen(false)}
                         className="mt-2 flex items-center gap-1.5 text-[0.8rem] font-medium text-bronze-deep"
                       >

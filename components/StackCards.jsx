@@ -7,16 +7,16 @@ import Media from "./Media";
 const NAV_H = 84; // px — matches the floating navbar capsule height
 
 /* ── one card in the stack ───────────────────────────────────────────── */
-function Card({ item, i, total, progress, fraction }) {
+function Card({ item, i, total, progress, fraction, fine }) {
   const last = i === total - 1;
   const start = i / total;
 
   // every card but the last shrinks and dims as the ones after it ride over.
-  // `fraction` is smaller on touch (0.015 vs 0.03): the GPU has to recomposite
-  // every card every scroll frame, so a gentler shrink is a cheaper one on
-  // phones while still reading as a stack.
+  // On touch both deltas collapse to 0 — the sticky cards still step through
+  // one at a time natively, but no transform changes per scroll frame and no
+  // extra GPU layers are promoted, so scrolling stays buttery.
   const scale = useTransform(progress, [start, 1], [1, last ? 1 : 1 - (total - 1 - i) * fraction]);
-  const dim = useTransform(progress, [start, 1], [0, last ? 0 : 0.45]);
+  const dim = useTransform(progress, [start, 1], [0, last ? 0 : fine ? 0.45 : 0]);
 
   return (
     <div
@@ -24,7 +24,7 @@ function Card({ item, i, total, progress, fraction }) {
       style={{ top: NAV_H, height: "clamp(30rem, 70dvh, 40rem)" }}
     >
       <motion.article
-        style={{ scale, y: i * 13, willChange: "transform" }}
+        style={fine ? { scale, y: i * 13, willChange: "transform" } : { y: i * 13 }}
         className="relative h-[calc(100%-1.5rem)] w-full origin-top overflow-hidden rounded-xl border border-n300 bg-white shadow-[0_32px_64px_-40px_rgba(45,34,24,0.35)]"
       >
         {/* photographic ground.
@@ -170,7 +170,7 @@ export default function StackCards({ items }) {
     setFine(window.matchMedia("(hover: hover) and (pointer: fine)").matches);
   }, []);
 
-  const fraction = fine ? 0.03 : 0.015;
+  const fraction = fine ? 0.03 : 0;
 
   if (reduce) {
     return (
@@ -191,7 +191,7 @@ export default function StackCards({ items }) {
   return (
     <div ref={ref} className="relative">
       {items.map((item, i) => (
-        <Card key={item.n} item={item} i={i} total={items.length} progress={scrollYProgress} fraction={fraction} />
+        <Card key={item.n} item={item} i={i} total={items.length} progress={scrollYProgress} fraction={fraction} fine={fine} />
       ))}
     </div>
   );

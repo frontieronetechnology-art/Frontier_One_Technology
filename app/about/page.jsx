@@ -47,7 +47,7 @@ export default function AboutPage() {
         lede="Frontier One Technology partners with startups, growing businesses, and enterprise organizations to design, build, and support modern technology solutions — with transparency, collaboration, and measurable results at the core of every engagement."
       >
         <div className="mt-9 flex flex-col gap-4 sm:flex-row">
-          <Link href="/contact" className="btn btn-bronze !rounded-full">
+          <Link href="/contact#form" className="btn btn-bronze !rounded-full">
             <span className="flex items-center gap-2.5">
               Let&rsquo;s Talk <Icon name="arrow" />
             </span>
