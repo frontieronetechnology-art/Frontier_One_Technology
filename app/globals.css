@@ -1001,6 +1001,55 @@ button:hover .roll > span {
   border-radius: 999px;
 }
 
+/* ── Mobile & touch performance ─────────────────────────────────
+
+   Coarse-pointer devices (phones, tablets) get a lighter render budget:
+   the film grain sits still instead of re-tiling, frosted glass becomes
+   opaque (backdrop-filter is the priciest paint on mobile GPUs), and the
+   big blurred glows tighten up. Nothing visual changes — it only sheds the
+   expensive parts that made mid-range phones lag.
+
+   Also the iOS/Android cross-browser basics: no unwanted text inflation
+   and no grey tap-flash rectangle under the finger. */
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media (pointer: coarse) {
+  .grain::after {
+    animation: none;
+  }
+
+  /* backdrop-filter is the single priciest CSS feature on mobile GPUs —
+     every moving element behind a blurred pane must be re-sampled each
+     frame (tech-marquee tiles, pinned panels, nav capsule). Drop it
+     everywhere on touch; the translucent surfaces below already carry
+     near-opaque backgrounds, so nothing reads differently. */
+  * {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+  .glass-pane { background: rgba(251, 249, 246, 0.97); }
+  .glass-capsule { background: rgba(251, 249, 246, 0.98); }
+
+  /* blur(80px) across a 44rem disc is brutal on mid-range phones —
+     pull the glows closer to a soft radial that still warms the section */
+  .mesh-glow::before,
+  .mesh-glow::after {
+    filter: blur(36px);
+  }
+
+  /* momentum-scrolled links shouldn't flash a stuck hover state */
+  .roll:hover > span,
+  a:hover .roll > span,
+  button:hover .roll > span {
+    transform: none;
+  }
+}
+
 /* ── Reduced motion ───────────────────────────────────────────── */
 
 @media (prefers-reduced-motion: reduce) {

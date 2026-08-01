@@ -18,7 +18,7 @@ function Card({ item, i, total, progress }) {
   return (
     <div
       className="sticky flex items-center justify-center"
-      style={{ top: NAV_H, height: "clamp(30rem, 70vh, 40rem)" }}
+      style={{ top: NAV_H, height: "clamp(30rem, 70dvh, 40rem)" }}
     >
       <motion.article
         style={{ scale, y: i * 13 }}

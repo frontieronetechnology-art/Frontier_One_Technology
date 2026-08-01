@@ -27,7 +27,7 @@ function Plate({ industry, i }) {
 
       <OrbitalField
         invert
-        className={`absolute top-1/2 h-[46rem] w-[46rem] -translate-y-1/2 opacity-80 ${
+        className={`absolute top-1/2 hidden h-[46rem] w-[46rem] -translate-y-1/2 opacity-80 lg:block ${
           i % 2 === 0 ? "right-[-8rem]" : "left-[-8rem]"
         }`}
       />
@@ -87,7 +87,7 @@ function Panel({ industry, i, total, progress }) {
   return (
     <div
       className="sticky"
-      style={{ top: NAV_H, height: `calc(100vh - ${NAV_H}px)`, zIndex: i + 1 }}
+      style={{ top: NAV_H, height: `calc(100dvh - ${NAV_H}px)`, zIndex: i + 1 }}
     >
       {/* perspective must live on a parent — not on the rotating element itself */}
       <div style={{ perspective: "1400px", height: "100%", width: "100%" }}>

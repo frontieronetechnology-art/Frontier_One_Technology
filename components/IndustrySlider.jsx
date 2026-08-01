@@ -159,7 +159,7 @@ export default function IndustrySlider({ items }) {
       onFocus={() => setPaused(true)}
       onBlur={() => setPaused(false)}
       className="relative max-h-[46rem] min-h-[42rem] w-full overflow-hidden rounded-xl border border-n300 bg-dark outline-none"
-      style={{ height: "80vh" }}
+      style={{ height: "80dvh" }}
     >
       <div className="grid h-full grid-rows-[14rem_minmax(0,1fr)] lg:grid-cols-2 lg:grid-rows-1">
         {/* ── plate ── */}
@@ -233,8 +233,11 @@ export default function IndustrySlider({ items }) {
         </div>
       </div>
 
-      {/* ── bullet rail — sits over the dark plate at every breakpoint ── */}
-      <div className="absolute left-4 top-1/2 z-30 flex -translate-y-1/2 flex-col gap-2 sm:left-8">
+      {/* ── bullet rail — floats over the dark plate at every breakpoint.
+          Below lg the slider is stacked (plate on top, detail below) so the
+          rail centers in the plate; from lg up the slider is two columns and
+          the rail sits at the vertical middle of the whole frame. ── */}
+      <div className="absolute left-3 top-[7rem] z-30 flex -translate-y-1/2 flex-col gap-2 sm:left-8 lg:top-1/2">
         {items.map((item, i) => (
           <button
             key={item.slug}

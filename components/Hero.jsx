@@ -204,7 +204,7 @@ export default function Hero() {
               { text: "Building Technology That Moves Businesses " },
               { text: "Forward", serif: true },
             ]}
-            className="display mt-7 max-w-[24ch] text-balance text-left text-[clamp(2.5rem,4vw+1.25rem,5rem)] leading-[0.98] tracking-[-0.04em] text-n100"
+            className="display mt-7 max-w-[24ch] text-balance text-left text-[clamp(2.2rem,4.5vw+1rem,5rem)] leading-[0.98] tracking-[-0.04em] text-n100"
           />
 
           {/* below the headline — description on the left, actions on the right */}

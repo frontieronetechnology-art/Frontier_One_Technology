@@ -144,11 +144,11 @@ export default function PageHero({
               onMount
               delay={0.35}
               segments={title}
-              className="display mt-7 text-balance text-[clamp(2.4rem,2.1vw+1.9rem,4.9rem)] leading-[1.0] tracking-[-0.035em] text-n100"
+              className="display mt-7 text-balance text-[clamp(2.2rem,2.1vw+1.75rem,4.9rem)] leading-[1.0] tracking-[-0.035em] text-n100"
             />
           ) : (
             <Reveal delay={0.1}>
-              <h1 className="display mt-7 text-balance text-[clamp(2.4rem,2.1vw+1.9rem,4.9rem)] leading-[1.0] tracking-[-0.035em] text-n100">
+              <h1 className="display mt-7 text-balance text-[clamp(2.2rem,2.1vw+1.75rem,4.9rem)] leading-[1.0] tracking-[-0.035em] text-n100">
                 {title}
               </h1>
             </Reveal>

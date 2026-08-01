@@ -36,6 +36,12 @@ export default function GlobeLines({ className = "" }) {
         @media (prefers-reduced-motion: reduce) {
           .f1-meridian, .f1-globe { animation: none !important; }
         }
+        /* phones & tablets get a still wireframe too — the meridian flip is
+           decorative and its per-frame composite cost isn't worth it on the
+           main thread of a mid-range phone */
+        @media (pointer: coarse) {
+          .f1-meridian, .f1-globe { animation: none !important; }
+        }
       `}</style>
 
       <svg viewBox="-220 -220 440 440" className="h-full w-full f1-globe" fill="none">

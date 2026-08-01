@@ -3,18 +3,28 @@
 import { useEffect } from "react";
 import Lenis from "lenis";
 
-/** Lenis inertia scrolling — the silk-smooth scroll feel. Desktop-tuned, honors reduced motion. */
+/**
+ * Lenis inertia scrolling — the silk-smooth scroll feel.
+ *
+ * Desktop-tuned and honors reduced motion. Lenis's touch sync (`syncTouch`,
+ * `touchMultiplier`) is the classic source of lag/tearing on phones and
+ * tablets, so on coarse-pointer devices we bail out entirely and let the
+ * browser's native scroll take over — that's what actually feels "buttery"
+ * on a touch screen, and it frees the main thread for the pinned sections.
+ */
 export default function SmoothScroll() {
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    // Touch devices scroll natively — no Lenis.
+    if (window.matchMedia("(pointer: coarse)").matches) return;
 
     const lenis = new Lenis({
       duration: 1.05,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
-      syncTouch: true,
+      syncTouch: false,
       wheelMultiplier: 1,
-      touchMultiplier: 1.6,
+      touchMultiplier: 1,
     });
 
     let raf;

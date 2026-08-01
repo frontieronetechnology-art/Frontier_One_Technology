@@ -1,7 +1,13 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import {
+  motion,
+  AnimatePresence,
+  useMotionValue,
+  useTransform,
+  useMotionValueEvent,
+} from "framer-motion";
 
 const EASE = [0.16, 1, 0.3, 1];
 const MARK = "/logos/logo-mark.png";
@@ -25,9 +31,21 @@ const WORDMARK = "/logos/logo-wordmark.png";
  */
 export default function Preloader() {
   const [show, setShow] = useState(false);
-  const [pct, setPct] = useState(0);
   const [done, setDone] = useState(false);
+  const [poured, setPoured] = useState(false);
   const raf = useRef(null);
+
+  // The fill is driven by a MotionValue so the pour runs at 60fps without
+  // re-rendering the React tree on every frame — the single biggest jank
+  // source the old `setPct` version had on mid-range phones.
+  const progress = useMotionValue(0);
+  const fillHeight = useTransform(progress, (v) => `${v}%`);
+  const gaugeScale = useTransform(progress, (v) => v / 100);
+  const pctText = useTransform(progress, (v) => String(Math.round(v)));
+
+  useMotionValueEvent(progress, "change", (v) => {
+    if (v >= 100) setPoured(true);
+  });
 
   useEffect(() => {
     if (sessionStorage.getItem("f1-intro")) return;
@@ -39,25 +57,25 @@ export default function Preloader() {
     document.documentElement.style.overflow = "hidden";
 
     const start = performance.now();
-    const DURATION = 1750;
+    const DURATION = 3000;
     const tick = (now) => {
       const p = Math.min(1, (now - start) / DURATION);
       // molten metal fills fast, then surface-tension slows it at the brim
       const eased = 1 - Math.pow(1 - p, 2.6);
-      setPct(eased * 100);
+      progress.set(eased * 100);
       if (p < 1) raf.current = requestAnimationFrame(tick);
-      else setTimeout(() => setDone(true), 480);
+      else setTimeout(() => setDone(true), 520);
     };
     raf.current = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf.current);
-  }, []);
+  }, [progress]);
 
   useEffect(() => {
     if (!done) return;
     const t = setTimeout(() => {
       document.documentElement.style.overflow = "";
       setShow(false);
-    }, 1200);
+    }, 1300);
     return () => clearTimeout(t);
   }, [done]);
 
@@ -72,8 +90,6 @@ export default function Preloader() {
     WebkitMaskPosition: "center",
     maskPosition: "center",
   });
-
-  const poured = pct > 99;
 
   return (
     <AnimatePresence>
@@ -105,9 +121,9 @@ export default function Preloader() {
 
                 {/* 2 — molten bronze rising into it */}
                 <div className="absolute inset-0 overflow-hidden" style={mask(MARK)}>
-                  <div
+                  <motion.div
                     className="absolute inset-x-0 bottom-0"
-                    style={{ height: `${pct}%` }}
+                    style={{ height: fillHeight }}
                   >
                     <div
                       className="absolute inset-0"
@@ -125,7 +141,7 @@ export default function Preloader() {
                         boxShadow: "0 0 14px 2px rgba(231,211,181,0.55)",
                       }}
                     />
-                  </div>
+                  </motion.div>
                 </div>
 
                 {/* 3 — one specular pass across the cooled metal */}
@@ -174,14 +190,14 @@ export default function Preloader() {
                       Casting
                     </span>
                     <div className="h-px w-full bg-dark-border">
-                      <div
+                      <motion.div
                         className="h-px origin-left bg-bronze-light"
-                        style={{ transform: `scaleX(${pct / 100})` }}
+                        style={{ scaleX: gaugeScale }}
                       />
                     </div>
                   </div>
                   <span className="display shrink-0 text-4xl tabular-nums text-n100 sm:text-5xl">
-                    {Math.round(pct)}
+                    <motion.span>{pctText}</motion.span>
                     <em className="text-bronze-light">%</em>
                   </span>
                 </div>

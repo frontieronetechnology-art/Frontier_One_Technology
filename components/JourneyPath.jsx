@@ -48,7 +48,13 @@ export default function JourneyPath({ items }) {
     const len = path.getTotalLength();
     const clamped = Math.min(len, Math.max(0, v * len));
     const pt = path.getPointAtLength(clamped);
-    setDot(v > 0.004 && v < 0.998 ? { x: pt.x, y: pt.y } : null);
+    // round to whole px and skip no-op updates — the old code re-rendered
+    // the whole JourneyPath on every scroll frame for sub-pixel movement,
+    // which was measurable jank on mid-range phones
+    const next = v > 0.004 && v < 0.998 ? { x: Math.round(pt.x), y: Math.round(pt.y) } : null;
+    setDot((prev) =>
+      prev === next || (prev && next && prev.x === next.x && prev.y === next.y) ? prev : next
+    );
   });
 
   return (

@@ -113,11 +113,13 @@ export default function WhyPinned({ cards, href = "/about", cta = "About the com
     <div ref={wrapRef} className="relative" style={{ height: `${total * 92}vh` }}>
       <div
         className="sticky flex items-center overflow-hidden"
-        style={{ top: NAV_H, height: `calc(100vh - ${NAV_H}px)` }}
+        style={{ top: NAV_H, height: `calc(100dvh - ${NAV_H}px)` }}
       >
         {/* the orbital field now spans the whole band rather than being
-            cropped inside a single card */}
-        <OrbitalField className="absolute left-1/2 top-1/2 h-[130vh] w-[130vh] -translate-x-1/2 -translate-y-1/2 opacity-90" />
+            cropped inside a single card — desktop only; on phones it is
+            buried behind the copy panel and cost mobile GPUs a repaint
+            every frame of the spin */}
+        <OrbitalField className="absolute left-1/2 top-1/2 hidden h-[130vh] w-[130vh] -translate-x-1/2 -translate-y-1/2 opacity-90 lg:block" />
         <OrbitalField className="absolute -left-[18vw] top-[8%] hidden h-[46vh] w-[46vh] opacity-60 lg:block" />
 
         <div className="container-x relative w-full">

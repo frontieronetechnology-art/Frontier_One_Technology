@@ -1,12 +1,20 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { motion, useScroll, useVelocity, useSpring, useTransform } from "framer-motion";
 
 /**
  * Kinetic statement marquee — two opposing rows of oversized
  * solid/outline type that skew with scroll velocity.
+ * The velocity skew is desktop-only: on touch devices the marquee runs
+ * straight (native scroll spikes would make the skew stutter).
  */
 export default function BigMarquee() {
+  const [fine, setFine] = useState(true);
+  useEffect(() => {
+    setFine(window.matchMedia("(hover: hover) and (pointer: fine)").matches);
+  }, []);
+
   const { scrollY } = useScroll();
   const velocity = useVelocity(scrollY);
   const skew = useSpring(useTransform(velocity, [-2200, 2200], [-5, 5]), {
@@ -18,7 +26,7 @@ export default function BigMarquee() {
   const rowB = "Cloud — Software — Security — Data — DevOps — AI";
 
   return (
-    <motion.div style={{ skewY: skew }} className="marquee select-none overflow-hidden py-14 sm:py-20" aria-hidden>
+    <motion.div style={fine ? { skewY: skew } : undefined} className="marquee select-none overflow-hidden py-14 sm:py-20" aria-hidden>
       <div className="marquee-track items-baseline gap-10" style={{ "--marquee-duration": "46s" }}>
         {[0, 1].map((n) => (
           <span key={n} className="flex shrink-0 items-baseline gap-10 pr-10">
