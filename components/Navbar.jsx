@@ -64,11 +64,15 @@ export default function Navbar() {
   return (
     <>
       <header className="pointer-events-none fixed inset-x-0 top-0 z-50">
-        {/* ── full-bleed frosted banner — the resting state ─────── */}
+        {/* ── full-bleed frosted banner — the resting state ───────
+            `invisible` once scrolled: at opacity-0 the pane's backdrop
+            blur would otherwise keep being re-sampled behind every
+            scroll frame for nothing. visibility toggles instantly, the
+            opacity fade carries the visual transition. */}
         <div
           aria-hidden
-          className={`glass-pane absolute inset-0 border-b transition-opacity duration-[650ms] ${
-            scrolled ? "border-transparent opacity-0" : "border-n300/60 opacity-100"
+          className={`glass-pane absolute inset-0 border-b transition-[opacity,visibility] duration-[650ms] ${
+            scrolled ? "invisible border-transparent opacity-0" : "border-n300/60 opacity-100"
           }`}
         />
 

@@ -81,6 +81,30 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Lenis inertia scrolling — when the smooth-scroll layer is active it must
+   take over scrolling entirely. CSS `scroll-behavior: smooth` fights Lenis's
+   per-frame position writes (each wheel tick gets double-smoothed → the
+   classic "smooth scroll but it still stutters" feel), so it is force-
+   disabled only while Lenis owns the scrollbar. `overscroll-behavior`
+   keeps an inner `data-lenis-prevent` region (chat panel) from hijacking
+   the page. */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+
 body {
   background: var(--color-n100);
   color: var(--color-ink);
@@ -181,8 +205,8 @@ body {
     rgba(251, 249, 246, 0.78) 0%,
     rgba(245, 241, 235, 0.68) 100%
   );
-  -webkit-backdrop-filter: blur(16px) saturate(150%);
-  backdrop-filter: blur(16px) saturate(150%);
+  -webkit-backdrop-filter: blur(10px) saturate(140%);
+  backdrop-filter: blur(10px) saturate(140%);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.65),
     inset 0 -1px 0 rgba(106, 74, 48, 0.06);
@@ -190,7 +214,6 @@ body {
      compositor layer keeps the blur from being resampled against every
      scroll-driven repaint underneath it */
   transform: translateZ(0);
-  will-change: backdrop-filter;
 }
 
 /* the detached, scrolled state sits on its own so it needs a touch more
@@ -201,14 +224,13 @@ body {
     rgba(251, 249, 246, 0.86) 0%,
     rgba(245, 241, 235, 0.76) 100%
   );
-  -webkit-backdrop-filter: blur(18px) saturate(160%);
-  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(14px) saturate(150%);
+  backdrop-filter: blur(14px) saturate(150%);
   border: 1px solid rgba(224, 214, 200, 0.75);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.7),
     0 10px 26px -12px rgba(106, 74, 48, 0.28);
   transform: translateZ(0);
-  will-change: backdrop-filter;
 }
 
 /* graceful degradation — no backdrop-filter means we must be opaque or the
@@ -807,7 +829,11 @@ button:hover .roll > span {
   content: "";
   position: absolute;
   border-radius: 50%;
-  filter: blur(80px);
+  /* blur(80px) across a 44rem disc is a pricey Gaussian that gets
+     re-resolved on every scroll repaint — 40px keeps the atmospheric
+     falloff while cutting that cost roughly in half (mobile already
+     runs 36px). */
+  filter: blur(40px);
 }
 .mesh-glow::before {
   width: 44rem;

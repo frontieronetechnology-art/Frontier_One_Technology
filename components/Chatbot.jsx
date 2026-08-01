@@ -151,7 +151,7 @@ export default function Chatbot() {
             </div>
 
             {/* Messages */}
-            <div ref={scrollRef} className="flex-1 space-y-3 overflow-y-auto bg-n100 p-4">
+            <div ref={scrollRef} data-lenis-prevent className="flex-1 space-y-3 overflow-y-auto bg-n100 p-4">
               {messages.map((m, i) => (
                 <div key={i} className={`flex ${m.from === "user" ? "justify-end" : "justify-start"}`}>
                   <div

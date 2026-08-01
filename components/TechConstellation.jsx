@@ -16,7 +16,7 @@ function Tile({ tech }) {
       rel="noopener noreferrer"
       data-cursor="Search"
       title={`Search ${tech.name}`}
-      className="group flex shrink-0 items-center gap-3 rounded-2xl border border-n300 bg-white/85 px-5 py-3.5 shadow-[0_1px_0_rgba(255,255,255,0.6)_inset] backdrop-blur-sm transition-all duration-500 hover:-translate-y-1 hover:border-bronze hover:bg-white hover:shadow-[0_22px_44px_-22px_rgba(45,34,24,0.4)]"
+      className="group flex shrink-0 items-center gap-3 rounded-2xl border border-n300 bg-white/85 px-5 py-3.5 shadow-[0_1px_0_rgba(255,255,255,0.6)_inset] transition-all duration-500 hover:-translate-y-1 hover:border-bronze hover:bg-white hover:shadow-[0_22px_44px_-22px_rgba(45,34,24,0.4)]"
     >
       {tech.slug ? (
         <img
