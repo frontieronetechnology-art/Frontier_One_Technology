@@ -978,6 +978,29 @@ button:hover .roll > span {
   font-size: 1.0625rem;
 }
 
+/* ── Homepage hero refinement (scoped to the hero) ─────────────── */
+
+/* Primary CTA — a quicker, more physical lift + shadow bloom than the
+   site-wide 0.5s brand curve, so the hero action feels immediate. */
+.hero-cta {
+  transition: transform 0.2s ease-out, box-shadow 0.2s ease-out,
+    background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Secondary text CTA — arrow nudge at 200ms instead of the 0.5s default. */
+.hero-cta-secondary svg {
+  transition: transform 0.2s ease-out;
+}
+
+/* Visible keyboard focus on the dark hero. The global :focus-visible ring
+   (bronze-rich) is too dark to read over photography; light bronze reads at
+   AA on the dark scrim. */
+.hero-focus:focus-visible {
+  outline: 2px solid var(--color-bronze-light);
+  outline-offset: 2px;
+  border-radius: 999px;
+}
+
 /* ── Reduced motion ───────────────────────────────────────────── */
 
 @media (prefers-reduced-motion: reduce) {
