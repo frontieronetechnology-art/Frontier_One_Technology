@@ -7,24 +7,36 @@ import Media from "./Media";
 const NAV_H = 84; // px — matches the floating navbar capsule height
 
 /* ── one card in the stack ───────────────────────────────────────────── */
+/* Card height is expressed in `svh`, not `dvh`: dvh re-resolves as a phone's
+   address bar collapses, which would resize all eight pinned cards — and
+   relayout the document around them — in the middle of a scroll. */
 function Card({ item, i, total, progress, fraction, fine }) {
   const last = i === total - 1;
   const start = i / total;
 
-  // every card but the last shrinks and dims as the ones after it ride over.
+  // Every card but the last shrinks and dims as the ones after it ride over.
   // On touch both deltas collapse to 0 — the sticky cards still step through
   // one at a time natively, but no transform changes per scroll frame and no
   // extra GPU layers are promoted, so scrolling stays buttery.
-  const scale = useTransform(progress, [start, 1], [1, last ? 1 : 1 - (total - 1 - i) * fraction]);
-  const dim = useTransform(progress, [start, 1], [0, last ? 0 : fine ? 0.45 : 0]);
+  //
+  // The recede resolves over the next two cards rather than over the rest of
+  // the section. Running it to `1` meant all eight cards were re-scaling on
+  // every single scroll frame, and a scale change on a card this size forces
+  // the compositor to re-rasterize the photograph, four gradient veils and
+  // the drafting grid inside it. That was the hitch measurable in the middle
+  // of this section. Windowed, at most two or three cards are ever in motion,
+  // and the settled stack looks the same.
+  const end = Math.min(1, (i + 2) / total);
+  const scale = useTransform(progress, [start, end], [1, last ? 1 : 1 - (total - 1 - i) * fraction]);
+  const dim = useTransform(progress, [start, end], [0, last ? 0 : fine ? 0.45 : 0]);
 
   return (
     <div
       className="sticky flex items-center justify-center"
-      style={{ top: NAV_H, height: "clamp(30rem, 70dvh, 40rem)" }}
+      style={{ top: NAV_H, height: "clamp(30rem, 70svh, 40rem)" }}
     >
       <motion.article
-        style={fine ? { scale, y: i * 13, willChange: "transform" } : { y: i * 13 }}
+        style={fine ? { scale, y: i * 13 } : { y: i * 13 }}
         className="relative h-[calc(100%-1.5rem)] w-full origin-top overflow-hidden rounded-xl border border-n300 bg-white shadow-[0_32px_64px_-40px_rgba(45,34,24,0.35)]"
       >
         {/* photographic ground.
@@ -42,6 +54,7 @@ function Card({ item, i, total, progress, fraction, fine }) {
             pass underneath still deepens the overall grade. */}
         <Media
           src={`home/approach-${item.n}.webp`}
+          alt={`${item.title} — step ${item.n} of the Frontier One Technology delivery process`}
           fill
           grade="light"
           position="center 45%"
@@ -67,18 +80,21 @@ function Card({ item, i, total, progress, fraction, fine }) {
           className="absolute inset-0 sm:hidden"
           style={{
             background:
-              "linear-gradient(180deg, rgba(251,249,246,0.85) 0%, rgba(251,249,246,0.7) 35%, rgba(245,241,235,0.4) 55%, rgba(236,228,217,0.12) 75%, rgba(236,228,217,0.04) 90%)",
+              "linear-gradient(180deg, rgba(251,249,246,0.96) 0%, rgba(251,249,246,0.94) 46%, rgba(251,249,246,0.82) 62%, rgba(245,241,235,0.4) 78%, rgba(236,228,217,0.08) 93%)",
           }}
           aria-hidden
         />
-        {/* pulled further left on purpose — the wash should hold the near
-            edge and be visibly clearing before the card's midpoint, not
-            reach into the middle */}
+        {/* The veil has to be opaque for as long as the copy column runs and
+            only then feather. The earlier calibration started clearing at
+            40% — inside the 62% text column — which left the body paragraph
+            sitting on bare photography and effectively unreadable. It now
+            holds through the column and releases across 66→86%, so the
+            photograph still opens up on the figure side. */}
         <div
           className="absolute inset-0 hidden sm:block"
           style={{
             background:
-              "linear-gradient(90deg, rgba(251,249,246,0.85) 0%, rgba(251,249,246,0.78) 25%, rgba(251,249,246,0.5) 40%, rgba(245,241,235,0.25) 52%, rgba(236,228,217,0.1) 64%, rgba(236,228,217,0) 76%)",
+              "linear-gradient(90deg, rgba(251,249,246,0.96) 0%, rgba(251,249,246,0.94) 44%, rgba(251,249,246,0.83) 57%, rgba(245,241,235,0.46) 67%, rgba(236,228,217,0.15) 78%, rgba(236,228,217,0) 88%)",
           }}
           aria-hidden
         />
@@ -105,7 +121,7 @@ function Card({ item, i, total, progress, fraction, fine }) {
               <h3 className="display text-ink text-[1.6rem] leading-[1.02] sm:text-[2.6rem]">
                 {item.title}
               </h3>
-              <p className="mt-4 line-clamp-5 max-w-lg text-[0.85rem] leading-relaxed text-n700 sm:mt-5 sm:line-clamp-none sm:text-[0.92rem]">
+              <p className="mt-4 line-clamp-6 max-w-lg text-[0.85rem] leading-relaxed text-n700 sm:mt-5 sm:line-clamp-none sm:text-[0.92rem]">
                 {item.body}
               </p>
             </div>

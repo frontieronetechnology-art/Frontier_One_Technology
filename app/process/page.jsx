@@ -11,10 +11,24 @@ import Icon from "@/components/Icons";
 import { breadcrumbs } from "@/lib/seo";
 
 export const metadata = {
-  title: "Our Approach",
+  title: { absolute: "Our Process | 8-Step Technology Delivery Framework" },
   description:
-    "A proven 8-step process — discover, assess, strategize, design, develop, validate, deploy, support — for reliable technology delivery.",
-  alternates: { canonical: "/process" },
+    "How we deliver: an eight-step process — discover, assess, strategize, design, develop, validate, deploy, and support — that keeps every engagement predictable.",
+  keywords: [
+    "technology delivery process",
+    "software development process",
+    "IT project methodology",
+    "technology consulting approach",
+    "project delivery framework",
+  ],
+  alternates: { canonical: "/process/" },
+  openGraph: {
+    title: "Our Process | Frontier One Technology",
+    description:
+      "The eight-step delivery framework behind every Frontier One engagement.",
+    url: "/process/",
+    type: "website",
+  },
 };
 
 /* Supplementary principles (SRS §5.3.3 — added per industry best practice) */
@@ -60,6 +74,7 @@ export default function ProcessPage() {
         eyebrow="Our Approach"
         watermark="Process"
         image="process/hero.webp"
+        imageAlt="The Frontier One Technology eight-step delivery process in practice"
         position="center 45%"
         title={[
           { text: "Building Technology with Purpose, Precision, and " },

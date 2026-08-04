@@ -583,8 +583,20 @@ body {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-14px); }
 }
-.animate-spin-slow { animation: spin-slow 60s linear infinite; transform-origin: center; }
-.animate-spin-slower { animation: spin-slow-rev 90s linear infinite; transform-origin: center; }
+/* These carry viewport-scale SVG linework. Without an explicit promotion
+   hint the browser is free to re-rasterize the whole rotating plate each
+   frame; with it the rotation stays a compositor transform on a texture
+   that is drawn once. */
+.animate-spin-slow {
+  animation: spin-slow 60s linear infinite;
+  transform-origin: center;
+  will-change: transform;
+}
+.animate-spin-slower {
+  animation: spin-slow-rev 90s linear infinite;
+  transform-origin: center;
+  will-change: transform;
+}
 .animate-drift { animation: drift-y 7s ease-in-out infinite; }
 
 /* pulse dot (live indicator) */
@@ -681,14 +693,31 @@ body {
 
 /* ── Film grain ───────────────────────────────────────────────── */
 
+/* Three things matter for this layer's cost, and all three were wrong:
+
+   1. `background-size`. Without it the noise SVG is painted once at the
+      element's full size — a feTurbulence filter resolved across a plane
+      several thousand pixels wide, re-resolved on every repaint. Tiling a
+      256px raster instead is the same grain for a fraction of the work.
+   2. The overscan. It only has to cover the ±3% the keyframes travel, so
+      -50% (four viewports of surface) was ~13× more layer than needed.
+   3. Promotion. This is a fixed, full-viewport element sitting above the
+      entire page; if it is not on its own compositor layer, every scroll
+      frame repaints it against the moving content underneath — which drags
+      every graded photograph and blurred glow under it into the repaint
+      too. translateZ(0) keeps it composited and the page scrolling. */
 .grain::after {
   content: "";
   position: fixed;
-  inset: -50%;
+  inset: -12%;
   z-index: 65;
   pointer-events: none;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 256px 256px;
+  background-repeat: repeat;
   opacity: 0.024;
+  transform: translateZ(0);
+  will-change: transform;
   animation: grain-shift 0.7s steps(4) infinite;
 }
 @keyframes grain-shift {
@@ -1050,6 +1079,27 @@ html {
      native instant restore feels far snappier */
   html { scroll-behavior: auto; }
 
+  /* dvh is a moving target on a phone: it re-resolves as the address bar
+     collapses and expands, so a `min-height: 100dvh` hero silently changes
+     height mid-scroll and relayouts the entire document underneath the
+     finger. That is the single most convincing cause of "the page drags
+     while I scroll" on mobile. svh is fixed to the largest-chrome state, so
+     the hero is sized once and never resized again. Desktop keeps dvh,
+     where the two are identical anyway. */
+  .hero-screen { min-height: 100svh; }
+  .hero-inner { min-height: calc(100svh - var(--nav-h)); }
+
+  /* Blend modes are the most expensive thing a mobile GPU can be asked to
+     do in a scrolling page: the compositor has to read the backdrop back
+     for every blended pixel, every frame. At these opacities (a 10% bronze
+     overlay, a 5–22% ink multiply) normal alpha compositing is visually
+     within a hair of the blended result. */
+  .mix-blend-overlay,
+  .mix-blend-multiply,
+  .mix-blend-soft-light {
+    mix-blend-mode: normal !important;
+  }
+
   .grain::after {
     animation: none;
   }
@@ -1066,11 +1116,13 @@ html {
   .glass-pane { background: rgba(251, 249, 246, 0.97); }
   .glass-capsule { background: rgba(251, 249, 246, 0.98); }
 
-  /* blur(80px) across a 44rem disc is brutal on mid-range phones —
-     pull the glows closer to a soft radial that still warms the section */
+  /* The glow discs are radial-gradients that already fade to transparent
+     at ~68%; the Gaussian on top of that is a whole extra GPU pass per
+     disc for a difference you cannot see once it is behind content. Drop
+     the filter on touch and keep the gradient. */
   .mesh-glow::before,
   .mesh-glow::after {
-    filter: blur(36px);
+    filter: none;
   }
 
   /* momentum-scrolled links shouldn't flash a stuck hover state */

@@ -3,6 +3,7 @@ import LegalPage from "@/components/LegalPage";
 export const metadata = {
   title: "Privacy Policy",
   description: "How Frontier One Technology collects, uses, protects, and manages visitor data.",
+  alternates: { canonical: "/privacy/" },
 };
 
 const SECTIONS = [

@@ -14,10 +14,24 @@ import { CORE_VALUES, JOURNEY } from "@/lib/data";
 import { breadcrumbs } from "@/lib/seo";
 
 export const metadata = {
-  title: "About Us",
+  title: { absolute: "About Frontier One Technology | Our Mission & Values" },
   description:
-    "Learn about Frontier One Technology's mission, values, and approach to building technology that creates lasting business value.",
-  alternates: { canonical: "/about" },
+    "Who we are, how we work, and why businesses choose us: Frontier One Technology's mission, core values, and approach to building technology that lasts.",
+  keywords: [
+    "about frontier one technology",
+    "technology consulting company",
+    "IT consulting firm United States",
+    "enterprise technology partner",
+    "our mission and values",
+  ],
+  alternates: { canonical: "/about/" },
+  openGraph: {
+    title: "About Frontier One Technology",
+    description:
+      "Our mission, our values, and the approach behind every engagement we deliver.",
+    url: "/about/",
+    type: "website",
+  },
 };
 
 export default function AboutPage() {
@@ -39,6 +53,7 @@ export default function AboutPage() {
         eyebrow="About Us"
         watermark="About"
         image="about/hero.webp"
+        imageAlt="The Frontier One Technology team at work"
         position="center 40%"
         title={[
           { text: "The Partner Behind the " },

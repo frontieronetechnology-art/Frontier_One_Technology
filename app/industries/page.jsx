@@ -9,10 +9,25 @@ import { INDUSTRIES } from "@/lib/data";
 import { breadcrumbs } from "@/lib/seo";
 
 export const metadata = {
-  title: "Industries We Serve",
+  title: { absolute: "Industries We Serve | Technology Solutions by Sector" },
   description:
-    "Technology solutions tailored for financial services, healthcare, retail, manufacturing, education, and more.",
-  alternates: { canonical: "/industries" },
+    "Technology solutions built for financial services, healthcare, retail and e-commerce, manufacturing, technology, education, professional services, and logistics.",
+  keywords: [
+    "industries we serve",
+    "technology solutions by industry",
+    "financial services IT solutions",
+    "healthcare technology consulting",
+    "manufacturing technology solutions",
+    "retail ecommerce technology",
+  ],
+  alternates: { canonical: "/industries/" },
+  openGraph: {
+    title: "Industries We Serve | Frontier One Technology",
+    description:
+      "Eight sectors, each with its own constraints — and technology built around them.",
+    url: "/industries/",
+    type: "website",
+  },
 };
 
 export default function IndustriesPage() {
@@ -34,6 +49,7 @@ export default function IndustriesPage() {
         eyebrow="Industries We Serve"
         watermark="Industries"
         image="industries/hero.webp"
+        imageAlt="Technology solutions delivered across the industries Frontier One Technology serves"
         position="center 40%"
         title={[
           { text: "Delivering Technology Solutions Across " },

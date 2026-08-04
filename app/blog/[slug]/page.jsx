@@ -21,7 +21,7 @@ export async function generateMetadata({ params }) {
     title: post.title,
     description: post.metaDescription,
     keywords: post.keywords,
-    alternates: { canonical: `/blog/${post.slug}` },
+    alternates: { canonical: `/blog/${post.slug}/` },
     openGraph: {
       title: post.title,
       description: post.metaDescription,
@@ -29,11 +29,6 @@ export async function generateMetadata({ params }) {
       type: "article",
       publishedTime: post.date,
       authors: [post.author],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: post.title,
-      description: post.metaDescription,
     },
   };
 }
@@ -121,6 +116,7 @@ export default async function BlogPost({ params }) {
         eyebrow={`Insights / ${post.category}`}
         watermark="Insights"
         image={post.image}
+        imageAlt={post.title}
         position="center 45%"
         title={[{ text: post.title }]}
         lede={post.excerpt}
@@ -220,7 +216,7 @@ export default async function BlogPost({ params }) {
                     className="group card flex h-full flex-col overflow-hidden"
                   >
                     <div className="relative h-44">
-                      <Media src={r.image} fill grade="light" />
+                      <Media src={r.image} alt={r.title} fill grade="light" />
                     </div>
                     <div className="flex flex-1 flex-col justify-between gap-5 p-6">
                       <div>

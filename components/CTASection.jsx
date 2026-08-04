@@ -58,14 +58,14 @@ export default function CTASection() {
           </p>
           <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Magnetic>
-              <Link href="/contact#form" className="btn btn-paper w-full sm:w-auto">
-                Let&rsquo;s Talk
+              <Link href="/services" className="btn btn-paper w-full sm:w-auto">
+                Explore Our Services
                 <Icon name="arrow" />
               </Link>
             </Magnetic>
             <Magnetic strength={0.2}>
               <Link href="/contact#form" className="btn btn-outline-paper w-full sm:w-auto">
-                Contact Our Team
+                Schedule a Consultation
               </Link>
             </Magnetic>
           </div>

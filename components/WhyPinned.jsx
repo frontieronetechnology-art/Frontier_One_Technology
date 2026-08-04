@@ -47,7 +47,13 @@ function Plate({ card, i, active, total }) {
       <div className="absolute inset-0 bg-gradient-to-br from-n800 via-dark to-n900" />
 
       {/* photograph sits at the base of the stack … */}
-      <Media src={`home/why-0${i + 1}.webp`} fill grade="dark" position="center 40%" />
+      <Media
+        src={`home/why-0${i + 1}.webp`}
+        alt={`${card.title} — why businesses choose Frontier One Technology`}
+        fill
+        grade="dark"
+        position="center 40%"
+      />
 
       {/* … the drafting lattice stays on top of it, exactly as before */}
       <div className="grid-paper-invert absolute inset-0" />
@@ -120,7 +126,9 @@ export default function WhyPinned({ cards, href = "/about", cta = "About the com
   }
 
   return (
-    <div ref={wrapRef} className="relative" style={{ height: `${total * 92}vh` }}>
+    /* 78vh per reason keeps the whole set inside a comfortable scroll run —
+       at the old 92vh six cards made the pin outstay its welcome. */
+    <div ref={wrapRef} className="relative" style={{ height: `${total * 78}vh` }}>
       <div
         className="sticky flex items-center overflow-hidden"
         style={{ top: NAV_H, height: `calc(100dvh - ${NAV_H}px)` }}

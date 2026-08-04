@@ -10,7 +10,10 @@ const H = 1.12; // em — glyph box height, gives digits room to breathe
 
 const box = { height: `${H}em`, lineHeight: `${H}em` };
 
-/* ── one rolling column ──────────────────────────────────────────────── */
+/* ── one rolling column ──────────────────────────────────────────────────
+   Columns land left to right, but the spread between the first and the last
+   stays tight — the old 0.22s-per-digit spread made a three-digit figure read
+   as three separate animations instead of one number arriving. */
 function Digit({ d, i, play }) {
   const landing = (CYCLES - 1) * 10 + d;
   return (
@@ -23,7 +26,7 @@ function Digit({ d, i, play }) {
         className="absolute inset-x-0 top-0 flex flex-col"
         initial={{ y: "0%" }}
         animate={play ? { y: `-${(landing / STRIP.length) * 100}%` } : { y: "0%" }}
-        transition={{ duration: 1.15 + i * 0.22, delay: i * 0.05, ease: EASE }}
+        transition={{ duration: 1.05 + i * 0.13, delay: i * 0.04, ease: EASE }}
       >
         {STRIP.map((n, k) => (
           <span key={k} className="block" style={box}>

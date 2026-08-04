@@ -7,7 +7,6 @@ import { sortedPosts } from "@/lib/blog";
 const SOCIALS = [
   { label: "LinkedIn", href: "https://www.linkedin.com/" },
   { label: "Instagram", href: "https://www.instagram.com/" },
-  { label: "X (Twitter)", href: "https://x.com/" },
 ];
 
 const LATEST_POSTS = sortedPosts().slice(0, 3);

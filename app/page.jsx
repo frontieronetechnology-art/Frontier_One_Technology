@@ -10,12 +10,19 @@ import StatsBand from "@/components/StatsBand";
 import Accordion from "@/components/Accordion";
 import CTASection from "@/components/CTASection";
 import WhyPinned from "@/components/WhyPinned";
+import EngagementModels from "@/components/EngagementModels";
 import StackCards from "@/components/StackCards";
 import IndustrySlider from "@/components/IndustrySlider";
 import ScrollFillHeading from "@/components/ScrollFillHeading";
 import Media from "@/components/Media";
 import Icon from "@/components/Icons";
-import { WHY_CARDS, PROCESS_STEPS, INDUSTRIES, SERVICES_FAQ } from "@/lib/data";
+import {
+  WHY_CARDS,
+  PROCESS_STEPS,
+  INDUSTRIES,
+  SERVICES_FAQ,
+  ENGAGEMENT_MODELS,
+} from "@/lib/data";
 import { sortedPosts } from "@/lib/blog";
 import { faqPage, breadcrumbs } from "@/lib/seo";
 
@@ -24,8 +31,27 @@ const LATEST_POSTS = sortedPosts().slice(0, 3);
 export const metadata = {
   title: "Frontier One Technology | Enterprise Technology Consulting",
   description:
-    "Enterprise technology consulting across cloud, cybersecurity, software engineering, data, AI, and DevOps. Practical solutions engineered for long-term business growth.",
+    "Enterprise technology consulting across cloud, cybersecurity, software engineering, data, AI, and DevOps — practical solutions engineered for long-term business growth.",
+  keywords: [
+    "technology consulting company",
+    "enterprise IT consulting services",
+    "cloud solutions provider",
+    "cybersecurity consulting firm",
+    "custom software development company",
+    "data analytics consulting",
+    "DevOps automation services",
+    "AI consulting services",
+    "managed IT services provider",
+    "digital transformation partner",
+  ],
   alternates: { canonical: "/" },
+  openGraph: {
+    title: "Frontier One Technology | Enterprise Technology Consulting",
+    description:
+      "Cloud, cybersecurity, software engineering, data, AI, and DevOps — engineered for long-term business growth.",
+    url: "/",
+    type: "website",
+  },
 };
 
 export default function HomePage() {
@@ -90,7 +116,7 @@ export default function HomePage() {
                 { text: "Why Businesses " },
                 { text: "Choose Us", serif: true },
               ]}
-              lede="Keep scrolling — the panel holds while four reasons technology partners stay with us step through, one at a time."
+              lede="Keep scrolling — the panel holds while six reasons technology partners stay with us step through, one at a time."
             />
             <Reveal delay={0.2}>
               <Link href="/about" className="link-arrow mb-2" data-cursor="About">
@@ -116,6 +142,13 @@ export default function HomePage() {
             ]}
             lede="Six disciplines, one standard — hover each service to preview it, click through for the full engagement detail."
           />
+          <Reveal delay={0.2}>
+            <Link href="/services" className="group mb-2 inline-flex">
+              <span className="cta-chip">
+                All Services <Icon name="arrowUpRight" />
+              </span>
+            </Link>
+          </Reveal>
         </div>
         <div className="mt-16">
           <ServicesShowcase />
@@ -125,6 +158,33 @@ export default function HomePage() {
       {/* ── KINETIC STATEMENT MARQUEE ────────────────────────── */}
       <section className="overflow-hidden border-y rule bg-band">
         <BigMarquee />
+      </section>
+
+      {/* ── ENGAGEMENT MODELS — how a client can work with us ──
+          Sits between the service index (what we do) and the delivery
+          process (how we run the work), which is exactly where a buyer
+          starts asking "and how would I actually engage you?" */}
+      <section className="container-x py-28 sm:py-36">
+        <div className="flex flex-wrap items-end justify-between gap-8">
+          <SectionHeading
+            eyebrow="Engagement Models"
+            title={[
+              { text: "Four Ways to " },
+              { text: "Work With Us", serif: true },
+            ]}
+            lede="Every organization buys technology differently. Choose the commercial model that fits your team, your timeline, and how much of the delivery you want to own."
+          />
+          <Reveal delay={0.2}>
+            <Link href="/contact#form" className="group mb-2 inline-flex">
+              <span className="cta-chip">
+                Discuss Your Model <Icon name="arrowUpRight" />
+              </span>
+            </Link>
+          </Reveal>
+        </div>
+        <div className="mt-16">
+          <EngagementModels models={ENGAGEMENT_MODELS} />
+        </div>
       </section>
 
       {/* ── OUR APPROACH — the page's dark feature section (§05.2 L3) ── */}
@@ -295,7 +355,7 @@ export default function HomePage() {
                 className="group card flex h-full flex-col overflow-hidden"
               >
                 <div className="relative h-48">
-                  <Media src={post.image} fill grade="light" />
+                  <Media src={post.image} alt={post.title} fill grade="light" />
                 </div>
                 <div className="flex flex-1 flex-col justify-between gap-5 p-6">
                   <div>

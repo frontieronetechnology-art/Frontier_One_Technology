@@ -52,8 +52,12 @@ export default function Hero() {
     return () => clearInterval(id);
   }, [reduce]);
 
-  /* parallax is desktop-only — the photographic drift reads as a bug on
-     phones, so gate it behind a matchMedia check rather than vw heuristics */
+  /* Parallax is desktop-only — the photographic drift reads as a bug on
+     phones, so gate it behind a matchMedia check rather than vw heuristics.
+     `motion` below is the single switch every scroll-linked value in this
+     hero passes through: on a phone the cutout plate, the copy block and the
+     trust strip used to be re-transformed on every scroll frame, and two of
+     those three carry a colour-graded photograph. */
   useEffect(() => {
     const mq = window.matchMedia("(min-width: 768px)");
     const update = () => setIsDesktop(mq.matches);
@@ -81,6 +85,9 @@ export default function Hero() {
   const contentY = useTransform(scrollYProgress, [0, 1], [0, -70]);
   const fade = useTransform(scrollYProgress, [0, 0.65], [1, 0]);
 
+  /* one gate for every scroll-linked style in this hero */
+  const motional = isDesktop && !reduce;
+
   /* entrance chain — eyebrow → headline → subhead → CTAs → trust strip.
      ~110ms between groups, all resolved by ~1.3s. Reduced motion collapses
      every step to an instant opacity fade. */
@@ -96,7 +103,7 @@ export default function Hero() {
       {/* ── PLANE 0 — the skyline plate (LCP) ─────────────────────── */}
       <motion.div
         aria-hidden
-        style={isDesktop && !reduce ? { y: parallaxY } : undefined}
+        style={motional ? { y: parallaxY } : undefined}
         className="absolute inset-x-0 -bottom-24 top-0 z-0"
       >
         <Image
@@ -134,7 +141,7 @@ export default function Hero() {
           second headline. Decorative only, hidden below md. ──────── */}
       <motion.div
         aria-hidden
-        style={reduce ? undefined : { y: wordmarkY, opacity: wordmarkFade }}
+        style={motional ? { y: wordmarkY, opacity: wordmarkFade } : undefined}
         className="pointer-events-none absolute inset-x-0 top-[var(--nav-h)] bottom-[54%] z-[2] hidden select-none items-center justify-center px-4 md:flex"
       >
         <motion.span
@@ -157,7 +164,7 @@ export default function Hero() {
       {/* ── PLANE 3 — sky-removed skyline, standing in front ────── */}
       <motion.div
         aria-hidden
-        style={reduce ? undefined : { y: cutoutY }}
+        style={motional ? { y: cutoutY } : undefined}
         className="pointer-events-none absolute inset-x-0 bottom-0 z-[3] h-[54%]"
       >
         <motion.div
@@ -180,7 +187,7 @@ export default function Hero() {
         <div className="flex-1" />
 
         <motion.div
-          style={reduce ? undefined : { y: contentY, opacity: fade }}
+          style={motional ? { y: contentY, opacity: fade } : undefined}
           className="w-full"
         >
           {/* eyebrow — anchored to the strip's left edge */}
@@ -232,7 +239,7 @@ export default function Hero() {
             >
               <Magnetic>
                 <Link
-                  href="/services/cloud-solutions"
+                  href="/services"
                   className="btn btn-bronze hero-cta hero-focus w-full !rounded-full sm:w-auto"
                 >
                   <span className="flex items-center gap-2.5">
@@ -261,7 +268,7 @@ export default function Hero() {
           initial={reduce ? false : { opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={t(0.55, 0.8)}
-          style={reduce ? undefined : { opacity: fade }}
+          style={motional ? { opacity: fade } : undefined}
           className="relative z-10 flex w-full items-center justify-between gap-6 border-t border-dark-border/70 pb-7 pt-5"
         >
           <ul className="flex flex-wrap items-center gap-x-6 gap-y-2.5">

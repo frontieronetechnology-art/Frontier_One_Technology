@@ -100,6 +100,8 @@ export default function Navbar() {
               } ${group}`}
               aria-label="Primary"
             >
+              {/* px-3 at lg keeps the six-item rail plus the CTA inside a
+                  1024px viewport; it opens back up to px-4 at xl */}
               {links.map((link) => {
                 const on = isActive(link.href);
                 return (
@@ -107,18 +109,18 @@ export default function Navbar() {
                     key={link.href}
                     href={link.href}
                     aria-current={on ? "page" : undefined}
-                    className={`group relative rounded-full px-4 py-2 text-[0.875rem] font-medium tracking-tight transition-colors duration-300 ${
+                    className={`group relative rounded-full px-3 py-2 text-[0.875rem] font-medium tracking-tight transition-colors duration-300 xl:px-4 ${
                       on ? "text-ink" : "text-n700 hover:text-ink"
                     }`}
                   >
                     {link.label}
                     {!on && (
-                      <span className="pointer-events-none absolute inset-x-4 bottom-1 h-[2px] origin-center scale-x-0 rounded-full bg-bronze transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-x-100" />
+                      <span className="pointer-events-none absolute inset-x-3 bottom-1 h-[2px] xl:inset-x-4 origin-center scale-x-0 rounded-full bg-bronze transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-x-100" />
                     )}
                     {on && (
                       <motion.span
                         layoutId="nav-underline"
-                        className="pointer-events-none absolute inset-x-4 bottom-1 h-[2px] rounded-full bg-bronze"
+                        className="pointer-events-none absolute inset-x-3 bottom-1 h-[2px] xl:inset-x-4 rounded-full bg-bronze"
                         transition={{ duration: 0.5, ease: EASE }}
                       />
                     )}
@@ -127,15 +129,23 @@ export default function Navbar() {
               })}
             </nav>
 
-            <Link
-              href="/contact"
-              className="btn btn-bronze hidden !rounded-full !px-6 !py-3 !text-[0.875rem] lg:inline-flex"
-            >
-              <span className="flex items-center gap-2">
-                Schedule a Consultation
-                <Icon name="arrowUpRight" />
-              </span>
-            </Link>
+            {/* The `hidden lg:inline-flex` pair has to live on a wrapper, not
+                on the button itself. `.btn` is an unlayered rule in
+                globals.css and Tailwind's utilities sit inside
+                `@layer utilities`, so unlayered `display: inline-flex` beats
+                the `hidden` utility outright — the desktop CTA was rendering
+                on phones and crushing the logo capsule next to it. */}
+            <div className="hidden lg:block">
+              <Link
+                href="/contact"
+                className="btn btn-bronze !rounded-full !px-6 !py-3 !text-[0.875rem]"
+              >
+                <span className="flex items-center gap-2">
+                  Schedule a Consultation
+                  <Icon name="arrowUpRight" />
+                </span>
+              </Link>
+            </div>
 
             {/* ── hamburger capsule ──────────────────────────── */}
             <button

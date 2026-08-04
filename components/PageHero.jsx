@@ -39,6 +39,7 @@ const ALIGN = {
 export default function PageHero({
   eyebrow,
   image,
+  imageAlt = "",
   title,
   lede,
   children,
@@ -74,7 +75,14 @@ export default function PageHero({
           style={reduce ? undefined : { y: plateY }}
           className="absolute inset-x-0 -bottom-24 top-0 z-0"
         >
-          <Media src={image} fill grade="dark" priority position={position || "center"} />
+          <Media
+            src={image}
+            alt={imageAlt}
+            fill
+            grade="dark"
+            priority
+            position={position || "center"}
+          />
         </motion.div>
       )}
 

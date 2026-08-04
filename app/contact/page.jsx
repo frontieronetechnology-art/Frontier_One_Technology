@@ -7,10 +7,23 @@ import Icon from "@/components/Icons";
 import { breadcrumbs } from "@/lib/seo";
 
 export const metadata = {
-  title: "Contact Us",
+  title: { absolute: "Contact Us | Schedule a Technology Consultation" },
   description:
-    "Schedule a consultation or reach the Frontier One Technology team. We respond to every inquiry.",
-  alternates: { canonical: "/contact" },
+    "Talk to Frontier One Technology about cloud, security, software, data, or AI. Schedule a consultation — we respond to every inquiry, usually within one business day.",
+  keywords: [
+    "contact technology consultant",
+    "schedule a technology consultation",
+    "IT consulting contact",
+    "request a technology quote",
+  ],
+  alternates: { canonical: "/contact/" },
+  openGraph: {
+    title: "Contact Frontier One Technology",
+    description:
+      "Tell us what you're building, modernizing, or securing. We answer every inquiry.",
+    url: "/contact/",
+    type: "website",
+  },
 };
 
 /* Placeholder contact values — pending client input
@@ -24,7 +37,6 @@ const DETAILS = [
 const SOCIALS = [
   { label: "LinkedIn", href: "https://www.linkedin.com/" },
   { label: "Instagram", href: "https://www.instagram.com/" },
-  { label: "X (Twitter)", href: "https://x.com/" },
 ];
 
 export default function ContactPage() {
@@ -46,6 +58,7 @@ export default function ContactPage() {
         eyebrow="Contact"
         watermark="Contact"
         image="contact/hero.webp"
+        imageAlt="Contact the Frontier One Technology team"
         position="center 45%"
         title={[
           { text: "Let's Talk About " },

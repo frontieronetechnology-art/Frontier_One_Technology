@@ -84,13 +84,6 @@ export const metadata = {
       },
     ],
   },
-  twitter: {
-    card: "summary_large_image",
-    title: "Frontier One Technology | Enterprise Technology Consulting",
-    description:
-      "Practical cloud, security, and software solutions engineered for long-term business growth.",
-    images: ["/og.webp"],
-  },
   category: "technology",
 };
 

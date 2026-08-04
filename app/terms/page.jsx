@@ -3,6 +3,7 @@ import LegalPage from "@/components/LegalPage";
 export const metadata = {
   title: "Terms & Conditions",
   description: "Terms and conditions governing the use of the Frontier One Technology website and services.",
+  alternates: { canonical: "/terms/" },
 };
 
 const SECTIONS = [

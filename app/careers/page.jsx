@@ -25,10 +25,25 @@ const CULTURE_WORDS = [
 ];
 
 export const metadata = {
-  title: "Careers",
+  title: { absolute: "Careers | Technology Jobs at Frontier One Technology" },
   description:
-    "Join Frontier One Technology. Explore open roles in cloud, software engineering, cybersecurity, data, and AI.",
-  alternates: { canonical: "/careers" },
+    "Build your career with us. Open roles in cloud engineering, software development, cybersecurity, data, DevOps, AI, business analysis, and IT support.",
+  keywords: [
+    "technology jobs",
+    "cloud engineer jobs",
+    "software engineer careers",
+    "cybersecurity analyst jobs",
+    "data engineer jobs",
+    "DevOps engineer careers",
+  ],
+  alternates: { canonical: "/careers/" },
+  openGraph: {
+    title: "Careers at Frontier One Technology",
+    description:
+      "Open roles across cloud, software engineering, cybersecurity, data, DevOps, and AI.",
+    url: "/careers/",
+    type: "website",
+  },
 };
 
 export default function CareersPage() {
@@ -50,6 +65,7 @@ export default function CareersPage() {
         eyebrow="Careers"
         watermark="Careers"
         image="careers/hero.webp"
+        imageAlt="Careers and open technology roles at Frontier One Technology"
         position="center 35%"
         title={[
           { text: "Build Your Future With " },

@@ -10,6 +10,7 @@ export default function sitemap() {
   const staticRoutes = [
     "",
     "/about",
+    "/services",
     "/process",
     "/industries",
     "/blog",
@@ -24,7 +25,14 @@ export default function sitemap() {
       url: `${BASE}${route}/`,
       lastModified: NOW,
       changeFrequency: route === "/blog" ? "weekly" : "monthly",
-      priority: route === "" ? 1 : route === "/terms" || route === "/privacy" ? 0.3 : 0.8,
+      priority:
+        route === ""
+          ? 1
+          : route === "/terms" || route === "/privacy"
+            ? 0.3
+            : route === "/services"
+              ? 0.95
+              : 0.8,
     })),
     ...SERVICES.map((s) => ({
       url: `${BASE}/services/${s.slug}/`,

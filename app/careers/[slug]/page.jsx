@@ -19,7 +19,7 @@ export async function generateMetadata({ params }) {
   return {
     title: `${job.title} — Careers`,
     description: job.summary,
-    alternates: { canonical: `/careers/${job.slug}` },
+    alternates: { canonical: `/careers/${job.slug}/` },
     openGraph: {
       title: `${job.title} — Careers | Frontier One Technology`,
       description: job.summary,

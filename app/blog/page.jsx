@@ -9,10 +9,10 @@ import { sortedPosts } from "@/lib/blog";
 const SITE = "https://frontieronetechnology.com";
 
 export const metadata = {
-  title: "Insights — Technology Consulting Perspectives",
+  title: { absolute: "Insights | Enterprise Technology Perspectives" },
   description:
     "Practical perspectives on cloud migration, security by design, DevOps economics, legacy modernization, and enterprise AI — written for the people who fund the decision.",
-  alternates: { canonical: "/blog" },
+  alternates: { canonical: "/blog/" },
   keywords: [
     "technology consulting insights",
     "cloud migration strategy",
