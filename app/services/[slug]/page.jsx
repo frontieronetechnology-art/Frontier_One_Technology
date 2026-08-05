@@ -78,10 +78,12 @@ export default async function ServicePage({ params }) {
         ]}
         lede={service.short}
       >
-        <Link href="/contact#form" className="btn btn-ink">
-          Schedule a Consultation <Icon name="arrow" />
+        <Link href="/contact#form" className="btn btn-bronze !rounded-full">
+          <span className="flex items-center gap-2.5">
+            Schedule a Consultation <Icon name="arrow" />
+          </span>
         </Link>
-        <Link href="/process" className="btn btn-ghost">
+        <Link href="/process" className="btn btn-outline-paper !rounded-full">
           See Our Process
         </Link>
       </PageHero>

@@ -14,10 +14,10 @@ export default function Logo({ invert = false, markOnly = false, className = "" 
   if (markOnly) {
     return (
       <Image
-        src="/logos/logo-mark.png"
+        src="/logos/logo-mark.webp"
         alt="Frontier One Technology"
-        width={962}
-        height={431}
+        width={700}
+        height={314}
         priority
         className={`h-8 w-auto ${className}`}
       />
@@ -26,10 +26,10 @@ export default function Logo({ invert = false, markOnly = false, className = "" 
 
   return (
     <Image
-      src={invert ? "/logos/logo-lockup-inverse.png" : "/logos/logo-lockup.png"}
+      src={invert ? "/logos/logo-lockup-inverse.webp" : "/logos/logo-lockup.webp"}
       alt="Frontier One Technology"
-      width={1618}
-      height={435}
+      width={640}
+      height={172}
       priority
       sizes="(max-width: 640px) 150px, 190px"
       className={`h-[2.15rem] w-auto sm:h-[2.45rem] ${className}`}

@@ -78,10 +78,12 @@ export default function ServicesIndexPage() {
         ]}
         lede="Six disciplines, one delivery standard. Each service is run by specialists, follows the same eight-step framework, and is measured against a business outcome rather than a technical milestone."
       >
-        <Link href="/contact#form" className="btn btn-ink">
-          Schedule a Consultation <Icon name="arrow" />
+        <Link href="/contact#form" className="btn btn-bronze !rounded-full">
+          <span className="flex items-center gap-2.5">
+            Schedule a Consultation <Icon name="arrow" />
+          </span>
         </Link>
-        <Link href="/process" className="btn btn-ghost">
+        <Link href="/process" className="btn btn-outline-paper !rounded-full">
           See Our Process
         </Link>
       </PageHero>

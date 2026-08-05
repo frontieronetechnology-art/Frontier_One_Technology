@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { mobileVariant } from "@/lib/imageVariants";
 
 /**
  * Universal image primitive for the site.
@@ -13,6 +14,11 @@ import { useState } from "react";
  * If the asset is not present yet, the slot renders a deliberate warm
  * drafting-plate placeholder with its own path printed on it — so a missing
  * image reads as an unfinished plate, never as a broken page.
+ *
+ * Phones are served a 1080px-wide companion file when one exists (see
+ * scripts/gen-mobile-images.py). It has to be a `media` query rather than
+ * `srcset`/`sizes`: at ~2.6x DPR the browser resolves even a 412px slot to
+ * ~1071 device pixels and picks the full-size file regardless.
  *
  * @param src      path under /public/images, e.g. "home/hero-city.webp"
  * @param fill     absolutely fill the nearest positioned ancestor
@@ -32,6 +38,7 @@ export default function Media({
   imgClassName = "",
 }) {
   const [missing, setMissing] = useState(false);
+  const small = mobileVariant(src);
 
   const gradeClass =
     grade === "dark" ? "img-grade-dark" : grade === "none" ? "" : "img-grade";
@@ -43,17 +50,23 @@ export default function Media({
   return (
     <div className={wrapper} aria-hidden={alt ? undefined : true}>
       {!missing ? (
-        /* eslint-disable-next-line @next/next/no-img-element */
-        <img
-          src={`/images/${src}`}
-          alt={alt}
-          loading={priority ? "eager" : "lazy"}
-          fetchPriority={priority ? "high" : undefined}
-          decoding="async"
-          onError={() => setMissing(true)}
-          style={{ objectPosition: position }}
-          className={`h-full w-full object-cover ${gradeClass} ${imgClassName}`}
-        />
+        /* `contents` keeps <picture> out of the box tree entirely, so the img's
+           h-full/w-full still resolve against the wrapper div above and the
+           layout is byte-for-byte what it was before the variant work. */
+        <picture className="contents">
+          {small && <source media="(max-width: 768px)" srcSet={`/images/${small}`} />}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={`/images/${src}`}
+            alt={alt}
+            loading={priority ? "eager" : "lazy"}
+            fetchPriority={priority ? "high" : undefined}
+            decoding="async"
+            onError={() => setMissing(true)}
+            style={{ objectPosition: position }}
+            className={`h-full w-full object-cover ${gradeClass} ${imgClassName}`}
+          />
+        </picture>
       ) : (
         <div
           className={`absolute inset-0 grid-paper ${

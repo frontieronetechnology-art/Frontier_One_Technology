@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
 import Magnetic from "./Magnetic";
 import Scramble from "./Scramble";
@@ -106,16 +105,42 @@ export default function Hero() {
         style={motional ? { y: parallaxY } : undefined}
         className="absolute inset-x-0 -bottom-24 top-0 z-0"
       >
-        <Image
-          src="/images/home/hero-city.webp"
-          alt=""
-          priority
-          width={2400}
-          height={1350}
-          sizes="100vw"
+        {/* Native <picture>, not next/image. With `images.unoptimized` (this is
+            a static export) next/image already emitted a plain <img> — but its
+            `priority` preload hard-codes the full-size file, so a phone
+            downloaded the 1600px plate *and* then the 1080px one the <source>
+            selected. These two media-scoped preloads keep the LCP head start
+            while letting each device class fetch exactly one file.
+            React hoists link tags into <head>. */}
+        <link
+          rel="preload"
+          as="image"
+          href="/images/home/hero-city-sm.webp"
+          media="(max-width: 768px)"
           fetchPriority="high"
-          className="img-grade-dark h-full w-full object-cover object-[center_40%] md:object-[center_32%]"
         />
+        <link
+          rel="preload"
+          as="image"
+          href="/images/home/hero-city.webp"
+          media="(min-width: 769px)"
+          fetchPriority="high"
+        />
+        <picture className="contents">
+          <source media="(max-width: 768px)" srcSet="/images/home/hero-city-sm.webp" />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/images/home/hero-city.webp"
+            alt=""
+            width={2400}
+            height={1350}
+            loading="eager"
+            decoding="async"
+            fetchPriority="high"
+            style={{ color: "transparent" }}
+            className="img-grade-dark h-full w-full object-cover object-[center_40%] md:object-[center_32%]"
+          />
+        </picture>
       </motion.div>
 
       {/* ── PLANE 1 — grade scrims ──────────────────────────────

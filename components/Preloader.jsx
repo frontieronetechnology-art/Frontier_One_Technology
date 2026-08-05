@@ -10,8 +10,12 @@ import {
 } from "framer-motion";
 
 const EASE = [0.16, 1, 0.3, 1];
-const MARK = "/logos/logo-mark.png";
-const WORDMARK = "/logos/logo-wordmark.png";
+/* WebP, not PNG — these are only ever read as alpha (see `mask` below), and the
+   variants are encoded with alpha_quality=100 so the mask edge is unchanged
+   while the file drops from 209KB to 58KB. Regenerate with
+   `python scripts/gen-mobile-images.py`. */
+const MARK = "/logos/logo-mark.webp";
+const WORDMARK = "/logos/logo-wordmark.webp";
 
 /**
  * THE BRONZE POUR
