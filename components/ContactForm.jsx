@@ -95,12 +95,17 @@ export default function ContactForm() {
   const [error, setError] = useState(null);
   const [status, setStatus] = useState("idle");
   const inputRef = useRef(null);
+  const skipFirst = useRef(true);
   const reduce = useReducedMotion();
 
   const last = step === STEPS.length - 1;
   const current = STEPS[step];
 
   useEffect(() => {
+    if (skipFirst.current) {
+      skipFirst.current = false;
+      return;
+    }
     if (status === "idle") inputRef.current?.focus({ preventScroll: true });
   }, [step, status]);
 
