@@ -71,7 +71,7 @@ export default function SmoothScroll() {
   // /contact#form that jump straight to a section.
   useEffect(() => {
     let cancelled = false;
-    const t = setTimeout(() => {
+    const raf = requestAnimationFrame(() => {
       if (cancelled) return;
       const hash = window.location.hash.slice(1);
       const el = hash
@@ -84,12 +84,12 @@ export default function SmoothScroll() {
       } else if (lenisRef.current) {
         lenisRef.current.scrollTo(0, { immediate: true });
       } else {
-        window.scrollTo(0, 0);
+        window.scrollTo({ top: 0, behavior: "instant" });
       }
-    }, 0);
+    });
     return () => {
       cancelled = true;
-      clearTimeout(t);
+      cancelAnimationFrame(raf);
     };
   }, [pathname]);
 

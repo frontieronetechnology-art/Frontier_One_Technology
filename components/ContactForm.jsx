@@ -101,7 +101,7 @@ export default function ContactForm() {
   const current = STEPS[step];
 
   useEffect(() => {
-    if (status === "idle") inputRef.current?.focus();
+    if (status === "idle") inputRef.current?.focus({ preventScroll: true });
   }, [step, status]);
 
   const set = (v) => {
