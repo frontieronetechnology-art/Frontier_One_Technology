@@ -5,7 +5,19 @@ import { motion, AnimatePresence } from "framer-motion";
 import Icon from "./Icons";
 
 const EASE = [0.16, 1, 0.3, 1];
-const ENDPOINT = process.env.NEXT_PUBLIC_CAREERS_FORM_ENDPOINT || "";
+const ENDPOINT = "/api/careers";
+
+function fileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const base64 = reader.result.split(",")[1];
+      resolve(base64);
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
 
 /** Careers application form — resume upload (PDF/DOC/DOCX), validation, SRS §5.11.4. */
 export default function ApplicationForm({ role = "" }) {
@@ -38,7 +50,22 @@ export default function ApplicationForm({ role = "" }) {
     setStatus("sending");
     try {
       if (ENDPOINT) {
-        await fetch(ENDPOINT, { method: "POST", body: data });
+        const file = data.get("resume");
+        const payload = {
+          name: data.get("name")?.trim() || "",
+          email: data.get("email")?.trim() || "",
+          phone: data.get("phone")?.trim() || "",
+          message: data.get("message")?.trim() || "",
+          role: data.get("role") || "",
+          resumeBase64: await fileToBase64(file),
+          resumeMime: file.type,
+          resumeName: file.name,
+        };
+        await fetch(ENDPOINT, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
       } else {
         await new Promise((r) => setTimeout(r, 900));
       }

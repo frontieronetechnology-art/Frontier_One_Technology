@@ -6,9 +6,8 @@ import Icon from "./Icons";
 
 const EASE = [0.16, 1, 0.3, 1];
 
-/* Wire to the production endpoint (email + Google Sheets relay)
-   before launch — SRS §6.5. Until then submissions confirm locally. */
-const ENDPOINT = process.env.NEXT_PUBLIC_FORM_ENDPOINT || "";
+/* Contact form endpoint — server-side proxy to Google Apps Script */
+const ENDPOINT = "/api/contact";
 
 const STEPS = [
   {
@@ -145,9 +144,11 @@ export default function ContactForm() {
     setStatus("sending");
     try {
       if (ENDPOINT) {
-        const body = new FormData();
-        Object.entries(values).forEach(([k, v]) => body.append(k, v));
-        await fetch(ENDPOINT, { method: "POST", body });
+        await fetch(ENDPOINT, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(values),
+        });
       } else {
         await new Promise((r) => setTimeout(r, 900));
       }

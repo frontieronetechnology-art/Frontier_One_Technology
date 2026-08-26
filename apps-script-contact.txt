@@ -1,0 +1,63 @@
+// Google Apps Script — Contact Form (Frontier One Technology)
+// 1. Contact form ka data leti hai (JSON POST)
+// 2. "Contact Submissions" Sheet me row append karti hai
+// 3. info@ + frontieronetechnology@gmail.com dono ko email bhejti hai
+
+const TO_EMAILS = ["info@frontieronetechnology.com", "frontieronetechnology@gmail.com"];
+const SHEET_ID = "1W-TyZcxyEtWbfN8WNi3PqtKJ2NVKIilUVO9HBLx0IyQ";
+
+function formatPhone(phone) {
+  if (!phone) return "";
+  const cleaned = phone.replace(/\s+/g, "");
+  if (cleaned.startsWith("+")) {
+    return cleaned.replace(/\+(\d{2})(\d+)/, "+$1 $2");
+  }
+  return cleaned;
+}
+
+function doPost(e) {
+  try {
+    const data = JSON.parse(e.postData.contents);
+    const sheet = SpreadsheetApp.openById(SHEET_ID).getActiveSheet();
+
+    const phone = formatPhone(data.phone);
+
+    // Append row to sheet (phone empty — will write separately as text)
+    sheet.appendRow([
+      new Date(),           // Timestamp
+      data.company || "",   // Company Name
+      data.email || "",     // Email
+      "",                   // Phone (placeholder)
+      data.message || ""    // Message / Project Details
+    ]);
+
+    // Write phone as text with apostrophe so + sign stays
+    const lastRow = sheet.getLastRow();
+    const phoneCell = sheet.getRange(lastRow, 4);
+    phoneCell.setNumberFormat("@");
+    phoneCell.setValue(phone);
+
+    // Email notification to BOTH accounts
+    const subject = "New Contact Inquiry from " + (data.company || "Unknown");
+    const body =
+      "New Contact Form Submission\n\n" +
+      "Company: " + (data.company || "N/A") + "\n" +
+      "Email: " + (data.email || "N/A") + "\n" +
+      "Phone: " + (phone || "N/A") + "\n" +
+      "Message: " + (data.message || "N/A") + "\n\n" +
+      "Submitted: " + new Date().toLocaleString();
+
+    TO_EMAILS.forEach(function (email) {
+      MailApp.sendEmail(email, subject, body);
+    });
+
+    return ContentService
+      .createTextOutput(JSON.stringify({ success: true }))
+      .setMimeType(ContentService.MimeType.JSON);
+
+  } catch (err) {
+    return ContentService
+      .createTextOutput(JSON.stringify({ success: false, error: String(err) }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}
