@@ -3,7 +3,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Chatbot from "@/components/Chatbot";
-import GoogleAnalytics from "@/components/GoogleAnalytics";
+import GoogleAnalytics, { GTMHeadScript } from "@/components/GoogleAnalytics";
 import SmoothScroll from "@/components/SmoothScroll";
 import Cursor from "@/components/Cursor";
 import Preloader from "@/components/Preloader";
@@ -103,6 +103,7 @@ export default function RootLayout({ children }) {
       className={`${instrumentSans.variable} ${instrumentSerif.variable} ${jetbrainsMono.variable}`}
     >
       <head>
+        <GTMHeadScript />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(rootGraph) }}
