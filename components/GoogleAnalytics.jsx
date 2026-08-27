@@ -1,10 +1,9 @@
-const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID;
+const GTM_ID = "GTM-P8LV7NPC";
 
 /* Inline GTM loader for <head> — rendered server-side into the raw HTML so
    tag-detection tools can see it (afterInteractive client-injection was
    invisible to HTML scanners). */
 export function GTMHeadScript() {
-  if (!GTM_ID) return null;
   return (
     <script
       dangerouslySetInnerHTML={{
@@ -16,7 +15,6 @@ export function GTMHeadScript() {
 
 /* Noscript fallback for <body> — no-JS users still pass data to GTM. */
 export default function GoogleAnalytics() {
-  if (!GTM_ID) return null;
   return (
     <noscript>
       <iframe
