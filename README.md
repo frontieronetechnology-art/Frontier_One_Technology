@@ -47,4 +47,4 @@ npm run build    # static export → ./out (deploy anywhere)
    without them). Official partner logos from vendor press kits only.
 6. **Legal** — Terms & Privacy are drafts; client legal counsel must review.
    Bracketed items need confirmation.
-7. **Analytics** — add GA4 + GTM snippets; verify GSC and submit `/sitemap.xml`.
+7. **Analytics** — ✅ GA4 + GTM integrated (GTM `GTM-P8LV7NPC` inline in `<head>`, GA4 `G-L4ZPK9EWFG` configured in GTM). Verify GSC and submit `/sitemap.xml`.
