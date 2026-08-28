@@ -205,7 +205,7 @@ export default function Footer() {
               }}
               aria-hidden
             />
-            <p>© {new Date().getFullYear()} Frontier One Technology. All rights reserved.</p>
+            <p>© 2020 Frontier One Technology. All rights reserved.</p>
           </div>
           <div className="flex items-center gap-6">
             <Link href="/privacy" className="transition-colors hover:text-n300">Privacy Policy</Link>
